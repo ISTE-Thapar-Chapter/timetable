@@ -7,7 +7,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto rounded-2xl px-5 md:px-6 py-3 flex items-center justify-between border border-white/15 bg-zinc-950/85 backdrop-blur-xl supports-[backdrop-filter]:bg-zinc-950/70 shadow-[0_8px_30px_rgba(0,0,0,0.45)] md:border-white/10 md:bg-white/5 md:backdrop-blur-md md:supports-[backdrop-filter]:bg-white/5 md:shadow-[0_4px_20px_rgba(0,0,0,0.28)]">
         <Link to={import.meta.env.VITE_OFFICIAL_SITE || "/"} className="flex items-center gap-2 group">
           <img
-            src="/iste.jpeg"
+            src="/iste.png"
             alt="ISTE Logo"
             className="h-8 w-auto transition-transform duration-200 group-hover:scale-105"
           />

@@ -7,6 +7,11 @@ export default function Footer() {
       github: "https://github.com/ayushs206",
       avatar: "https://github.com/ayushs206.png",
     },
+    {
+      name: "Bhavya Goyal",
+      github: "https://github.com/07BhavyaGoyal",
+      avatar: "https://github.com/07BhavyaGoyal.png",
+    },
     // Add more if needed, user didn't specify other names, so I'll leave them room to add or just use theirs.
   ];
 
@@ -18,7 +23,7 @@ export default function Footer() {
           <Heart size={16} className="text-red-500 fill-red-500 animate-pulse" />
           <span>by</span>
         </div>
-        
+
         <div className="flex flex-wrap justify-center gap-6">
           {contributors.map((c, i) => (
             <a
@@ -39,7 +44,7 @@ export default function Footer() {
             </a>
           ))}
         </div>
-        
+
         <p className="text-xs text-white/40 mt-4">
           © {new Date().getFullYear()} ISTE Student Chapter. All rights reserved.
         </p>

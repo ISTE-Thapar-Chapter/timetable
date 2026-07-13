@@ -30,7 +30,7 @@ export default function Background() {
                 >
                     <div className="hidden sm:flex items-center justify-between">
                         <img
-                            src="/iste.jpeg"
+                            src="/iste.png"
                             alt="ISTE Logo"
                             className="h-8 w-auto object-contain"
                         />
@@ -59,7 +59,7 @@ export default function Background() {
 
                     <div className="sm:hidden flex items-center justify-center">
                         <img
-                            src="/iste.jpeg"
+                            src="/iste.png"
                             alt="ISTE Logo"
                             className="h-8 w-auto object-contain"
                         />
