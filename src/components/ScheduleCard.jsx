@@ -45,7 +45,7 @@ export default function ScheduleCard({ batches, loading }) {
         </div>
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight">Schedule</h2>
-          <p className="text-sm text-white/50">2025-26 Even Sem</p>
+          <p className="text-sm text-white/50">{import.meta.env.VITE_SEM_DETAIL || 'Even Sem'}</p>
         </div>
       </div>
 
