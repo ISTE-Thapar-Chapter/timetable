@@ -20,6 +20,8 @@ const TIMES = [
   "02:40 PM",
   "03:30 PM",
   "04:20 PM",
+  "05:10 PM",
+  "06:00 PM",
 ];
 
 const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName}`;
@@ -193,7 +195,7 @@ export default function FreeSlotsView() {
             <div className="flex-1 flex flex-col relative z-10 w-full">
               {/* Desktop View: Grid (Refined to optimally fill screen) */}
               <div className="hidden md:block w-full overflow-x-auto custom-scrollbar">
-                <table className="w-full text-left border-collapse table-fixed min-w-[700px]">
+                <table className="w-full text-left border-collapse table-fixed min-w-[1280px]">
                   <thead>
                     <tr>
                       <th className="p-4 border-b border-white/10 bg-white/5/50 font-semibold text-white/90 w-28 text-sm sticky left-0 z-20 backdrop-blur-md">
@@ -204,7 +206,7 @@ export default function FreeSlotsView() {
                         return (
                           <th
                             key={time}
-                            className="p-3 border-b border-white/10 bg-white/5/50 font-medium text-center"
+                            className="p-3 border-b border-white/10 bg-white/5/50 font-medium text-center w-[90px]"
                           >
                             <div className="flex flex-col items-center justify-center gap-0.5">
                               <span className="text-sm text-white/90">{timeVal}</span>

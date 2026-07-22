@@ -22,6 +22,8 @@ const TIMES = [
   "02:40 PM",
   "03:30 PM",
   "04:20 PM",
+  "05:10 PM",
+  "06:00 PM",
 ];
 
 const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName}`;
@@ -369,7 +371,7 @@ export default function ScheduleView() {
   const renderDesktopTable = (refProps, isCaptureOnly = false) => (
     <div
       {...refProps}
-      className={`${!isCaptureOnly ? "w-full overflow-x-auto custom-scrollbar bg-black/40 rounded-2xl p-4 shadow-2xl glass-card border-none" : "bg-[#09090b] text-white p-6 pb-4 w-[1150px] min-w-[1150px] max-w-[1150px] block"}`}
+      className={`${!isCaptureOnly ? "w-full overflow-x-auto custom-scrollbar bg-black/40 rounded-2xl p-4 shadow-2xl glass-card border-none" : "bg-[#09090b] text-white p-6 pb-4 w-[1350px] min-w-[1350px] max-w-[1350px] block"}`}
     >
       <div className={`flex items-end justify-between pb-4 ${isCaptureOnly ? 'mb-6 border-b-2 border-white/10' : 'mb-4 border-b border-white/10'}`}>
         <div>
@@ -381,7 +383,7 @@ export default function ScheduleView() {
         </div>
       </div>
 
-      <table className="w-full text-left border-collapse table-fixed min-w-[1000px]">
+      <table className="w-full text-left border-collapse table-fixed min-w-[1280px]">
         <thead>
           <tr>
             <th className={`p-3 border-b border-r border-white/10 bg-white/5 font-semibold text-white/90 w-24 text-sm ${!isCaptureOnly ? "sticky left-0 z-20 backdrop-blur-md" : ""}`}>
