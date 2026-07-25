@@ -1,3 +1,5 @@
+mychanges
+
 # Frontend
 
 This package contains the React + Vite user interface for the timetable app.
