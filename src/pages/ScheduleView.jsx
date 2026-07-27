@@ -304,7 +304,7 @@ export default function ScheduleView() {
               className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[240px] px-4 py-4 rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.8)] flex flex-col justify-center items-center text-center backdrop-blur-3xl border border-white/20 bg-zinc-950`}
             >
               <div className="flex flex-col justify-center items-center gap-1.5 mb-3 opacity-90 w-full">
-                <div className={`font-bold text-[12px] uppercase tracking-wider break-all text-center w-full ${getTypeColors(type).split(' ').find(c => c.startsWith('text-'))}`}>{code}</div>
+                <div className={`font-orbitron font-bold text-[12px] uppercase tracking-wider break-all text-center w-full ${getTypeColors(type).split(' ').find(c => c.startsWith('text-'))}`}>{code}</div>
                 {loc && (
                   <div className={`text-[11px] tracking-wide flex items-start justify-center gap-1.5 w-full ${getTypeColors(type).split(' ').find(c => c.startsWith('text-'))}`}>
                     <div className="w-1.5 h-1.5 rounded-full bg-current opacity-50 shrink-0 mt-[5px]" />
@@ -312,7 +312,7 @@ export default function ScheduleView() {
                   </div>
                 )}
               </div>
-              <div className={`font-bold text-[14px] leading-snug mb-3 w-full break-words whitespace-normal text-center ${getTypeColors(type).split(' ').find(c => c.startsWith('text-'))}`}>{name}</div>
+              <div className={`font-space-grotesk font-bold text-[14px] leading-snug mb-3 w-full break-words whitespace-normal text-center text-white`}>{name}</div>
               <span className={`text-[10px] px-2 py-1 rounded shadow-sm whitespace-nowrap uppercase tracking-wider shrink-0 mb-4 ${getTypeBadgeColors(type)}`}>
                 {type}
               </span>
@@ -321,7 +321,7 @@ export default function ScheduleView() {
                   e.stopPropagation();
                   if (onEdit) onEdit();
                 }}
-                className="text-[11px] font-semibold bg-white text-black px-4 py-1.5 rounded hover:bg-white/90 transition-all shadow active:scale-95 w-full shrink-0"
+                className="font-space-grotesk text-[11px] font-bold bg-white text-black px-4 py-2 rounded-lg hover:bg-white/90 transition-all shadow active:scale-95 w-full shrink-0"
               >
                 Edit Slot
               </button>
@@ -375,8 +375,8 @@ export default function ScheduleView() {
     >
       <div className={`flex items-end justify-between pb-4 ${isCaptureOnly ? 'mb-6 border-b-2 border-white/10' : 'mb-4 border-b border-white/10'}`}>
         <div>
-          {isCaptureOnly && <div className="text-sky-400 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2"><Calendar size={14} /> GENERATED TIMETABLE</div>}
-          <h2 className={`${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight`}>
+          {isCaptureOnly && <div className="font-space-grotesk text-sky-400 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2"><Calendar size={14} /> GENERATED TIMETABLE</div>}
+          <h2 className={`font-space-grotesk ${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight`}>
             {!isCaptureOnly && <Calendar className="text-sky-400" />}
             {isCaptureOnly ? `Schedule for ${batch}` : `Schedule: ${batch}`}
           </h2>
@@ -386,16 +386,16 @@ export default function ScheduleView() {
       <table className="w-full text-left border-collapse table-fixed min-w-[1280px]">
         <thead>
           <tr>
-            <th className={`p-3 border-b border-r border-white/10 bg-white/5 font-semibold text-white/90 w-24 text-sm ${!isCaptureOnly ? "sticky left-0 z-20 backdrop-blur-md" : ""}`}>
+            <th className={`p-3 border-b border-r border-white/10 bg-white/5 font-bold text-white/90 w-24 text-xs ${!isCaptureOnly ? "sticky left-0 z-20 backdrop-blur-md font-space-grotesk uppercase tracking-wider" : "font-space-grotesk uppercase tracking-wider"}`}>
               Day
             </th>
             {TIMES.map((time) => {
               const [timeVal, period] = time.split(" ");
               return (
-                <th key={time} className="p-2 border-b border-r border-white/10 bg-white/5 font-medium text-center w-[90px]">
-                  <div className="flex flex-col items-center justify-center gap-0.5">
-                    <span className="text-sm text-white/90">{timeVal}</span>
-                    <span className="text-[10px] text-white/50 tracking-widest">{period}</span>
+                <th key={time} className="p-2 border-b border-r border-white/10 bg-white/5 font-semibold text-center w-[90px] text-xs">
+                  <div className="flex flex-col items-center justify-center gap-0.5 leading-none">
+                    <span className="text-white font-space-grotesk">{timeVal}</span>
+                    <span className="text-[9px] text-white/40 tracking-widest uppercase mt-1">{period}</span>
                   </div>
                 </th>
               );
@@ -499,7 +499,7 @@ export default function ScheduleView() {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-white flex items-center gap-3 mb-2">
+              <h1 className="font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 mb-2">
                 <span className="p-2 bg-sky-500/20 text-sky-400 rounded-lg">
                   <Calendar size={24} />
                 </span>
@@ -648,8 +648,8 @@ export default function ScheduleView() {
               <X size={20} />
             </button>
 
-            <h3 className="text-xl font-bold text-white mb-1">Edit Timetable Slot</h3>
-            <p className="text-sm text-white/50 mb-6">{currentEditSlot.day} at {currentEditSlot.time}</p>
+            <h3 className="font-space-grotesk text-xl font-bold text-white mb-1">Edit Timetable Slot</h3>
+            <p className="font-share-tech text-xs text-white/40 mb-6 uppercase tracking-wider">{currentEditSlot.day} at {currentEditSlot.time}</p>
 
             <div className="space-y-4">
               <div className="md:hidden">

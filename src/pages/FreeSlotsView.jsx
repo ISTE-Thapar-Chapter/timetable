@@ -151,7 +151,7 @@ export default function FreeSlotsView() {
             <span>Back to Dashboard</span>
           </Link>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-6 mb-2">
-            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+            <h1 className="font-space-grotesk text-3xl font-bold text-white flex items-center gap-3">
               <span className="p-2 bg-amber-500/20 text-amber-500 rounded-lg">
                 <Users size={24} />
               </span>
@@ -198,7 +198,7 @@ export default function FreeSlotsView() {
                 <table className="w-full text-left border-collapse table-fixed min-w-[1280px]">
                   <thead>
                     <tr>
-                      <th className="p-4 border-b border-white/10 bg-white/5/50 font-semibold text-white/90 w-28 text-sm sticky left-0 z-20 backdrop-blur-md">
+                      <th className="p-4 border-b border-white/10 bg-white/5/50 font-bold text-white/90 w-28 text-xs sticky left-0 z-20 backdrop-blur-md font-space-grotesk uppercase tracking-wider">
                         Day
                       </th>
                       {TIMES.map((time) => {
@@ -206,11 +206,11 @@ export default function FreeSlotsView() {
                         return (
                           <th
                             key={time}
-                            className="p-3 border-b border-white/10 bg-white/5/50 font-medium text-center w-[90px]"
+                            className="p-3 border-b border-white/10 bg-white/5/50 font-semibold text-center w-[90px] text-xs text-white"
                           >
-                            <div className="flex flex-col items-center justify-center gap-0.5">
-                              <span className="text-sm text-white/90">{timeVal}</span>
-                              <span className="text-[10px] text-white/50 tracking-widest">{period}</span>
+                            <div className="flex flex-col items-center justify-center leading-none">
+                              <span className="font-space-grotesk">{timeVal}</span>
+                              <span className="text-[9px] font-share-tech text-white/40 tracking-widest uppercase mt-1">{period}</span>
                             </div>
                           </th>
                         );
