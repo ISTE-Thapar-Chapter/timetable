@@ -226,25 +226,32 @@ export function HomeSite() {
     });
   }, [batches, primarySearch]);
 
-  // Comparison Batch Search Filter (excludes primary and already selected)
+  // Comparison Batch Search Filter (excludes already selected)
   const filteredComparisonBatches = useMemo(() => {
     if (!Array.isArray(batches)) return [];
     return batches.filter((b) => {
       if (typeof b !== 'string') return false;
-      if (b.toUpperCase() === primaryBatch.toUpperCase()) return false;
       if (comparisonBatches.includes(b)) return false;
       return b.toLowerCase().includes(comparisonSearch.toLowerCase());
     });
-  }, [batches, comparisonSearch, primaryBatch, comparisonBatches]);
+  }, [batches, comparisonSearch, comparisonBatches]);
+
+  // Sync comparisonBatches with primaryBatch when primaryBatch changes
+  useEffect(() => {
+    if (primaryBatch) {
+      setComparisonBatches([primaryBatch]);
+    } else {
+      setComparisonBatches([]);
+    }
+  }, [primaryBatch]);
 
   // Calculate Free Slots when comparison batch list changes
   useEffect(() => {
     if (activeTab !== "freeSlots") return;
 
-    const allCompare = [primaryBatch, ...comparisonBatches].filter(Boolean);
-    if (allCompare.length < 2) {
+    if (comparisonBatches.length < 2) {
       setFreeSlotsResult(null);
-      setFreeSlotsError("Select at least one other batch to compare schedules.");
+      setFreeSlotsError("Select at least 2 batches to compare schedules.");
       return;
     }
 
@@ -252,10 +259,10 @@ export function HomeSite() {
     setFreeSlotsError("");
 
     try {
-      const data = getBatchesData(allCompare);
+      const data = getBatchesData(comparisonBatches);
       if (data && Object.keys(data).length > 0) {
         // Resolve schedules (preferring local storage edits)
-        const resolvedSchedules = allCompare.map((batchName) => {
+        const resolvedSchedules = comparisonBatches.map((batchName) => {
           const storedKey = getScheduleStorageKey(batchName);
           const localStored = localStorage.getItem(storedKey);
           if (localStored) {
@@ -297,7 +304,7 @@ export function HomeSite() {
     } finally {
       setFreeSlotsLoading(false);
     }
-  }, [primaryBatch, comparisonBatches, activeTab]);
+  }, [comparisonBatches, activeTab]);
 
   // Workspace Actions
   const handleSelectPrimary = (batchName) => {
@@ -1133,19 +1140,24 @@ export function HomeSite() {
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-semibold text-white/50">Active Batches</label>
                         <div className="flex flex-wrap gap-2">
-                          <span className="px-3 py-1.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-300 text-xs font-bold flex items-center gap-1.5">
-                            {primaryBatch} (Workspace)
-                          </span>
-                          {comparisonBatches.map((b) => (
-                            <button
-                              key={b}
-                              onClick={() => setComparisonBatches(comparisonBatches.filter(x => x !== b))}
-                              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-red-500/30 hover:bg-red-500/10 text-white/80 hover:text-red-400 text-xs font-semibold flex items-center gap-2 transition-all"
-                            >
-                              <span>{b}</span>
-                              <X size={12} />
-                            </button>
-                          ))}
+                          {comparisonBatches.length > 0 ? (
+                            comparisonBatches.map((b) => (
+                              <button
+                                key={b}
+                                onClick={() => setComparisonBatches(comparisonBatches.filter((x) => x !== b))}
+                                className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-2 transition-all ${
+                                  b === primaryBatch
+                                    ? "bg-sky-500/10 border-sky-500/20 text-sky-300 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+                                    : "bg-white/5 border-white/10 text-white/80 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+                                }`}
+                              >
+                                <span>{b} {b === primaryBatch && "(Workspace)"}</span>
+                                <X size={12} />
+                              </button>
+                            ))
+                          ) : (
+                            <span className="text-xs text-white/40 italic py-1">No batches selected. Add below or from search.</span>
+                          )}
                         </div>
                       </div>
 
