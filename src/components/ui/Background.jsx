@@ -29,11 +29,21 @@ export default function Background() {
                     className="mx-auto max-w-5xl rounded-full border border-white/15 bg-white/[0.03] backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)] px-4 py-3 md:px-6"
                 >
                     <div className="hidden sm:flex items-center justify-between">
-                        <img
-                            src="/iste.png"
-                            alt="ISTE Logo"
-                            className="h-8 w-auto object-contain"
-                        />
+                        <div className="flex items-center gap-3.5">
+                            <img
+                                src="/logo.png"
+                                alt="ISTE Logo"
+                                className="h-12 w-auto object-contain"
+                            />
+                            <div className="flex flex-col justify-center leading-none">
+                                <span className="font-orbitron text-2xl font-black tracking-wider text-white">
+                                    ISTE
+                                </span>
+                                <span className="font-share-tech text-[10px] font-medium tracking-[0.15em] uppercase text-white/50 mt-1">
+                                    Thapar Chapter
+                                </span>
+                            </div>
+                        </div>
 
                         <div className="flex items-center gap-2">
                             <a
@@ -57,12 +67,20 @@ export default function Background() {
                         </div>
                     </div>
 
-                    <div className="sm:hidden flex items-center justify-center">
+                    <div className="sm:hidden flex items-center justify-center gap-3.5">
                         <img
-                            src="/iste.png"
+                            src="/logo.png"
                             alt="ISTE Logo"
-                            className="h-8 w-auto object-contain"
+                            className="h-12 w-auto object-contain"
                         />
+                        <div className="flex flex-col justify-center leading-none">
+                            <span className="font-orbitron text-2xl font-black tracking-wider text-white">
+                                ISTE
+                            </span>
+                            <span className="font-share-tech text-[10px] font-medium tracking-[0.15em] uppercase text-white/50 mt-1">
+                                Thapar Chapter
+                            </span>
+                        </div>
                     </div>
                 </motion.div>
             </header>

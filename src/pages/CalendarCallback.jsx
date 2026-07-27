@@ -38,11 +38,11 @@ export default function CalendarCallback() {
           {isSuccess ? (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] pointer-events-none" />
           ) : (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-rose-500/20 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-red-500/20 rounded-full blur-[80px] pointer-events-none" />
           )}
 
           <div className="relative z-10 flex flex-col items-center">
-            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-xl ${isSuccess ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}`}>
+            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-xl ${isSuccess ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
               {isSuccess ? <CopyCheck size={36} /> : <XOctagon size={36} />}
             </div>
 

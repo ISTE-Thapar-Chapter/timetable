@@ -51,10 +51,10 @@ export default function FreeSlotsCard({ batches, loading }) {
   return (
     <div className={`glass-card rounded-2xl p-6 md:p-8 flex flex-col overflow-visible group hover:border-white/20 transition-all ${isDropdownOpen ? 'z-50' : 'z-10'} relative`}>
       {/* Decorative gradient orb */}
-      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-fuchsia-500/10 rounded-full blur-3xl transition-all pointer-events-none" />
+      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl transition-all pointer-events-none" />
 
       <div className="flex items-center gap-4 mb-6 relative z-10">
-        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-fuchsia-500 shadow-inner">
+        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-500 shadow-inner">
           <Users size={24} />
         </div>
         <div>
@@ -66,7 +66,7 @@ export default function FreeSlotsCard({ batches, loading }) {
       <div className="space-y-4 mb-8 relative z-20 flex-1 flex flex-col">
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-white/70">Select 2-9 batches</label>
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${isValidCount ? 'bg-fuchsia-500/20 text-fuchsia-300 ring-1 ring-fuchsia-500/30' : 'bg-white/10 text-white/50'}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${isValidCount ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/30' : 'bg-white/10 text-white/50'}`}>
             {selectedBatches.length}/9
           </span>
         </div>
@@ -79,7 +79,7 @@ export default function FreeSlotsCard({ batches, loading }) {
         ) : (
           <div className="flex flex-col gap-2 relative group/input" ref={dropdownRef}>
             <div
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border transition-all cursor-text ${isDropdownOpen ? 'border-fuchsia-500/50 ring-2 ring-fuchsia-500/20 bg-black/40' : 'glass border-white/10'}`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border transition-all cursor-text ${isDropdownOpen ? 'border-amber-500/50 ring-2 ring-amber-500/20 bg-black/40' : 'glass border-white/10'}`}
               onClick={() => setIsDropdownOpen(true)}
             >
               <input

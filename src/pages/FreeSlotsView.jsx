@@ -152,7 +152,7 @@ export default function FreeSlotsView() {
           </Link>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-6 mb-2">
             <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <span className="p-2 bg-fuchsia-500/20 text-fuchsia-500 rounded-lg">
+              <span className="p-2 bg-amber-500/20 text-amber-500 rounded-lg">
                 <Users size={24} />
               </span>
               Common Free Slots
@@ -174,15 +174,15 @@ export default function FreeSlotsView() {
         </div>
 
         <div className="glass-card rounded-2xl p-6 min-h-[400px] flex flex-col relative overflow-hidden">
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-fuchsia-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
           {loading ? (
             <div className="flex flex-col items-center justify-center flex-1 text-white/50 gap-4 relative z-10">
-              <Loader2 size={32} className="animate-spin text-fuchsia-500" />
+              <Loader2 size={32} className="animate-spin text-amber-500" />
               <p>Calculating common free slots...</p>
             </div>
           ) : error ? (
-            <div className="flex flex-col items-center justify-center flex-1 text-rose-400 gap-4 relative z-10">
+            <div className="flex flex-col items-center justify-center flex-1 text-amber-400 gap-4 relative z-10">
               <p className="text-lg font-medium text-center">{error}</p>
               <Link
                 to="/"

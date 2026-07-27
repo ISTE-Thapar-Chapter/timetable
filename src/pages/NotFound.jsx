@@ -22,11 +22,11 @@ export default function NotFound() {
 
       <main className="flex-1 w-full max-w-[1200px] mx-auto px-6 pt-32 pb-16 flex items-center justify-center">
         <section className="glass-card w-full max-w-3xl rounded-3xl p-8 md:p-12 border border-white/10 relative overflow-hidden">
-          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-rose-500/20 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-16 -left-10 w-44 h-44 rounded-full bg-red-600/20 blur-3xl pointer-events-none" />
+          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-sky-500/20 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-10 w-44 h-44 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none" />
 
           <div className="relative z-10 text-center">
-            <div className="w-16 h-16 mx-auto rounded-2xl border border-white/15 bg-white/5 flex items-center justify-center text-rose-400 mb-6">
+            <div className="w-16 h-16 mx-auto rounded-2xl border border-white/15 bg-white/5 flex items-center justify-center text-sky-400 mb-6">
               <SearchX size={30} />
             </div>
 

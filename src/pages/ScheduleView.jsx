@@ -375,9 +375,9 @@ export default function ScheduleView() {
     >
       <div className={`flex items-end justify-between pb-4 ${isCaptureOnly ? 'mb-6 border-b-2 border-white/10' : 'mb-4 border-b border-white/10'}`}>
         <div>
-          {isCaptureOnly && <div className="text-rose-500 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2"><Calendar size={14} /> GENERATED TIMETABLE</div>}
+          {isCaptureOnly && <div className="text-sky-400 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2"><Calendar size={14} /> GENERATED TIMETABLE</div>}
           <h2 className={`${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight`}>
-            {!isCaptureOnly && <Calendar className="text-rose-500" />}
+            {!isCaptureOnly && <Calendar className="text-sky-400" />}
             {isCaptureOnly ? `Schedule for ${batch}` : `Schedule: ${batch}`}
           </h2>
         </div>
@@ -500,7 +500,7 @@ export default function ScheduleView() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center gap-3 mb-2">
-                <span className="p-2 bg-rose-500/20 text-rose-500 rounded-lg">
+                <span className="p-2 bg-sky-500/20 text-sky-400 rounded-lg">
                   <Calendar size={24} />
                 </span>
                 Schedule for {batch}
@@ -510,7 +510,7 @@ export default function ScheduleView() {
                 <p className="text-xs text-white/70 mt-2">{saveStatus}</p>
               )}
             </div>
-
+ 
             {result && (
               <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto self-start md:self-end">
                 <button
@@ -523,7 +523,7 @@ export default function ScheduleView() {
                 <button
                   onClick={handleResetLocal}
                   disabled={!hasSavedLocalData}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-500/10 text-rose-300 font-semibold rounded-lg border border-rose-400/20 hover:bg-rose-500/20 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 bg-sky-500/10 text-sky-300 font-semibold rounded-lg border border-sky-400/20 hover:bg-sky-500/20 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   Reset Schedule
                 </button>
@@ -539,15 +539,15 @@ export default function ScheduleView() {
             )}
           </div>
         </div>
-
+ 
         <div className="relative flex flex-col flex-1">
           {loading ? (
             <div className="glass-card rounded-2xl p-6 min-h-[400px] flex flex-col items-center justify-center text-white/50 gap-4">
-              <Loader2 size={32} className="animate-spin text-rose-500" />
+              <Loader2 size={32} className="animate-spin text-sky-400" />
               <p>Fetching schedule...</p>
             </div>
           ) : error ? (
-            <div className="glass-card rounded-2xl p-6 min-h-[400px] flex flex-col items-center justify-center text-rose-400 gap-4">
+            <div className="glass-card rounded-2xl p-6 min-h-[400px] flex flex-col items-center justify-center text-sky-400 gap-4">
               <p className="text-lg font-medium text-center">{error}</p>
               <Link
                 to="/"
@@ -656,7 +656,7 @@ export default function ScheduleView() {
                 {/* On mobile, allow changing the time itself when 'adding a class' from empty day */}
                 <label className="block text-xs font-medium text-white/70 mb-1">Time Slot</label>
                 <select
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-rose-500/50"
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50"
                   value={currentEditSlot.time}
                   onChange={(e) => setCurrentEditSlot({ ...currentEditSlot, time: e.target.value })}
                 >
@@ -667,7 +667,7 @@ export default function ScheduleView() {
               <div>
                 <label className="block text-xs font-medium text-white/70 mb-1">Type</label>
                 <select
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-rose-500/50"
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50"
                   value={modalFormData.type}
                   onChange={(e) => setModalFormData({ ...modalFormData, type: e.target.value })}
                 >
@@ -683,7 +683,7 @@ export default function ScheduleView() {
                 <input
                   type="text"
                   placeholder="e.g. UPH013P"
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-rose-500/50"
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50"
                   value={modalFormData.code}
                   onChange={(e) => setModalFormData({ ...modalFormData, code: e.target.value })}
                 />
@@ -695,7 +695,7 @@ export default function ScheduleView() {
                   type="text"
                   autoFocus
                   placeholder="e.g. PHYSICS"
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-rose-500/50"
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50"
                   value={modalFormData.name}
                   onChange={(e) => setModalFormData({ ...modalFormData, name: e.target.value })}
                 />
@@ -706,7 +706,7 @@ export default function ScheduleView() {
                 <input
                   type="text"
                   placeholder="e.g. G312 LAB1"
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-rose-500/50"
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50"
                   value={modalFormData.location}
                   onChange={(e) => setModalFormData({ ...modalFormData, location: e.target.value })}
                 />

@@ -1,7 +1,20 @@
 @import "@fontsource-variable/inter";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Share+Tech+Mono&family=Space+Grotesk:wght@500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+  .font-share-tech {
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .font-space-grotesk {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
 
 @layer base {
   :root {

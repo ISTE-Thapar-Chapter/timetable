@@ -37,10 +37,10 @@ export default function ScheduleCard({ batches, loading }) {
 
   return (
     <div className={`glass-card rounded-2xl p-6 md:p-8 flex flex-col overflow-visible group hover:border-white/20 transition-all ${isDropdownOpen ? 'z-50' : 'z-10'} relative`}>
-      <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl transition-all pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-3xl transition-all pointer-events-none" />
 
       <div className="flex items-center gap-4 mb-6 relative z-10">
-        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-rose-500 shadow-inner">
+        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-sky-400 shadow-inner">
           <Calendar size={24} />
         </div>
         <div>
@@ -59,7 +59,7 @@ export default function ScheduleCard({ batches, loading }) {
           <div className="flex flex-col gap-2 relative group/input pt-2" ref={dropdownRef}>
             <label className="text-sm font-medium text-white/70">Select your batch</label>
             <div
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border transition-all cursor-text ${isDropdownOpen ? 'border-rose-500/50 ring-2 ring-rose-500/20 bg-black/40' : 'glass border-white/10'}`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border transition-all cursor-text ${isDropdownOpen ? 'border-sky-500/50 ring-2 ring-sky-500/20 bg-black/40' : 'glass border-white/10'}`}
               onClick={() => setIsDropdownOpen(true)}
             >
               <input
@@ -88,7 +88,7 @@ export default function ScheduleCard({ batches, loading }) {
                         setIsDropdownOpen(false);
                       }}
                       className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all flex items-center justify-between mb-0.5
-                        ${selectedBatch === batch ? 'bg-rose-500/20 text-rose-300' : 'text-white/70 hover:bg-white/10 hover:text-white'}
+                        ${selectedBatch === batch ? 'bg-sky-500/20 text-sky-300' : 'text-white/70 hover:bg-white/10 hover:text-white'}
                       `}
                     >
                       <span className="font-medium">{batch}</span>
