@@ -331,28 +331,17 @@ export default function CalendarCard({ batches, loadingBatches }) {
     return b.toLowerCase().includes(search.toLowerCase());
   }) : [];
 
-  const handleApiCall = async (operation) => {
-    if (operation === "addToCalendar" && !selectedBatch) return;
+  const handleApiError = (error) => {
+    console.error(error);
+    setErrorMsg(error.message || "Failed to complete Google Calendar action. Please retry.");
+    setIsAdding(false);
+    setIsResetting(false);
+    setSyncProgress("");
+  };
 
-    setErrorMsg("");
-    setSyncProgress("Initializing...");
-    if (operation === "addToCalendar") setIsAdding(true);
-    else setIsResetting(true);
-
+  const proceedWithToken = async (token, operation) => {
     try {
-      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-      if (!clientId) {
-        throw new Error("Google OAuth Client ID is missing. Please set VITE_GOOGLE_CLIENT_ID in your .env file.");
-      }
-
-      setSyncProgress("Loading Google authentication...");
-      const googleObj = await loadGsi();
-
       if (operation === "addToCalendar") {
-        setSyncProgress("Requesting permissions for Drive & Calendar...");
-        const scopes = "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/calendar";
-        const token = await getAccessToken(googleObj, clientId, scopes);
-
         // Compile exact timetable data
         setSyncProgress("Compiling timetable data...");
         const getLocalTimetableData = () => {
@@ -409,10 +398,6 @@ export default function CalendarCard({ batches, loadingBatches }) {
         navigate("/calendar?success=true", { replace: true });
       } else {
         // resetCalendar operation
-        setSyncProgress("Requesting permissions for Google Calendar...");
-        const scopes = "https://www.googleapis.com/auth/calendar";
-        const token = await getAccessToken(googleObj, clientId, scopes);
-
         // Delete "Timetable" calendar
         await deleteCalendarOnly(token, setSyncProgress);
 
@@ -420,12 +405,70 @@ export default function CalendarCard({ batches, loadingBatches }) {
         navigate("/calendar?success=true", { replace: true });
       }
     } catch (error) {
-      console.error(error);
-      setErrorMsg(error.message || "Failed to complete Google Calendar action. Please retry.");
+      handleApiError(error);
     } finally {
       setIsAdding(false);
       setIsResetting(false);
       setSyncProgress("");
+    }
+  };
+
+  const requestTokenAndProceed = (googleObj, clientId, operation) => {
+    setSyncProgress("Requesting permissions...");
+    const scopes = operation === "addToCalendar"
+      ? "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/calendar"
+      : "https://www.googleapis.com/auth/calendar";
+
+    try {
+      const tokenClient = googleObj.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: scopes,
+        callback: (response) => {
+          if (response.error) {
+            handleApiError(new Error(response.error_description || response.error));
+            return;
+          }
+          if (!response.access_token) {
+            handleApiError(new Error("No access token returned from Google."));
+            return;
+          }
+          proceedWithToken(response.access_token, operation);
+        },
+        error_callback: (err) => {
+          handleApiError(new Error(err.message || "OAuth authentication error."));
+        }
+      });
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    } catch (err) {
+      handleApiError(err);
+    }
+  };
+
+  const handleApiCall = (operation) => {
+    if (operation === "addToCalendar" && !selectedBatch) return;
+
+    setErrorMsg("");
+    setSyncProgress("Initializing...");
+    if (operation === "addToCalendar") setIsAdding(true);
+    else setIsResetting(true);
+
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      handleApiError(new Error("Google OAuth Client ID is missing. Please set VITE_GOOGLE_CLIENT_ID in your .env file."));
+      return;
+    }
+
+    if (!window.google?.accounts?.oauth2) {
+      setSyncProgress("Loading Google authentication...");
+      loadGsi()
+        .then((googleObj) => {
+          requestTokenAndProceed(googleObj, clientId, operation);
+        })
+        .catch((error) => {
+          handleApiError(error);
+        });
+    } else {
+      requestTokenAndProceed(window.google, clientId, operation);
     }
   };
 

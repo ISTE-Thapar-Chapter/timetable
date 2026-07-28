@@ -226,13 +226,14 @@ export default function ScheduleView() {
     localStorage.removeItem(storageKey);
 
     // Clear elective keys for this batch
+    const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key && key.startsWith(`timetable:elective:${batch}:`)) {
-        localStorage.removeItem(key);
-        i--;
+        keysToRemove.push(key);
       }
     }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
 
     setHasSavedLocalData(false);
     setSaveStatus("Local saved data removed. Using backend default.");

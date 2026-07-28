@@ -713,13 +713,14 @@ export function HomeSite() {
     localStorage.removeItem(storageKey);
 
     // Clear elective keys for this batch
+    const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key && key.startsWith(`timetable:elective:${primaryBatch}:`)) {
-        localStorage.removeItem(key);
-        i--;
+        keysToRemove.push(key);
       }
     }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
 
     setHasSavedLocalData(false);
     setEditedSchedule(cloneSchedule(originalSchedule));
@@ -866,29 +867,17 @@ export function HomeSite() {
     setIsModalOpen(false);
   };
 
-  // Google Calendar integration call
-  const handleCalendarApiCall = async (operation) => {
-    if (!primaryBatch) return;
+  const handleCalendarApiError = (error) => {
+    console.error(error);
+    setCalendarError(error.message || "Failed to complete Google Calendar action. Please retry.");
+    setIsAddingCalendar(false);
+    setIsResettingCalendar(false);
+    setSyncProgress("");
+  };
 
-    setCalendarError("");
-    setSyncProgress("Initializing...");
-    if (operation === "addToCalendar") setIsAddingCalendar(true);
-    else setIsResettingCalendar(true);
-
+  const proceedWithCalendarToken = async (token, operation) => {
     try {
-      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-      if (!clientId) {
-        throw new Error("Google OAuth Client ID is missing. Please set VITE_GOOGLE_CLIENT_ID in your .env file.");
-      }
-
-      setSyncProgress("Loading Google authentication...");
-      const googleObj = await loadGsi();
-
       if (operation === "addToCalendar") {
-        setSyncProgress("Requesting permissions for Drive & Calendar...");
-        const scopes = "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/calendar";
-        const token = await getAccessToken(googleObj, clientId, scopes);
-
         // Compile exact timetable data
         setSyncProgress("Compiling timetable data...");
         const getLocalTimetableData = () => {
@@ -936,10 +925,6 @@ export function HomeSite() {
         navigate("/calendar?success=true", { replace: true });
       } else {
         // resetCalendar operation
-        setSyncProgress("Requesting permissions for Google Calendar...");
-        const scopes = "https://www.googleapis.com/auth/calendar";
-        const token = await getAccessToken(googleObj, clientId, scopes);
-
         // Delete "Timetable" calendar
         await deleteCalendarOnly(token, setSyncProgress);
 
@@ -947,12 +932,71 @@ export function HomeSite() {
         navigate("/calendar?success=true", { replace: true });
       }
     } catch (error) {
-      console.error(error);
-      setCalendarError(error.message || "Failed to complete Google Calendar action. Please retry.");
+      handleCalendarApiError(error);
     } finally {
       setIsAddingCalendar(false);
       setIsResettingCalendar(false);
       setSyncProgress("");
+    }
+  };
+
+  const requestCalendarTokenAndProceed = (googleObj, clientId, operation) => {
+    setSyncProgress("Requesting permissions...");
+    const scopes = operation === "addToCalendar"
+      ? "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/calendar"
+      : "https://www.googleapis.com/auth/calendar";
+
+    try {
+      const tokenClient = googleObj.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: scopes,
+        callback: (response) => {
+          if (response.error) {
+            handleCalendarApiError(new Error(response.error_description || response.error));
+            return;
+          }
+          if (!response.access_token) {
+            handleCalendarApiError(new Error("No access token returned from Google."));
+            return;
+          }
+          proceedWithCalendarToken(response.access_token, operation);
+        },
+        error_callback: (err) => {
+          handleCalendarApiError(new Error(err.message || "OAuth authentication error."));
+        }
+      });
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    } catch (err) {
+      handleCalendarApiError(err);
+    }
+  };
+
+  // Google Calendar integration call
+  const handleCalendarApiCall = (operation) => {
+    if (!primaryBatch) return;
+
+    setCalendarError("");
+    setSyncProgress("Initializing...");
+    if (operation === "addToCalendar") setIsAddingCalendar(true);
+    else setIsResettingCalendar(true);
+
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      handleCalendarApiError(new Error("Google OAuth Client ID is missing. Please set VITE_GOOGLE_CLIENT_ID in your .env file."));
+      return;
+    }
+
+    if (!window.google?.accounts?.oauth2) {
+      setSyncProgress("Loading Google authentication...");
+      loadGsi()
+        .then((googleObj) => {
+          requestCalendarTokenAndProceed(googleObj, clientId, operation);
+        })
+        .catch((error) => {
+          handleCalendarApiError(error);
+        });
+    } else {
+      requestCalendarTokenAndProceed(window.google, clientId, operation);
     }
   };
 
