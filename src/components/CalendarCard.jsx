@@ -1,7 +1,310 @@
 import { useEffect, useState, useRef } from "react";
-import { ChevronDown, Check, Loader2, CalendarSync } from "lucide-react";
+import { ChevronDown, Check, Loader2, CalendarSync, Plus, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+const CALENDAR_NAME = "Timetable";
+const SEMESTER_START = "2026-07-27";
+const SEMESTER_END = "2026-12-20";
+const TIME_ZONE = "Asia/Kolkata";
+const UNTIL_RULE = "20261220T182959Z";
+
+const DAY_MAP = {
+  Sunday: 0,
+  Monday: 1,
+  Tuesday: 2,
+  Wednesday: 3,
+  Thursday: 4,
+  Friday: 5,
+  Saturday: 6
+};
+
+// Loader for Google Identity Services SDK
+const loadGsi = () => {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.oauth2) {
+      resolve(window.google);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.google?.accounts?.oauth2) {
+        resolve(window.google);
+      } else {
+        reject(new Error("Google Identity Services failed to initialize."));
+      }
+    };
+    script.onerror = () => reject(new Error("Failed to load Google Identity Services SDK."));
+    document.body.appendChild(script);
+  });
+};
+
+// Request access token with scopes
+const getAccessToken = (google, clientId, scopes) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: scopes,
+        callback: (response) => {
+          if (response.error) {
+            reject(new Error(response.error_description || response.error));
+          } else if (response.access_token) {
+            resolve(response.access_token);
+          } else {
+            reject(new Error("No access token returned from Google."));
+          }
+        },
+        error_callback: (err) => {
+          reject(new Error(err.message || "OAuth authentication error."));
+        }
+      });
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+const uploadToGoogleDrive = async (accessToken, timetableData, onProgress) => {
+  onProgress("Checking Google Drive AppData...");
+  const searchUrl = `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${encodeURIComponent("name='timetable.json' and 'appDataFolder' in parents")}`;
+  const searchRes = await fetch(searchUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+  if (!searchRes.ok) {
+    const errText = await searchRes.text();
+    throw new Error(`Failed to check Drive AppData: ${errText}`);
+  }
+  const searchResult = await searchRes.json();
+  const existingFile = searchResult.files && searchResult.files[0];
+
+  const fileContent = JSON.stringify(timetableData);
+
+  if (existingFile) {
+    onProgress("Updating timetable.json in Google Drive...");
+    const updateUrl = `https://www.googleapis.com/upload/drive/v3/files/${existingFile.id}?uploadType=media`;
+    const updateRes = await fetch(updateUrl, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      },
+      body: fileContent
+    });
+    if (!updateRes.ok) {
+      const errText = await updateRes.text();
+      throw new Error(`Failed to update timetable.json: ${errText}`);
+    }
+  } else {
+    onProgress("Uploading timetable.json to Google Drive...");
+    const createUrl = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+    const boundary = "timetable_sync_boundary";
+    const metadata = {
+      name: "timetable.json",
+      parents: ["appDataFolder"]
+    };
+
+    const body = [
+      `--${boundary}`,
+      "Content-Type: application/json; charset=UTF-8",
+      "",
+      JSON.stringify(metadata),
+      `--${boundary}`,
+      "Content-Type: application/json; charset=UTF-8",
+      "",
+      fileContent,
+      `--${boundary}--`
+    ].join("\r\n");
+
+    const createRes = await fetch(createUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": `multipart/related; boundary=${boundary}`
+      },
+      body: body
+    });
+    if (!createRes.ok) {
+      const errText = await createRes.text();
+      throw new Error(`Failed to upload timetable.json: ${errText}`);
+    }
+  }
+};
+
+const syncToGoogleCalendar = async (accessToken, editedSchedule, selectedBatch, onProgress) => {
+  onProgress("Checking Google Calendars...");
+  const listUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList";
+  const listRes = await fetch(listUrl, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+  if (!listRes.ok) {
+    const errText = await listRes.text();
+    throw new Error(`Failed to fetch calendars: ${errText}`);
+  }
+  const listData = await listRes.json();
+  const existingCalendar = listData.items?.find(cal => cal.summary === CALENDAR_NAME);
+
+  let calendarId;
+
+  if (existingCalendar) {
+    onProgress("Cleaning up previous Timetable calendar...");
+    const deleteUrl = `https://www.googleapis.com/calendar/v3/calendars/${existingCalendar.id}`;
+    const deleteRes = await fetch(deleteUrl, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (!deleteRes.ok) {
+      console.warn("Failed to delete calendar, continuing...");
+    }
+  }
+
+  onProgress("Creating a fresh Timetable calendar...");
+  const createUrl = "https://www.googleapis.com/calendar/v3/calendars";
+  const createRes = await fetch(createUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ summary: CALENDAR_NAME, timeZone: TIME_ZONE })
+  });
+  if (!createRes.ok) {
+    const errText = await createRes.text();
+    throw new Error(`Failed to create calendar: ${errText}`);
+  }
+  const newCalendar = await createRes.json();
+  calendarId = newCalendar.id;
+
+  const classesToSync = [];
+
+  for (const [day, slots] of Object.entries(editedSchedule || {})) {
+    if (!slots) continue;
+    for (const [time, info] of Object.entries(slots)) {
+      if (!info) continue;
+      const courseCode = info[0];
+      const room = info[1];
+      const subject = info[2];
+      const type = info[3];
+
+      if (!subject) continue; // Skip empty slots
+
+      classesToSync.push({ day, time, courseCode, room, subject, type });
+    }
+  }
+
+  const totalClasses = classesToSync.length;
+  if (totalClasses === 0) {
+    onProgress("No classes found to sync.");
+    return;
+  }
+
+  const getFirstOccurrenceDate = (startDateStr, dayName, timeString) => {
+    const date = new Date(startDateStr);
+    while (date.getDay() !== DAY_MAP[dayName]) {
+      date.setDate(date.getDate() + 1);
+    }
+    const [clock, modifier] = timeString.split(" ");
+    let [hour, minute] = clock.split(":").map(Number);
+    if (modifier === "PM" && hour !== 12) hour += 12;
+    if (modifier === "AM" && hour === 12) hour = 0;
+    date.setHours(hour, minute, 0, 0);
+    return date;
+  };
+
+  const getColorId = (type) => {
+    const t = (type || "").toLowerCase();
+    if (t.includes("lecture")) return "9"; // Blue
+    if (t.includes("lab") || t.includes("practical")) return "10"; // Basil (Green)
+    if (t.includes("tutorial")) return "3"; // Grape (Mauve)
+    return "8"; // Graphite (Gray)
+  };
+
+  onProgress(`Syncing 0 of ${totalClasses} classes...`);
+
+  // Call API in parallel batches of 3
+  const batchSize = 3;
+  for (let i = 0; i < totalClasses; i += batchSize) {
+    const currentBatch = classesToSync.slice(i, i + batchSize);
+    
+    await Promise.all(currentBatch.map(async (cls) => {
+      const start = getFirstOccurrenceDate(SEMESTER_START, cls.day, cls.time);
+      const end = new Date(start.getTime() + 50 * 60000);
+
+      const eventBody = {
+        summary: `${cls.subject} (${cls.type})`,
+        location: cls.room,
+        description: `Course Code: ${cls.courseCode}\nType: ${cls.type}\nBatch: ${selectedBatch}`,
+        start: {
+          dateTime: start.toISOString(),
+          timeZone: TIME_ZONE
+        },
+        end: {
+          dateTime: end.toISOString(),
+          timeZone: TIME_ZONE
+        },
+        recurrence: [
+          `RRULE:FREQ=WEEKLY;UNTIL=${UNTIL_RULE}`
+        ],
+        colorId: getColorId(cls.type)
+      };
+
+      const eventUrl = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`;
+      const res = await fetch(eventUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(eventBody)
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Failed to create event for ${cls.subject}: ${errText}`);
+      }
+    }));
+
+    const syncedCount = Math.min(i + batchSize, totalClasses);
+    onProgress(`Syncing ${syncedCount} of ${totalClasses} classes...`);
+  }
+};
+
+const deleteCalendarOnly = async (accessToken, onProgress) => {
+  onProgress("Checking Google Calendars...");
+  const listUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList";
+  const listRes = await fetch(listUrl, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+  if (!listRes.ok) {
+    const errText = await listRes.text();
+    throw new Error(`Failed to fetch calendars: ${errText}`);
+  }
+  const listData = await listRes.json();
+  const existingCalendar = listData.items?.find(cal => cal.summary === CALENDAR_NAME);
+
+  if (existingCalendar) {
+    onProgress("Deleting Timetable calendar...");
+    const deleteUrl = `https://www.googleapis.com/calendar/v3/calendars/${existingCalendar.id}`;
+    const deleteRes = await fetch(deleteUrl, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (!deleteRes.ok) {
+      const errText = await deleteRes.text();
+      throw new Error(`Failed to delete calendar: ${errText}`);
+    }
+    onProgress("Timetable calendar deleted successfully.");
+  } else {
+    onProgress("Timetable calendar not found.");
+  }
+};
 
 export default function CalendarCard({ batches, loadingBatches }) {
+  const navigate = useNavigate();
   const [selectedBatch, setSelectedBatch] = useState("");
   const [search, setSearch] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -11,6 +314,7 @@ export default function CalendarCard({ batches, loadingBatches }) {
   // For the two buttons
   const [isAdding, setIsAdding] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [syncProgress, setSyncProgress] = useState("");
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -31,33 +335,97 @@ export default function CalendarCard({ batches, loadingBatches }) {
     if (operation === "addToCalendar" && !selectedBatch) return;
 
     setErrorMsg("");
+    setSyncProgress("Initializing...");
     if (operation === "addToCalendar") setIsAdding(true);
     else setIsResetting(true);
 
     try {
-      const scriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-
-      if (scriptUrl) {
-        // Construct the Google Apps Script Web App URL with parameters
-        const redirectUri = window.location.origin + "/calendar";
-        const targetUrl = new URL(scriptUrl);
-        targetUrl.searchParams.set("batch", selectedBatch);
-        targetUrl.searchParams.set("operation", operation);
-        // targetUrl.searchParams.set("redirectUri", redirectUri);
-
-        // Redirect the user to Google Apps Script Web App
-        window.location.href = targetUrl.toString();
-        return;
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      if (!clientId) {
+        throw new Error("Google OAuth Client ID is missing. Please set VITE_GOOGLE_CLIENT_ID in your .env file.");
       }
-      else {
-        throw new Error("Invalid response format");
+
+      setSyncProgress("Loading Google authentication...");
+      const googleObj = await loadGsi();
+
+      if (operation === "addToCalendar") {
+        setSyncProgress("Requesting permissions for Drive & Calendar...");
+        const scopes = "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/calendar";
+        const token = await getAccessToken(googleObj, clientId, scopes);
+
+        // Compile exact timetable data
+        setSyncProgress("Compiling timetable data...");
+        const getLocalTimetableData = () => {
+          const scheduleKey = `timetable:schedule:${selectedBatch}`;
+          const scheduleData = localStorage.getItem(scheduleKey);
+          
+          const electives = {};
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith(`timetable:elective:${selectedBatch}:`)) {
+              try {
+                electives[key] = JSON.parse(localStorage.getItem(key));
+              } catch (e) {
+                electives[key] = localStorage.getItem(key);
+              }
+            }
+          }
+
+          const allLocalData = {};
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith("timetable:")) {
+              allLocalData[key] = localStorage.getItem(key);
+            }
+          }
+
+          let schedule = null;
+          if (scheduleData) {
+            schedule = JSON.parse(scheduleData);
+          } else {
+            // Load batch schedule data
+            const raw = {}; // start empty
+            schedule = raw;
+          }
+
+          return {
+            batch: selectedBatch,
+            schedule,
+            electives,
+            allLocalData,
+            lastUpdated: new Date().toISOString()
+          };
+        };
+
+        const timetablePayload = getLocalTimetableData();
+
+        // 1. Upload to Google Drive AppData
+        await uploadToGoogleDrive(token, timetablePayload, setSyncProgress);
+
+        // 2. Sync to Google Calendar
+        await syncToGoogleCalendar(token, timetablePayload.schedule, selectedBatch, setSyncProgress);
+
+        setSyncProgress("Sync complete! Redirecting...");
+        navigate("/calendar?success=true", { replace: true });
+      } else {
+        // resetCalendar operation
+        setSyncProgress("Requesting permissions for Google Calendar...");
+        const scopes = "https://www.googleapis.com/auth/calendar";
+        const token = await getAccessToken(googleObj, clientId, scopes);
+
+        // Delete "Timetable" calendar
+        await deleteCalendarOnly(token, setSyncProgress);
+
+        setSyncProgress("Calendar reset complete! Redirecting...");
+        navigate("/calendar?success=true", { replace: true });
       }
     } catch (error) {
       console.error(error);
-      setErrorMsg(error.message || "Failed to connect to Google Calendar. Please try again later.");
+      setErrorMsg(error.message || "Failed to complete Google Calendar action. Please retry.");
     } finally {
-      if (operation === "addToCalendar") setIsAdding(false);
-      else setIsResetting(false);
+      setIsAdding(false);
+      setIsResetting(false);
+      setSyncProgress("");
     }
   };
 
@@ -149,16 +517,45 @@ export default function CalendarCard({ batches, loadingBatches }) {
             disabled={!selectedBatch || isAdding || isResetting}
             className="flex-1 py-3 px-4 bg-white text-black font-bold rounded-xl hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.25)] active:scale-[0.98] flex items-center justify-center gap-2"
           >
-            {isAdding ? <Loader2 className="animate-spin" size={18} /> : <span>Add</span>}
+            {isAdding && syncProgress ? <Loader2 className="animate-spin" size={18} /> : <span>Add</span>}
           </button>
           <button
             onClick={() => handleApiCall('resetCalendar')}
             disabled={isAdding || isResetting}
             className="flex-1 py-3 px-4 bg-red-500/10 text-red-500 border border-red-500/20 font-bold rounded-xl hover:bg-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-[0_0_20px_rgba(239,68,68,0.1)] hover:shadow-[0_0_25px_rgba(239,68,68,0.25)] active:scale-[0.98] flex items-center justify-center gap-2"
           >
-            {isResetting ? <Loader2 className="animate-spin" size={18} /> : <span>Reset</span>}
+            {isResetting && syncProgress ? <Loader2 className="animate-spin" size={18} /> : <span>Reset</span>}
           </button>
         </div>
+
+        {(isAdding || isResetting) && syncProgress && (
+          <div className="mt-4 p-4 glass rounded-xl border border-white/10 flex flex-col gap-2">
+            <div className="flex justify-between items-center text-xs text-white/70">
+              <span className="font-semibold">{syncProgress}</span>
+              <Loader2 className="animate-spin text-sky-400" size={14} />
+            </div>
+            <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+              <div 
+                className="bg-sky-400 h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: syncProgress.includes("Google Drive") ? "40%" :
+                         syncProgress.includes("fresh Timetable") ? "60%" :
+                         syncProgress.includes("Syncing") ? 
+                           (() => {
+                             const matches = syncProgress.match(/\d+/g);
+                             if (matches && matches.length >= 2) {
+                               const current = parseInt(matches[0]);
+                               const total = parseInt(matches[1]);
+                               return `${60 + (current / total) * 40}%`;
+                             }
+                             return "80%";
+                           })() :
+                         "15%"
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
