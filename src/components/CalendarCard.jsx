@@ -41,33 +41,6 @@ const loadGsi = () => {
   });
 };
 
-// Request access token with scopes
-const getAccessToken = (google, clientId, scopes) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: clientId,
-        scope: scopes,
-        callback: (response) => {
-          if (response.error) {
-            reject(new Error(response.error_description || response.error));
-          } else if (response.access_token) {
-            resolve(response.access_token);
-          } else {
-            reject(new Error("No access token returned from Google."));
-          }
-        },
-        error_callback: (err) => {
-          reject(new Error(err.message || "OAuth authentication error."));
-        }
-      });
-      tokenClient.requestAccessToken({ prompt: "consent" });
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
 const uploadToGoogleDrive = async (accessToken, timetableData, onProgress) => {
   onProgress("Checking Google Drive AppData...");
   const searchUrl = `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${encodeURIComponent("name='timetable.json' and 'appDataFolder' in parents")}`;
@@ -354,7 +327,7 @@ export default function CalendarCard({ batches, loadingBatches }) {
             if (key && key.startsWith(`timetable:elective:${selectedBatch}:`)) {
               try {
                 electives[key] = JSON.parse(localStorage.getItem(key));
-              } catch (e) {
+              } catch {
                 electives[key] = localStorage.getItem(key);
               }
             }
