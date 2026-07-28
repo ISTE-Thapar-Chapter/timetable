@@ -72,6 +72,54 @@ const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName}`;
 const getPrimaryWorkspaceBatchKey = () => `timetable:workspace:primary-batch`;
 
 const cloneSchedule = (schedule) => JSON.parse(JSON.stringify(schedule || {}));
+const resolveElectives = (schedule, batchName) => {
+  if (!schedule || typeof schedule !== "object") return schedule;
+  const newSchedule = cloneSchedule(schedule);
+  DAYS.forEach((day) => {
+    if (!newSchedule[day]) return;
+    Object.keys(newSchedule[day]).forEach((time) => {
+      const slot = newSchedule[day][time];
+      if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
+        const storageKey = `timetable:elective:${batchName}:${day}:${time}`;
+        const stored = localStorage.getItem(storageKey);
+        if (stored) {
+          try {
+            const saved = JSON.parse(stored);
+            if (saved && saved.subject_code) {
+              newSchedule[day][time] = [
+                saved.subject_code,
+                saved.place || "",
+                saved.subject_name || "",
+                saved.type || slot[3] || "Elective",
+                slot[4],
+                slot[5]
+              ];
+            }
+          } catch (e) {
+            console.error("Failed to parse stored elective", e);
+          }
+        }
+      }
+    });
+  });
+  return newSchedule;
+};
+const parseSubjectCode = (code) => {
+  if (!code) return { cleanCode: "", note: "" };
+  const match = code.match(/([^(]+)\((UPTO[^)]+)\)/i);
+  if (match) {
+    let note = match[2].trim();
+    const timeMatch = note.match(/UPTO(\d{2}):(\d{2})(AM|PM)/i);
+    if (timeMatch) {
+      note = `Upto ${timeMatch[1]}:${timeMatch[2]} ${timeMatch[3]}`;
+    }
+    return {
+      cleanCode: match[1].trim(),
+      note: note
+    };
+  }
+  return { cleanCode: code, note: "" };
+};
 const isValidScheduleShape = (value) => value && typeof value === "object" && !Array.isArray(value);
 
 const getTypeColors = (type) => {
@@ -79,6 +127,7 @@ const getTypeColors = (type) => {
   if (t.includes("lecture")) return "bg-sky-500/10 border-sky-500/30 text-sky-300";
   if (t.includes("practical") || t.includes("lab")) return "bg-emerald-500/10 border-emerald-500/30 text-emerald-300";
   if (t.includes("tutorial")) return "bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-300";
+  if (t.includes("elective")) return "bg-amber-500/10 border-amber-500/30 text-amber-300";
   return "bg-white/5 border-white/10 text-white/70";
 };
 
@@ -87,6 +136,7 @@ const getTypeBadgeColors = (type) => {
   if (t.includes("lecture")) return "bg-sky-500/20 text-sky-400";
   if (t.includes("practical") || t.includes("lab")) return "bg-emerald-500/20 text-emerald-400";
   if (t.includes("tutorial")) return "bg-fuchsia-500/20 text-fuchsia-400";
+  if (t.includes("elective")) return "bg-amber-500/20 text-amber-400";
   return "bg-white/10 text-white/50";
 };
 
@@ -103,7 +153,7 @@ export function HomeSite() {
   const primaryDropdownRef = useRef(null);
 
   // Active view state
-  const [activeTab, setActiveTab] = useState("overview"); // overview, weekPlanner, freeSlots
+  const [activeTab, setActiveTab] = useState("weekPlanner"); // weekPlanner, freeSlots
 
   // Schedule States for loaded primary batch
   const [originalSchedule, setOriginalSchedule] = useState(null);
@@ -119,7 +169,7 @@ export function HomeSite() {
   // Edit Modal States (for Tab 2 inline editor)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEditSlot, setCurrentEditSlot] = useState({ day: "", time: "" });
-  const [modalFormData, setModalFormData] = useState({ type: "Lecture", code: "", name: "", location: "" });
+  const [modalFormData, setModalFormData] = useState({ type: "Lecture", code: "", name: "", location: "", altWeek: null, options: [] });
   const [expandedCell, setExpandedCell] = useState(null);
 
   // Drag and Drop (Week Planner)
@@ -182,7 +232,8 @@ export function HomeSite() {
       // 1. Get backend data
       const data = getBatchesData([primaryBatch]);
       const raw = data[primaryBatch] || {};
-      setOriginalSchedule(raw);
+      const resolvedRaw = resolveElectives(raw, primaryBatch);
+      setOriginalSchedule(resolvedRaw);
 
       // 2. Check local modifications
       const storageKey = getScheduleStorageKey(primaryBatch);
@@ -190,13 +241,13 @@ export function HomeSite() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (isValidScheduleShape(parsed)) {
-          setEditedSchedule(parsed);
+          setEditedSchedule(resolveElectives(parsed, primaryBatch));
           setHasSavedLocalData(true);
           return;
         }
       }
 
-      setEditedSchedule(cloneSchedule(raw));
+      setEditedSchedule(cloneSchedule(resolvedRaw));
       setHasSavedLocalData(false);
     } catch (err) {
       console.error(err);
@@ -312,7 +363,7 @@ export function HomeSite() {
     localStorage.setItem(getPrimaryWorkspaceBatchKey(), batchName);
     setIsPrimaryDropdownOpen(false);
     setPrimarySearch("");
-    setActiveTab("overview");
+    setActiveTab("weekPlanner");
   };
 
   const handleClearWorkspace = () => {
@@ -327,6 +378,24 @@ export function HomeSite() {
     try {
       const storageKey = getScheduleStorageKey(primaryBatch);
       localStorage.setItem(storageKey, JSON.stringify(editedSchedule));
+
+      // Save elective selection configurations
+      DAYS.forEach((day) => {
+        if (!editedSchedule[day]) return;
+        Object.keys(editedSchedule[day]).forEach((time) => {
+          const slot = editedSchedule[day][time];
+          if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
+            if (slot[0] && slot[0] !== "ELECTIVE") {
+              const electiveStorageKey = `timetable:elective:${primaryBatch}:${day}:${time}`;
+              const selectedItem = slot[5].find(opt => opt.subject_code === slot[0]);
+              if (selectedItem) {
+                localStorage.setItem(electiveStorageKey, JSON.stringify(selectedItem));
+              }
+            }
+          }
+        });
+      });
+
       setHasSavedLocalData(true);
       setSaveStatus("Changes saved successfully.");
       setTimeout(() => setSaveStatus(""), 3000);
@@ -339,6 +408,16 @@ export function HomeSite() {
     if (!primaryBatch) return;
     const storageKey = getScheduleStorageKey(primaryBatch);
     localStorage.removeItem(storageKey);
+
+    // Clear elective keys for this batch
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(`timetable:elective:${primaryBatch}:`)) {
+        localStorage.removeItem(key);
+        i--;
+      }
+    }
+
     setHasSavedLocalData(false);
     setEditedSchedule(cloneSchedule(originalSchedule));
     setSaveStatus("Schedule reset to default.");
@@ -431,17 +510,21 @@ export function HomeSite() {
         code: slotData[0] || "",
         location: slotData[1] || "",
         name: slotData[2] || "",
-        type: slotData[3] || "Lecture"
+        type: slotData[3] || "Lecture",
+        altWeek: slotData[4] || null,
+        options: slotData[5] || []
       });
     } else if (slotData && typeof slotData === "string") {
       setModalFormData({
         code: "",
         location: "",
         name: slotData,
-        type: "Lecture"
+        type: "Lecture",
+        altWeek: null,
+        options: []
       });
     } else {
-      setModalFormData({ code: "", location: "", name: "", type: "Lecture" });
+      setModalFormData({ code: "", location: "", name: "", type: "Lecture", altWeek: null, options: [] });
     }
     setIsModalOpen(true);
     setExpandedCell(null);
@@ -458,7 +541,9 @@ export function HomeSite() {
       modalFormData.code.trim().toUpperCase(),
       modalFormData.location.trim().toUpperCase(),
       modalFormData.name.trim().toUpperCase(),
-      modalFormData.type
+      modalFormData.type,
+      modalFormData.altWeek,
+      modalFormData.options
     ];
 
     setEditedSchedule(newSchedule);
@@ -511,29 +596,54 @@ export function HomeSite() {
   const renderCellContent = (subjectList, isDesktop = true, isExpanded = false, onEdit = null) => {
     if (!subjectList) return null;
 
-    let code, loc, name, type;
+    let code, loc, name, type, altWeek, options;
     if (Array.isArray(subjectList)) {
-      [code, loc, name, type] = subjectList;
+      [code, loc, name, type, altWeek, options] = subjectList;
     } else {
       name = subjectList;
       type = "Lecture";
     }
 
+    const { cleanCode, note } = parseSubjectCode(code);
+    const isElective = type === "Elective" || (options && options.length > 0);
+    const isUnselectedElective = isElective && (!code || code === "ELECTIVE");
+
     if (isDesktop) {
+      if (isUnselectedElective) {
+        return (
+          <div className="flex flex-col h-full w-full p-1.5 rounded-lg border border-dashed border-amber-500/40 bg-amber-500/5 text-amber-300 transition-all justify-center items-center text-center overflow-hidden">
+            <span className="font-share-tech font-bold text-[9px] uppercase tracking-wider leading-none mb-0.5">ELECTIVE</span>
+            <span className="font-semibold text-[10px] leading-tight mb-1 text-amber-400/80">Configure slot</span>
+            <span className="text-[8px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold uppercase tracking-wider">Select</span>
+          </div>
+        );
+      }
+
       if (isExpanded) {
         return (
           <>
             <div className={`flex flex-col h-full w-full p-2 rounded-lg transition-all justify-center items-center text-center overflow-hidden ${getTypeColors(type)}`}>
-              <span className="font-bold text-[9px] uppercase tracking-wider truncate max-w-full leading-none mb-0.5">{code}</span>
+              <span className="font-bold text-[9px] uppercase tracking-wider truncate max-w-full leading-none mb-0.5">{cleanCode}</span>
+              {note && <span className="text-[8px] text-amber-400 font-mono leading-none mb-0.5 font-bold uppercase tracking-wider">{note}</span>}
               <span className="font-semibold text-[11px] leading-tight mb-1 line-clamp-2 w-full break-words">{name}</span>
-              <span className={`text-[8px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap uppercase tracking-wider shrink-0 ${getTypeBadgeColors(type)}`}>
-                {type}
-              </span>
+              <div className="flex items-center gap-1 shrink-0">
+                <span className={`text-[8px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap uppercase tracking-wider ${getTypeBadgeColors(type)}`}>
+                  {type}
+                </span>
+                {altWeek && (
+                  <span className="text-[8px] px-1 py-0.5 rounded bg-sky-500/20 text-sky-400 font-mono font-bold uppercase tracking-wider" title="Alternate starting week">
+                    ALT
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[240px] px-4 py-4 rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.8)] flex flex-col justify-center items-center text-center backdrop-blur-3xl border border-white/20 bg-zinc-950">
               <div className="flex flex-col justify-center items-center gap-1 mb-3 opacity-90 w-full">
-                <div className={`font-orbitron font-bold text-[12px] uppercase tracking-wider break-all text-center w-full ${getTypeColors(type).split(' ').find(c => c.startsWith('text-'))}`}>{code}</div>
+                <div className={`font-orbitron font-bold text-[12px] uppercase tracking-wider break-all text-center w-full ${getTypeColors(type).split(' ').find(c => c.startsWith('text-'))}`}>
+                  {cleanCode}
+                  {note && <div className="text-[10px] text-amber-400 font-mono mt-0.5 font-bold uppercase tracking-wider">{note}</div>}
+                </div>
                 {loc && (
                   <div className="text-[11px] tracking-wide flex items-center justify-center gap-1 w-full opacity-70">
                     <MapPin size={10} />
@@ -542,17 +652,24 @@ export function HomeSite() {
                 )}
               </div>
               <div className="font-space-grotesk font-bold text-[14px] leading-snug mb-3 w-full break-words whitespace-normal text-center text-white">{name}</div>
-              <span className={`text-[10px] px-2.5 py-1 rounded shadow-sm whitespace-nowrap uppercase tracking-wider shrink-0 mb-4 ${getTypeBadgeColors(type)}`}>
-                {type}
-              </span>
+              <div className="flex items-center gap-1.5 mb-4 shrink-0">
+                <span className={`text-[10px] px-2.5 py-1 rounded shadow-sm whitespace-nowrap uppercase tracking-wider ${getTypeBadgeColors(type)}`}>
+                  {type}
+                </span>
+                {altWeek && (
+                  <span className="text-[9px] px-2 py-1 rounded bg-sky-500/20 text-sky-400 font-mono font-bold uppercase tracking-wider">
+                    ALT WEEK
+                  </span>
+                )}
+              </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   if (onEdit) onEdit();
                 }}
-                className="font-space-grotesk text-[11px] font-bold bg-white text-black px-4 py-2 rounded-lg hover:bg-white/90 transition-all shadow active:scale-95 w-full shrink-0"
+                className="font-space-grotesk text-[11px] font-bold bg-white text-black px-4 py-2 rounded-lg hover:bg-white/90 transition-all shadow active:scale-[0.98] w-full shrink-0"
               >
-                Edit Slot
+                {isElective ? "Select Elective" : "Edit Slot"}
               </button>
             </div>
           </>
@@ -562,7 +679,10 @@ export function HomeSite() {
       return (
         <div className={`flex flex-col h-full w-full p-2 rounded-lg transition-all justify-center items-center text-center overflow-hidden ${getTypeColors(type)}`}>
           <div className="flex flex-col justify-center items-center gap-0.5 mb-1 opacity-90 w-full">
-            <span className="font-bold text-[9px] uppercase tracking-wider line-clamp-2 break-all w-full leading-tight">{code}</span>
+            <span className="font-bold text-[9px] uppercase tracking-wider line-clamp-2 break-all w-full leading-tight">
+              {cleanCode}
+              {note && <span className="block text-[8px] text-amber-400 font-mono font-bold mt-0.5 leading-none uppercase tracking-wider">{note}</span>}
+            </span>
             {loc && (
               <span className="text-[9px] tracking-wide flex items-center justify-center gap-0.5 w-full opacity-80">
                 <MapPin size={8} />
@@ -571,9 +691,28 @@ export function HomeSite() {
             )}
           </div>
           <span className="font-semibold text-[11px] leading-tight mb-1 line-clamp-3 w-full break-words text-white" title={name}>{name}</span>
-          <span className={`text-[8px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap uppercase tracking-wider shrink-0 ${getTypeBadgeColors(type)}`}>
-            {type}
-          </span>
+          <div className="flex items-center gap-1 shrink-0">
+            <span className={`text-[8px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap uppercase tracking-wider ${getTypeBadgeColors(type)}`}>
+              {type}
+            </span>
+            {altWeek && (
+              <span className="text-[8px] px-1 py-0.5 rounded bg-sky-500/20 text-sky-400 font-mono font-bold uppercase tracking-wider shrink-0" title="Alternate starting week">
+                ALT
+              </span>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (isUnselectedElective) {
+      return (
+        <div className="flex flex-col w-full p-3 border border-dashed border-amber-500/40 bg-amber-500/5 text-amber-300 rounded-xl">
+          <div className="flex justify-between items-start mb-1 gap-3">
+            <span className="font-bold text-xs uppercase tracking-wider">ELECTIVE</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-bold uppercase tracking-wider">Select</span>
+          </div>
+          <div className="font-semibold text-sm leading-snug mb-1 text-amber-200/80">Tap to select subject</div>
         </div>
       );
     }
@@ -581,10 +720,20 @@ export function HomeSite() {
     return (
       <div className={`flex flex-col w-full p-3 border rounded-xl ${getTypeColors(type)}`}>
         <div className="flex justify-between items-start mb-1 gap-3">
-          <span className="font-bold text-xs uppercase tracking-wider break-all min-w-0 flex-1">{code}</span>
-          <span className={`text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 ${getTypeBadgeColors(type)}`}>
-            {type}
+          <span className="font-bold text-xs uppercase tracking-wider break-all min-w-0 flex-1">
+            {cleanCode}
+            {note && <span className="text-[9px] text-amber-400 font-mono ml-2 font-bold uppercase tracking-wider">({note})</span>}
           </span>
+          <div className="flex items-center gap-1 shrink-0">
+            <span className={`text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap ${getTypeBadgeColors(type)}`}>
+              {type}
+            </span>
+            {altWeek && (
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-400 font-mono font-bold uppercase tracking-wider">
+                ALT
+              </span>
+            )}
+          </div>
         </div>
         <div className="font-semibold text-sm leading-snug mb-2 text-white">{name}</div>
         <div className="text-xs opacity-80 mt-auto flex items-center gap-1 w-full">
@@ -697,207 +846,65 @@ export function HomeSite() {
           </div>
         ) : (
           // ==================== MAIN WORKSPACE VIEW ====================
-          <div className="flex-1 flex flex-col lg:flex-row gap-6 mt-4">
+          <div className="flex-1 flex flex-col gap-6 mt-4 w-full">
             
-            {/* 1. SIDEBAR (Control Station) */}
-            <aside className="w-full lg:w-[280px] shrink-0 flex flex-col gap-4">
-              {/* Workspace active state card */}
-              <div className="glass-card rounded-2xl p-5 border border-white/10 relative overflow-hidden flex flex-col gap-4">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
-                
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner shrink-0">
-                    <Layout size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">WORKSPACE ACTIVE</span>
-                    <h2 className="font-orbitron text-2xl font-black text-white leading-none truncate mt-0.5">{primaryBatch}</h2>
-                  </div>
+            {/* Sleek Horizontal Control Deck */}
+            <div className="glass-card rounded-2xl p-5 border border-white/10 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner shrink-0">
+                  <Layout size={20} />
                 </div>
-
-                <div className="border-t border-white/5 pt-4 flex flex-col gap-2">
-                  <button
-                    onClick={() => setActiveTab("overview")}
-                    className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold tracking-wider transition-all ${
-                      activeTab === "overview"
-                        ? "bg-sky-500/15 border border-sky-500/30 text-sky-300 shadow-[0_0_15px_rgba(56,189,248,0.05)]"
-                        : "text-white/60 hover:bg-white/5 border border-transparent hover:text-white"
-                    }`}
-                  >
-                    <Clock size={16} />
-                    <span>Overview (Today)</span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab("weekPlanner")}
-                    className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold tracking-wider transition-all ${
-                      activeTab === "weekPlanner"
-                        ? "bg-sky-500/15 border border-sky-500/30 text-sky-300 shadow-[0_0_15px_rgba(56,189,248,0.05)]"
-                        : "text-white/60 hover:bg-white/5 border border-transparent hover:text-white"
-                    }`}
-                  >
-                    <Calendar size={16} />
-                    <span>Week Planner</span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab("freeSlots")}
-                    className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold tracking-wider transition-all ${
-                      activeTab === "freeSlots"
-                        ? "bg-sky-500/15 border border-sky-500/30 text-sky-300 shadow-[0_0_15px_rgba(56,189,248,0.05)]"
-                        : "text-white/60 hover:bg-white/5 border border-transparent hover:text-white"
-                    }`}
-                  >
-                    <Users size={16} />
-                    <span>Free Slots Panel</span>
-                  </button>
-                </div>
-
-                <div className="border-t border-white/5 pt-3 mt-2">
-                  <button
-                    onClick={handleClearWorkspace}
-                    className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all text-center flex items-center justify-center gap-2"
-                  >
-                    <RefreshCw size={14} />
-                    <span>Change Workspace Batch</span>
-                  </button>
+                <div>
+                  <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">WORKSPACE ACTIVE</span>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <h2 className="font-orbitron text-2xl font-black text-white leading-none">{primaryBatch}</h2>
+                    <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold">ODD 26-27</span>
+                  </div>
                 </div>
               </div>
-            </aside>
 
-            {/* 2. DYNAMIC WORKSPACE PANEL */}
-            <section className="flex-1 flex flex-col min-w-0">
-              
-              {/* TAB 1: OVERVIEW */}
-              {activeTab === "overview" && (
-                <div className="flex-1 flex flex-col gap-6">
-                  
-                  {/* Today's schedule preview */}
-                  <div className="glass-card rounded-2xl p-6 border border-white/10 relative z-10 flex-1 flex flex-col">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
-                      <div>
-                        <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Today's Agenda</span>
-                        <h2 className="font-space-grotesk text-2xl font-bold text-white flex items-center gap-2">
-                          Classes Preview for {primaryBatch}
-                        </h2>
-                      </div>
-                      
-                      {/* Weekday Selector */}
-                      <div className="flex flex-wrap gap-1 bg-white/5 p-1 rounded-xl border border-white/5">
-                        {DAYS.map((d) => (
-                          <button
-                            key={d}
-                            onClick={() => setPreviewDay(d)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                              previewDay === d
-                                ? "bg-white text-black shadow-lg"
-                                : "text-white/50 hover:text-white"
-                            }`}
-                          >
-                            {d.slice(0, 3)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Timeline List */}
-                    <div className="flex-1 flex flex-col gap-3">
-                      {editedSchedule && editedSchedule[previewDay] && Object.keys(editedSchedule[previewDay]).length > 0 ? (
-                        TIMES.map((time) => {
-                          const slotData = editedSchedule[previewDay][time];
-                          if (!slotData) return null;
-
-                          let code, loc, name, type;
-                          if (Array.isArray(slotData)) {
-                            [code, loc, name, type] = slotData;
-                          } else {
-                            name = slotData;
-                            type = "Lecture";
-                          }
-
-                          return (
-                            <div key={time} className={`flex items-start gap-4 p-4 rounded-xl border transition-all ${getTypeColors(type)}`}>
-                              <div className="flex items-center gap-2 text-white/50 font-share-tech text-sm shrink-0 w-24 pt-0.5">
-                                <Clock size={14} />
-                                <span>{time.replace(" AM", "").replace(" PM", "")}</span>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 flex-wrap mb-1">
-                                  <span className="font-bold text-xs uppercase tracking-wider text-white">{code || "N/A"}</span>
-                                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${getTypeBadgeColors(type)}`}>
-                                    {type}
-                                  </span>
-                                </div>
-                                <h3 className="font-semibold text-sm text-white/90 truncate">{name}</h3>
-                                {loc && (
-                                  <div className="flex items-center gap-1 text-xs text-white/50 mt-1">
-                                    <MapPin size={12} />
-                                    <span>{loc}</span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })
-                      ) : (
-                        <div className="flex-1 flex flex-col items-center justify-center text-center p-8 text-white/40 border border-dashed border-white/10 rounded-2xl py-12">
-                          <BookOpen size={36} className="opacity-40 mb-3" />
-                          <p className="text-sm font-medium">No classes scheduled on {previewDay} for {primaryBatch}</p>
-                          <p className="text-xs opacity-75 mt-1">Enjoy your free time!</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Calendar Sync panel */}
-                  <div className="glass-card rounded-2xl p-6 border border-white/10 relative z-10">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner shrink-0">
-                        <CalendarSync size={24} />
-                      </div>
-                      <div>
-                        <h3 className="font-space-grotesk text-lg font-bold text-white">Google Calendar Integrations</h3>
-                        <p className="text-xs text-white/50">Sync your scheduled events up-to date</p>
-                      </div>
-                    </div>
-
-                    <p className="text-sm text-white/70 mb-5 leading-relaxed">
-                      Wipe previously synced slots and push your live custom edited {primaryBatch} schedule directly to your Google Calendar accounts. Only valid Thapar student emails are authorized.
-                    </p>
-
-                    {calendarError && (
-                      <div className="text-red-400 text-sm bg-red-500/10 py-2.5 px-4 rounded-xl border border-red-500/20 mb-4 font-semibold">
-                        {calendarError}
-                      </div>
-                    )}
-
-                    <div className="flex gap-4">
-                      <button
-                        onClick={() => handleCalendarApiCall("addToCalendar")}
-                        disabled={isAddingCalendar || isResettingCalendar}
-                        className="flex-1 py-3 px-4 bg-white hover:bg-white/90 text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
-                      >
-                        {isAddingCalendar ? <Loader2 className="animate-spin" size={16} /> : <Plus size={16} />}
-                        <span>Sync Events</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleCalendarApiCall("resetCalendar")}
-                        disabled={isAddingCalendar || isResettingCalendar}
-                        className="flex-1 py-3 px-4 bg-red-500/10 text-red-500 border border-red-500/20 font-bold rounded-xl hover:bg-red-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
-                      >
-                        {isResettingCalendar ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
-                        <span>Reset Calendar</span>
-                      </button>
-                    </div>
-                  </div>
-
+              {/* Tabs Switcher and Change Workspace button */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex bg-white/5 p-1 rounded-xl border border-white/5">
+                  <button
+                    onClick={() => setActiveTab("weekPlanner")}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                      activeTab === "weekPlanner"
+                        ? "bg-white text-black shadow-lg"
+                        : "text-white/60 hover:text-white"
+                    }`}
+                  >
+                    Week Planner
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("freeSlots")}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                      activeTab === "freeSlots"
+                        ? "bg-white text-black shadow-lg"
+                        : "text-white/60 hover:text-white"
+                    }`}
+                  >
+                    Free Slots Panel
+                  </button>
                 </div>
-              )}
 
-              {/* TAB 2: WEEK TIMETABLE PLANNER */}
+                <button
+                  onClick={handleClearWorkspace}
+                  className="py-2 px-4 rounded-xl text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all text-center flex items-center justify-center gap-2"
+                >
+                  <RefreshCw size={14} />
+                  <span>Change Batch</span>
+                </button>
+              </div>
+            </div>
+
+            {/* DYNAMIC WORKSPACE PANEL */}
+            <section className="flex-1 flex flex-col min-w-0 w-full">
               {activeTab === "weekPlanner" && (
-                <div className="glass-card rounded-2xl p-6 border border-white/10 relative z-10 flex-1 flex flex-col">
+                <>
+                  <div className="glass-card rounded-2xl p-6 border border-white/10 relative z-10 flex-1 flex flex-col">
                   
                   {/* Title & Actions Bar */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
@@ -982,16 +989,23 @@ export function HomeSite() {
                                   onDragOver={(e) => handleDragOver(e, day, time)}
                                   onDragLeave={() => setDragOverCell(null)}
                                   onDrop={(e) => handleDrop(e, day, time)}
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     if (cellData) {
-                                      setExpandedCell(isExpanded ? null : `${day}-${time}`);
+                                      const isElective = Array.isArray(cellData) && (cellData[3] === "Elective" || (cellData[5] && cellData[5].length > 0));
+                                      const isUnselected = isElective && (!cellData[0] || cellData[0] === "ELECTIVE");
+                                      if (isUnselected) {
+                                        openSlotModal(day, time, cellData);
+                                      } else {
+                                        setExpandedCell(isExpanded ? null : `${day}-${time}`);
+                                      }
                                     } else {
                                       openSlotModal(day, time, null);
                                     }
                                   }}
                                   className={`p-1.5 border-b border-white/5 text-center transition-all cursor-pointer relative h-20 w-[95px] ${
                                     isDragOver ? "bg-sky-500/20 border-2 border-dashed border-sky-400" : ""
-                                  } ${cellData ? "hover:scale-[1.02]" : "hover:bg-white/[0.02]"}`}
+                                  } ${cellData ? (!isExpanded ? "hover:scale-[1.02]" : "") : "hover:bg-white/[0.02]"}`}
                                 >
                                   {cellData ? (
                                     renderCellContent(cellData, true, isExpanded, () => openSlotModal(day, time, cellData))
@@ -1123,7 +1137,51 @@ export function HomeSite() {
                   </div>
 
                 </div>
-              )}
+
+                {/* Calendar Sync Panel */}
+                <div className="glass-card rounded-2xl p-6 border border-white/10 relative z-10 mt-6 flex flex-col">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner shrink-0">
+                      <CalendarSync size={24} />
+                    </div>
+                    <div>
+                      <h3 className="font-space-grotesk text-lg font-bold text-white">Google Calendar Sync</h3>
+                      <p className="text-xs text-white/50">Push your custom timetable to your Google Calendar</p>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-white/70 mb-5 leading-relaxed max-w-2xl">
+                    Wipe previously synced slots and push your live custom edited {primaryBatch} schedule directly to your Google Calendar accounts. Only valid Thapar student emails are authorized.
+                  </p>
+
+                  {calendarError && (
+                    <div className="text-red-400 text-sm bg-red-500/10 py-2.5 px-4 rounded-xl border border-red-500/20 mb-4 font-semibold">
+                      {calendarError}
+                    </div>
+                  )}
+
+                  <div className="flex gap-4 max-w-md">
+                    <button
+                      onClick={() => handleCalendarApiCall("addToCalendar")}
+                      disabled={isAddingCalendar || isResettingCalendar}
+                      className="flex-1 py-3 px-4 bg-white hover:bg-white/90 text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                    >
+                      {isAddingCalendar ? <Loader2 className="animate-spin" size={16} /> : <Plus size={16} />}
+                      <span>Sync Events</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleCalendarApiCall("resetCalendar")}
+                      disabled={isAddingCalendar || isResettingCalendar}
+                      className="flex-1 py-3 px-4 bg-red-500/10 text-red-500 border border-red-500/20 font-bold rounded-xl hover:bg-red-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                    >
+                      {isResettingCalendar ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
+                      <span>Reset Calendar</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
 
               {/* TAB 3: FREE SLOTS COMPARER */}
               {activeTab === "freeSlots" && (
@@ -1363,55 +1421,127 @@ export function HomeSite() {
             <h3 className="font-space-grotesk text-xl font-bold text-white mb-1">Edit Class Slot</h3>
             <p className="font-share-tech text-xs text-white/40 mb-6 uppercase tracking-wider">{currentEditSlot.day} at {currentEditSlot.time}</p>
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1">Type</label>
-                <select
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm"
-                  value={modalFormData.type}
-                  onChange={(e) => setModalFormData({ ...modalFormData, type: e.target.value })}
-                >
-                  <option value="Lecture">Lecture</option>
-                  <option value="Practical">Practical / Lab</option>
-                  <option value="Tutorial">Tutorial</option>
-                  <option value="Event">Event / Other</option>
-                </select>
-              </div>
+            {modalFormData.options && modalFormData.options.length > 0 ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-white/70 mb-1">Select Elective Subject</label>
+                  <select
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-sky-500/50 text-xs font-semibold"
+                    value={modalFormData.code}
+                    onChange={(e) => {
+                      const selectedVal = e.target.value;
+                      const selected = modalFormData.options.find(opt => opt.subject_code === selectedVal);
+                      if (selected) {
+                        setModalFormData({
+                          ...modalFormData,
+                          code: selected.subject_code || "",
+                          location: selected.place || "",
+                          name: selected.subject_name || "",
+                          type: selected.type || "Lecture"
+                        });
+                      } else {
+                        setModalFormData({
+                          ...modalFormData,
+                          code: "",
+                          location: "",
+                          name: "",
+                          type: "Elective"
+                        });
+                      }
+                    }}
+                  >
+                    <option value="">-- Choose elective subject --</option>
+                    {modalFormData.options.map((opt) => {
+                      const { cleanCode, note } = parseSubjectCode(opt.subject_code);
+                      return (
+                        <option key={opt.subject_code} value={opt.subject_code}>
+                          {cleanCode} - {opt.subject_name || "TBA"} {note ? `(${note})` : ""} ({opt.place || "TBA"})
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1">Lecture Code (Optional)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. UPH013P"
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-medium placeholder:text-white/20"
-                  value={modalFormData.code}
-                  onChange={(e) => setModalFormData({ ...modalFormData, code: e.target.value })}
-                />
+                {modalFormData.code && (() => {
+                  const { cleanCode, note } = parseSubjectCode(modalFormData.code);
+                  return (
+                    <div className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-2.5 text-xs">
+                      <div>
+                        <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Subject Name</span>
+                        <span className="text-white font-semibold font-space-grotesk">{modalFormData.name}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Subject Code</span>
+                          <span className="text-sky-300 font-mono font-semibold">
+                            {cleanCode}
+                            {note && <span className="text-amber-400 block mt-0.5 text-[9px] font-bold">({note})</span>}
+                          </span>
+                        </div>
+                      <div>
+                        <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Room / Place</span>
+                        <span className="text-white font-semibold">{modalFormData.location || "TBA"}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Class Type</span>
+                      <span className="text-white/80 font-semibold">{modalFormData.type}</span>
+                    </div>
+                  </div>
+                  );
+                })()}
               </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-white/70 mb-1">Type</label>
+                  <select
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm"
+                    value={modalFormData.type}
+                    onChange={(e) => setModalFormData({ ...modalFormData, type: e.target.value })}
+                  >
+                    <option value="Lecture">Lecture</option>
+                    <option value="Practical">Practical / Lab</option>
+                    <option value="Tutorial">Tutorial</option>
+                    <option value="Event">Event / Other</option>
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1">Name</label>
-                <input
-                  type="text"
-                  autoFocus
-                  placeholder="e.g. PHYSICS"
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-semibold placeholder:text-white/20"
-                  value={modalFormData.name}
-                  onChange={(e) => setModalFormData({ ...modalFormData, name: e.target.value })}
-                />
-              </div>
+                <div>
+                  <label className="block text-xs font-semibold text-white/70 mb-1">Lecture Code (Optional)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. UPH013P"
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-medium placeholder:text-white/20"
+                    value={modalFormData.code}
+                    onChange={(e) => setModalFormData({ ...modalFormData, code: e.target.value })}
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-white/70 mb-1">Location</label>
-                <input
-                  type="text"
-                  placeholder="e.g. G312 LAB1"
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-medium placeholder:text-white/20"
-                  value={modalFormData.location}
-                  onChange={(e) => setModalFormData({ ...modalFormData, location: e.target.value })}
-                />
+                <div>
+                  <label className="block text-xs font-semibold text-white/70 mb-1">Name</label>
+                  <input
+                    type="text"
+                    autoFocus
+                    placeholder="e.g. PHYSICS"
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-semibold placeholder:text-white/20"
+                    value={modalFormData.name}
+                    onChange={(e) => setModalFormData({ ...modalFormData, name: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-white/70 mb-1">Location</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. G312 LAB1"
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-medium placeholder:text-white/20"
+                    value={modalFormData.location}
+                    onChange={(e) => setModalFormData({ ...modalFormData, location: e.target.value })}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex items-center justify-between gap-4 mt-8 pt-4 border-t border-white/5">
               <button
