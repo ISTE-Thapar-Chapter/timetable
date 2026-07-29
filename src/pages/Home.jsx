@@ -1140,8 +1140,8 @@ export function HomeSite() {
   return (
     <div className="min-h-screen flex flex-col relative text-foreground w-full">
       <Seo
-        title="Workspace Console"
-        description="Unified college dashboard: View class schedules, manage task timelines, edit custom classes, sync calendar notifications, and calculate comparative free slots."
+        title="Timetable Dashboard"
+        description="Unified college dashboard: View class schedules, edit custom classes, sync calendar notifications, and find overlapping free time slots."
         path="/"
         keywords={["timetable", "schedule", "free slots", "calendar sync", "tiet", "iste", "thapar"]}
         structuredData={homeStructuredData}
@@ -1158,16 +1158,16 @@ export function HomeSite() {
                 <Layout size={32} />
               </div>
               <h1 className="font-space-grotesk text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-                Workspace Console
+                Timetable Dashboard
               </h1>
               <p className="text-base md:text-lg text-white/50 max-w-lg mx-auto">
-                Configure your primary batch to unlock schedule timelines, inline planners, and interactive free slots comparison panels.
+                Select your batch to view your schedule, edit classes, and compare free time slots.
               </p>
 
               {/* Central Search work desk */}
               <div className="glass-card rounded-2xl p-6 md:p-8 border border-white/10 relative z-20" ref={primaryDropdownRef}>
                 <div className="flex flex-col gap-3 relative text-left">
-                  <label className="font-share-tech text-xs uppercase tracking-widest text-white/60">Load Class Batch</label>
+                  <label className="font-share-tech text-xs uppercase tracking-widest text-white/60">Select Your Batch</label>
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={18} />
                     <input
@@ -1250,7 +1250,7 @@ export function HomeSite() {
                   <Layout size={20} />
                 </div>
                 <div>
-                  <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">WORKSPACE ACTIVE</span>
+                  <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">ACTIVE BATCH</span>
                   <div className="flex items-center gap-2 mt-0.5">
                     <h2 className="font-orbitron text-2xl font-black text-white leading-none">{primaryBatch}</h2>
                     <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold">ODD 26-27</span>
@@ -1302,9 +1302,9 @@ export function HomeSite() {
                   {/* Title & Actions Bar */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
                     <div>
-                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Week Workdesk</span>
-                      <h2 className="font-space-grotesk text-2xl font-bold text-white">Interactive Week Schedule</h2>
-                      <p className="text-xs text-white/50 mt-1">Drag slots to reschedule or click to edit subject values</p>
+                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Schedule Planner</span>
+                      <h2 className="font-space-grotesk text-2xl font-bold text-white">Edit Weekly Schedule</h2>
+                      <p className="text-xs text-white/50 mt-1">Drag classes to move them, or click on a class to edit details</p>
                     </div>
 
                     <div className="flex flex-wrap gap-2 shrink-0">
@@ -1611,9 +1611,9 @@ export function HomeSite() {
                   
                   {/* Header & input */}
                   <div className="border-b border-white/10 pb-5 mb-6">
-                    <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Collaboration Hub</span>
-                    <h2 className="font-space-grotesk text-2xl font-bold text-white">Compare Batches for Gaps</h2>
-                    <p className="text-xs text-white/50 mt-1">Select batches to compute overlapping free timeslots instantly</p>
+                    <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Find Common Gaps</span>
+                    <h2 className="font-space-grotesk text-2xl font-bold text-white">Compare Batch Schedules</h2>
+                    <p className="text-xs text-white/50 mt-1">Select multiple batches to find overlapping free slots</p>
 
                     <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Active batch lists */}
@@ -1631,7 +1631,7 @@ export function HomeSite() {
                                     : "bg-white/5 border-white/10 text-white/80 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
                                 }`}
                               >
-                                <span>{b} {b === primaryBatch && "(Workspace)"}</span>
+                                <span>{b} {b === primaryBatch && "(Active)"}</span>
                                 <X size={12} />
                               </button>
                             ))
