@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { ChevronDown, Check, Loader2, CalendarSync, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const CALENDAR_NAME = "Timetable";
+const getCalendarName = (batchName) => `Timetable - ${batchName ? batchName.toUpperCase() : ""}`;
 const SEMESTER_START = "2026-07-27";
 const SEMESTER_END = "2026-12-20";
 const TIME_ZONE = "Asia/Kolkata";
@@ -120,12 +120,13 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, selectedBatch, 
     throw new Error(`Failed to fetch calendars: ${errText}`);
   }
   const listData = await listRes.json();
-  const existingCalendar = listData.items?.find(cal => cal.summary === CALENDAR_NAME);
+  const calendarName = getCalendarName(selectedBatch);
+  const existingCalendar = listData.items?.find(cal => cal.summary === calendarName);
 
   let calendarId;
 
   if (existingCalendar) {
-    onProgress("Cleaning up previous Timetable calendar...");
+    onProgress(`Cleaning up previous ${calendarName} calendar...`);
     const deleteUrl = `https://www.googleapis.com/calendar/v3/calendars/${existingCalendar.id}`;
     const deleteRes = await fetch(deleteUrl, {
       method: "DELETE",
@@ -136,7 +137,7 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, selectedBatch, 
     }
   }
 
-  onProgress("Creating a fresh Timetable calendar...");
+  onProgress(`Creating a fresh ${calendarName} calendar...`);
   const createUrl = "https://www.googleapis.com/calendar/v3/calendars";
   const createRes = await fetch(createUrl, {
     method: "POST",
@@ -144,7 +145,7 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, selectedBatch, 
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ summary: CALENDAR_NAME, timeZone: TIME_ZONE })
+    body: JSON.stringify({ summary: calendarName, timeZone: TIME_ZONE })
   });
   if (!createRes.ok) {
     const errText = await createRes.text();
@@ -246,7 +247,7 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, selectedBatch, 
   }
 };
 
-const deleteCalendarOnly = async (accessToken, onProgress) => {
+const deleteCalendarOnly = async (accessToken, batchName, onProgress) => {
   onProgress("Checking Google Calendars...");
   const listUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList";
   const listRes = await fetch(listUrl, {
@@ -257,10 +258,11 @@ const deleteCalendarOnly = async (accessToken, onProgress) => {
     throw new Error(`Failed to fetch calendars: ${errText}`);
   }
   const listData = await listRes.json();
-  const existingCalendar = listData.items?.find(cal => cal.summary === CALENDAR_NAME);
+  const calendarName = getCalendarName(batchName);
+  const existingCalendar = listData.items?.find(cal => cal.summary === calendarName);
 
   if (existingCalendar) {
-    onProgress("Deleting Timetable calendar...");
+    onProgress(`Deleting ${calendarName} calendar...`);
     const deleteUrl = `https://www.googleapis.com/calendar/v3/calendars/${existingCalendar.id}`;
     const deleteRes = await fetch(deleteUrl, {
       method: "DELETE",
@@ -270,9 +272,9 @@ const deleteCalendarOnly = async (accessToken, onProgress) => {
       const errText = await deleteRes.text();
       throw new Error(`Failed to delete calendar: ${errText}`);
     }
-    onProgress("Timetable calendar deleted successfully.");
+    onProgress(`${calendarName} calendar deleted successfully.`);
   } else {
-    onProgress("Timetable calendar not found.");
+    onProgress(`${calendarName} calendar not found.`);
   }
 };
 
@@ -371,8 +373,8 @@ export default function CalendarCard({ batches, loadingBatches }) {
         navigate("/calendar?success=true", { replace: true });
       } else {
         // resetCalendar operation
-        // Delete "Timetable" calendar
-        await deleteCalendarOnly(token, setSyncProgress);
+        // Delete calendar related to active workbench
+        await deleteCalendarOnly(token, selectedBatch, setSyncProgress);
 
         setSyncProgress("Calendar reset complete! Redirecting...");
         navigate("/calendar?success=true", { replace: true });

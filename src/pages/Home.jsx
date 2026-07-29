@@ -68,19 +68,21 @@ const TIMES = [
   "06:00 PM",
 ];
 
-const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName}`;
+const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName ? batchName.toUpperCase() : ""}`;
 const getPrimaryWorkspaceBatchKey = () => `timetable:workspace:primary-batch`;
+const getCalendarName = (batchName) => `Timetable - ${batchName ? batchName.toUpperCase() : ""}`;
 
 const cloneSchedule = (schedule) => JSON.parse(JSON.stringify(schedule || {}));
 const resolveElectives = (schedule, batchName) => {
   if (!schedule || typeof schedule !== "object") return schedule;
   const newSchedule = cloneSchedule(schedule);
+  const upperBatch = batchName ? batchName.toUpperCase() : "";
   DAYS.forEach((day) => {
     if (!newSchedule[day]) return;
     Object.keys(newSchedule[day]).forEach((time) => {
       const slot = newSchedule[day][time];
       if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
-        const storageKey = `timetable:elective:${batchName}:${day}:${time}`;
+        const storageKey = `timetable:elective:${upperBatch}:${day}:${time}`;
         const stored = localStorage.getItem(storageKey);
         if (stored) {
           try {
@@ -258,12 +260,13 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, primaryBatch, o
     throw new Error(`Failed to fetch calendars: ${errText}`);
   }
   const listData = await listRes.json();
-  const existingCalendar = listData.items?.find(cal => cal.summary === CALENDAR_NAME);
+  const calendarName = getCalendarName(primaryBatch);
+  const existingCalendar = listData.items?.find(cal => cal.summary === calendarName);
 
   let calendarId;
 
   if (existingCalendar) {
-    onProgress("Cleaning up previous Timetable calendar...");
+    onProgress(`Cleaning up previous ${calendarName} calendar...`);
     const deleteUrl = `https://www.googleapis.com/calendar/v3/calendars/${existingCalendar.id}`;
     const deleteRes = await fetch(deleteUrl, {
       method: "DELETE",
@@ -274,7 +277,7 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, primaryBatch, o
     }
   }
 
-  onProgress("Creating a fresh Timetable calendar...");
+  onProgress(`Creating a fresh ${calendarName} calendar...`);
   const createUrl = "https://www.googleapis.com/calendar/v3/calendars";
   const createRes = await fetch(createUrl, {
     method: "POST",
@@ -282,7 +285,7 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, primaryBatch, o
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ summary: CALENDAR_NAME, timeZone: TIME_ZONE })
+    body: JSON.stringify({ summary: calendarName, timeZone: TIME_ZONE })
   });
   if (!createRes.ok) {
     const errText = await createRes.text();
@@ -384,7 +387,7 @@ const syncToGoogleCalendar = async (accessToken, editedSchedule, primaryBatch, o
   }
 };
 
-const deleteCalendarOnly = async (accessToken, onProgress) => {
+const deleteCalendarOnly = async (accessToken, batchName, onProgress) => {
   onProgress("Checking Google Calendars...");
   const listUrl = "https://www.googleapis.com/calendar/v3/users/me/calendarList";
   const listRes = await fetch(listUrl, {
@@ -395,10 +398,11 @@ const deleteCalendarOnly = async (accessToken, onProgress) => {
     throw new Error(`Failed to fetch calendars: ${errText}`);
   }
   const listData = await listRes.json();
-  const existingCalendar = listData.items?.find(cal => cal.summary === CALENDAR_NAME);
+  const calendarName = getCalendarName(batchName);
+  const existingCalendar = listData.items?.find(cal => cal.summary === calendarName);
 
   if (existingCalendar) {
-    onProgress("Deleting Timetable calendar...");
+    onProgress(`Deleting ${calendarName} calendar...`);
     const deleteUrl = `https://www.googleapis.com/calendar/v3/calendars/${existingCalendar.id}`;
     const deleteRes = await fetch(deleteUrl, {
       method: "DELETE",
@@ -408,9 +412,9 @@ const deleteCalendarOnly = async (accessToken, onProgress) => {
       const errText = await deleteRes.text();
       throw new Error(`Failed to delete calendar: ${errText}`);
     }
-    onProgress("Timetable calendar deleted successfully.");
+    onProgress(`${calendarName} calendar deleted successfully.`);
   } else {
-    onProgress("Timetable calendar not found.");
+    onProgress(`${calendarName} calendar not found.`);
   }
 };
 
@@ -589,13 +593,19 @@ export function HomeSite() {
       if (data && Object.keys(data).length > 0) {
         // Resolve schedules (preferring local storage edits)
         const resolvedSchedules = comparisonBatches.map((batchName) => {
+          if (batchName === primaryBatch && editedSchedule) {
+            return editedSchedule;
+          }
           const storedKey = getScheduleStorageKey(batchName);
           const localStored = localStorage.getItem(storedKey);
           if (localStored) {
             const parsed = JSON.parse(localStored);
-            if (isValidScheduleShape(parsed)) return parsed;
+            if (isValidScheduleShape(parsed)) {
+              return resolveElectives(parsed, batchName);
+            }
           }
-          return data[batchName] || {};
+          const defaultRaw = data[batchName] || {};
+          return resolveElectives(defaultRaw, batchName);
         });
 
         // Compute free slots overlap
@@ -605,7 +615,9 @@ export function HomeSite() {
           const slotValue = dayData[time];
           if (slotValue === undefined || slotValue === null) return false;
           if (Array.isArray(slotValue)) {
-            return slotValue.some((item) => String(item ?? "").trim() !== "");
+            const codeStr = String(slotValue[0] ?? "").trim();
+            const nameStr = String(slotValue[2] ?? "").trim();
+            return codeStr !== "" || nameStr !== "";
           }
           if (typeof slotValue === "string") {
             return slotValue.trim() !== "";
@@ -651,6 +663,7 @@ export function HomeSite() {
   const handleSaveLocal = () => {
     if (!primaryBatch || !editedSchedule) return;
     try {
+      const upperBatch = primaryBatch.toUpperCase();
       const storageKey = getScheduleStorageKey(primaryBatch);
       localStorage.setItem(storageKey, JSON.stringify(editedSchedule));
 
@@ -661,7 +674,7 @@ export function HomeSite() {
           const slot = editedSchedule[day][time];
           if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
             if (slot[0] && slot[0] !== "ELECTIVE") {
-              const electiveStorageKey = `timetable:elective:${primaryBatch}:${day}:${time}`;
+              const electiveStorageKey = `timetable:elective:${upperBatch}:${day}:${time}`;
               const selectedItem = slot[5].find(opt => opt.subject_code === slot[0]);
               if (selectedItem) {
                 localStorage.setItem(electiveStorageKey, JSON.stringify(selectedItem));
@@ -681,6 +694,7 @@ export function HomeSite() {
 
   const handleResetLocal = () => {
     if (!primaryBatch) return;
+    const upperBatch = primaryBatch.toUpperCase();
     const storageKey = getScheduleStorageKey(primaryBatch);
     localStorage.removeItem(storageKey);
 
@@ -688,7 +702,7 @@ export function HomeSite() {
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && key.startsWith(`timetable:elective:${primaryBatch}:`)) {
+      if (key && (key.startsWith(`timetable:elective:${primaryBatch}:`) || key.startsWith(`timetable:elective:${upperBatch}:`))) {
         keysToRemove.push(key);
       }
     }
@@ -711,13 +725,12 @@ export function HomeSite() {
       const dataUrl = await toPng(element, {
         backgroundColor: "#030712",
         pixelRatio: 2,
-        skipFonts: false,
-        fetchRequest: {
-          cache: 'no-cache',
-        },
+        skipFonts: true,
+        cacheBust: true,
         style: {
           transform: 'none',
-          opacity: '1'
+          opacity: '1',
+          visibility: 'visible'
         }
       });
 
@@ -897,8 +910,8 @@ export function HomeSite() {
         navigate("/calendar?success=true", { replace: true });
       } else {
         // resetCalendar operation
-        // Delete "Timetable" calendar
-        await deleteCalendarOnly(token, setSyncProgress);
+        // Delete calendar related to active workbench
+        await deleteCalendarOnly(token, primaryBatch, setSyncProgress);
 
         setSyncProgress("Calendar reset complete! Redirecting...");
         navigate("/calendar?success=true", { replace: true });
@@ -1471,7 +1484,7 @@ export function HomeSite() {
                   </div>
 
                   {/* Off-screen capture template (to ensure perfect, unclipped downloads) */}
-                  <div className="absolute top-[-9999px] left-[-9999px]" ref={hiddenTableRef}>
+                  <div className="fixed top-0 left-[-9999px] pointer-events-none" style={{ opacity: 1 }} ref={hiddenTableRef}>
                     <div style={{ width: "1350px", padding: "30px", background: "#030712", color: "#ffffff" }}>
                       <div style={{ marginBottom: "20px", borderBottom: "2px solid rgba(255,255,255,0.1)", paddingBottom: "15px" }}>
                         <div style={{ fontSize: "11px", color: "#38bdf8", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase" }}>GENERATED TIMETABLE</div>

@@ -26,19 +26,20 @@ const TIMES = [
   "06:00 PM",
 ];
 
-const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName}`;
+const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName ? batchName.toUpperCase() : ""}`;
 
 const cloneSchedule = (schedule) => JSON.parse(JSON.stringify(schedule || {}));
 
 const resolveElectives = (schedule, batchName) => {
   if (!schedule || typeof schedule !== "object") return schedule;
   const newSchedule = cloneSchedule(schedule);
+  const upperBatch = batchName ? batchName.toUpperCase() : "";
   DAYS.forEach((day) => {
     if (!newSchedule[day]) return;
     Object.keys(newSchedule[day]).forEach((time) => {
       const slot = newSchedule[day][time];
       if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
-        const storageKey = `timetable:elective:${batchName}:${day}:${time}`;
+        const storageKey = `timetable:elective:${upperBatch}:${day}:${time}`;
         const stored = localStorage.getItem(storageKey);
         if (stored) {
           try {
@@ -193,6 +194,7 @@ export default function ScheduleView() {
   const handleSaveLocal = () => {
     if (!batch || !editedResult) return;
     try {
+      const upperBatch = batch.toUpperCase();
       const storageKey = getScheduleStorageKey(batch);
       localStorage.setItem(storageKey, JSON.stringify(editedResult));
 
@@ -203,7 +205,7 @@ export default function ScheduleView() {
           const slot = editedResult[day][time];
           if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
             if (slot[0] && slot[0] !== "ELECTIVE") {
-              const electiveStorageKey = `timetable:elective:${batch}:${day}:${time}`;
+              const electiveStorageKey = `timetable:elective:${upperBatch}:${day}:${time}`;
               const selectedItem = slot[5].find(opt => opt.subject_code === slot[0]);
               if (selectedItem) {
                 localStorage.setItem(electiveStorageKey, JSON.stringify(selectedItem));
@@ -222,6 +224,7 @@ export default function ScheduleView() {
 
   const handleResetLocal = () => {
     if (!batch) return;
+    const upperBatch = batch.toUpperCase();
     const storageKey = getScheduleStorageKey(batch);
     localStorage.removeItem(storageKey);
 
@@ -229,7 +232,7 @@ export default function ScheduleView() {
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && key.startsWith(`timetable:elective:${batch}:`)) {
+      if (key && (key.startsWith(`timetable:elective:${batch}:`) || key.startsWith(`timetable:elective:${upperBatch}:`))) {
         keysToRemove.push(key);
       }
     }
@@ -255,13 +258,12 @@ export default function ScheduleView() {
       const dataUrl = await toPng(element, {
         backgroundColor: "#09090b",
         pixelRatio: 2,
-        skipFonts: false,
-        fetchRequest: {
-          cache: 'no-cache',
-        },
+        skipFonts: true,
+        cacheBust: true,
         style: {
           transform: 'none',
-          opacity: '1'
+          opacity: '1',
+          visibility: 'visible'
         }
       });
 
@@ -665,7 +667,7 @@ export default function ScheduleView() {
                 <p className="text-xs text-white/70 mt-2">{saveStatus}</p>
               )}
             </div>
- 
+
             {result && (
               <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto self-start md:self-end">
                 <button
@@ -694,7 +696,7 @@ export default function ScheduleView() {
             )}
           </div>
         </div>
- 
+
         <div className="relative flex flex-col flex-1">
           {loading ? (
             <div className="glass-card rounded-2xl p-6 min-h-[400px] flex flex-col items-center justify-center text-white/50 gap-4">
@@ -778,7 +780,7 @@ export default function ScheduleView() {
               </div>
 
               {/* Hidden Desktop Table for Reliable PNG Captures */}
-              <div className="fixed top-0 left-[-3000px] opacity-0 pointer-events-none">
+              <div className="fixed top-0 left-[-9999px] pointer-events-none" style={{ opacity: 1 }}>
                 {renderDesktopTable({ ref: hiddenTableRef }, true)}
               </div>
             </>
@@ -876,16 +878,16 @@ export default function ScheduleView() {
                               {note && <span className="text-amber-400 block mt-0.5 text-[9px] font-bold">({note})</span>}
                             </span>
                           </div>
+                          <div>
+                            <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Room / Place</span>
+                            <span className="text-white font-semibold">{modalFormData.location || "TBA"}</span>
+                          </div>
+                        </div>
                         <div>
-                          <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Room / Place</span>
-                          <span className="text-white font-semibold">{modalFormData.location || "TBA"}</span>
+                          <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Class Type</span>
+                          <span className="text-white/80 font-semibold">{modalFormData.type}</span>
                         </div>
                       </div>
-                      <div>
-                        <span className="text-white/40 block mb-0.5 font-share-tech uppercase tracking-wider text-[10px]">Class Type</span>
-                        <span className="text-white/80 font-semibold">{modalFormData.type}</span>
-                      </div>
-                    </div>
                     );
                   })()}
                 </>

@@ -24,9 +24,45 @@ const TIMES = [
   "06:00 PM",
 ];
 
-const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName}`;
+const getScheduleStorageKey = (batchName) => `timetable:schedule:${batchName ? batchName.toUpperCase() : ""}`;
 
 const isValidScheduleShape = (value) => value && typeof value === "object" && !Array.isArray(value);
+
+const cloneSchedule = (schedule) => JSON.parse(JSON.stringify(schedule || {}));
+
+const resolveElectives = (schedule, batchName) => {
+  if (!schedule || typeof schedule !== "object") return schedule;
+  const newSchedule = cloneSchedule(schedule);
+  const upperBatch = batchName ? batchName.toUpperCase() : "";
+  DAYS.forEach((day) => {
+    if (!newSchedule[day]) return;
+    Object.keys(newSchedule[day]).forEach((time) => {
+      const slot = newSchedule[day][time];
+      if (Array.isArray(slot) && slot.length >= 6 && Array.isArray(slot[5]) && slot[5].length > 0) {
+        const storageKey = `timetable:elective:${upperBatch}:${day}:${time}`;
+        const stored = localStorage.getItem(storageKey);
+        if (stored) {
+          try {
+            const saved = JSON.parse(stored);
+            if (saved && saved.subject_code) {
+              newSchedule[day][time] = [
+                saved.subject_code,
+                saved.place || "",
+                saved.subject_name || "",
+                saved.type || slot[3] || "Elective",
+                slot[4],
+                slot[5]
+              ];
+            }
+          } catch (e) {
+            console.error("Failed to parse stored elective", e);
+          }
+        }
+      }
+    });
+  });
+  return newSchedule;
+};
 
 const normalizeBatchSchedules = (payload, batches) => {
   const raw = payload?.data ?? payload;
@@ -61,7 +97,9 @@ const hasClassInSlot = (schedule, day, time) => {
   if (slotValue === undefined || slotValue === null) return false;
 
   if (Array.isArray(slotValue)) {
-    return slotValue.some((item) => String(item ?? "").trim() !== "");
+    const codeStr = String(slotValue[0] ?? "").trim();
+    const nameStr = String(slotValue[2] ?? "").trim();
+    return codeStr !== "" || nameStr !== "";
   }
 
   if (typeof slotValue === "string") {
@@ -106,10 +144,13 @@ export default function FreeSlotsView() {
 
             const mergedSchedules = batches.map((batchName, index) => {
               const localSchedule = getStoredScheduleForBatch(batchName);
-              if (localSchedule) return localSchedule;
+              if (localSchedule) {
+                return resolveElectives(localSchedule, batchName);
+              }
 
               const backendSchedule = backendSchedules[index];
-              return isValidScheduleShape(backendSchedule) ? backendSchedule : {};
+              const scheduleShape = isValidScheduleShape(backendSchedule) ? backendSchedule : {};
+              return resolveElectives(scheduleShape, batchName);
             });
 
             setResult(calculateCommonFreeSlots(mergedSchedules));
