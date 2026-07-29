@@ -1484,8 +1484,8 @@ export function HomeSite() {
                   </div>
 
                   {/* Off-screen capture template (to ensure perfect, unclipped downloads) */}
-                  <div className="fixed top-0 left-[-9999px] pointer-events-none" style={{ opacity: 1 }} ref={hiddenTableRef}>
-                    <div style={{ width: "1350px", padding: "30px", background: "#030712", color: "#ffffff" }}>
+                  <div style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: -9999 }}>
+                    <div ref={hiddenTableRef} style={{ width: "1350px", padding: "30px", background: "#030712", color: "#ffffff" }}>
                       <div style={{ marginBottom: "20px", borderBottom: "2px solid rgba(255,255,255,0.1)", paddingBottom: "15px" }}>
                         <div style={{ fontSize: "11px", color: "#38bdf8", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase" }}>GENERATED TIMETABLE</div>
                         <h2 style={{ fontSize: "28px", fontWeight: "bold", margin: "5px 0 0 0" }}>Schedule for {primaryBatch}</h2>

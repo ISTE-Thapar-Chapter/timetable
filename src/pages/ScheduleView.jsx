@@ -780,7 +780,7 @@ export default function ScheduleView() {
               </div>
 
               {/* Hidden Desktop Table for Reliable PNG Captures */}
-              <div className="fixed top-0 left-[-9999px] pointer-events-none" style={{ opacity: 1 }}>
+              <div style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: -9999 }}>
                 {renderDesktopTable({ ref: hiddenTableRef }, true)}
               </div>
             </>
