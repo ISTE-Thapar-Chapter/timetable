@@ -26,15 +26,15 @@ export default function BackgroundElements() {
       constructor(x, y) {
         this.x = x || Math.random() * canvas.width;
         this.y = y || Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.6;
+        this.size = Math.random() * 0.8 + 0.3;
         this.baseX = this.x;
         this.baseY = this.y;
         this.density = Math.random() * 30 + 1;
         // Speeds
-        this.vx = (Math.random() - 0.5) * 0.25;
-        this.vy = (Math.random() - 0.5) * 0.25;
-        // Colors from theme: 70% sky blue, 30% amber gold
-        this.color = Math.random() > 0.3 ? "rgba(56, 189, 248, 0.35)" : "rgba(245, 158, 11, 0.35)";
+        this.vx = (Math.random() - 0.5) * 0.08;
+        this.vy = (Math.random() - 0.5) * 0.08;
+        // Colors from theme: 70% sky blue, 30% amber gold (subtle opacity)
+        this.color = Math.random() > 0.3 ? "rgba(56, 189, 248, 0.12)" : "rgba(245, 158, 11, 0.12)";
       }
 
       update() {
@@ -75,7 +75,7 @@ export default function BackgroundElements() {
     // Populate particles
     const init = () => {
       particles = [];
-      const numberOfParticles = Math.min(75, Math.floor((canvas.width * canvas.height) / 16000));
+      const numberOfParticles = Math.min(20, Math.floor((canvas.width * canvas.height) / 80000));
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
       }
@@ -91,28 +91,8 @@ export default function BackgroundElements() {
       mouse.x = null;
       mouse.y = null;
     };
-    // Click creates a burst of particles (Easter Egg!)
-    const handleMouseClick = (e) => {
-      const burstCount = 15;
-      for (let i = 0; i < burstCount; i++) {
-        const p = new Particle(e.clientX, e.clientY);
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 2.2 + 0.8;
-        p.vx = Math.cos(angle) * speed;
-        p.vy = Math.sin(angle) * speed;
-        p.size = Math.random() * 2.5 + 1;
-        p.color = Math.random() > 0.4 ? "rgba(56, 189, 248, 0.8)" : "rgba(245, 158, 11, 0.8)";
-        particles.push(p);
-      }
-      // Cap max particles so it doesn't slow down
-      if (particles.length > 200) {
-        particles.splice(0, particles.length - 200);
-      }
-    };
-
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("click", handleMouseClick);
 
     // Loop
     const animate = () => {
@@ -162,7 +142,6 @@ export default function BackgroundElements() {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("click", handleMouseClick);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
