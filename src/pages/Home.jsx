@@ -1147,7 +1147,7 @@ export function HomeSite() {
         structuredData={homeStructuredData}
       />
       <BackgroundElements />
-      <Navbar />
+      <Navbar onLogoClick={handleClearWorkspace} />
 
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-6 pt-28 pb-16 flex flex-col">
         {!primaryBatch ? (

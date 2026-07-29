@@ -26,15 +26,15 @@ export default function BackgroundElements() {
       constructor(x, y) {
         this.x = x || Math.random() * canvas.width;
         this.y = y || Math.random() * canvas.height;
-        this.size = Math.random() * 0.8 + 0.3;
+        this.size = Math.random() * 1.0 + 0.5;
         this.baseX = this.x;
         this.baseY = this.y;
         this.density = Math.random() * 30 + 1;
         // Speeds
-        this.vx = (Math.random() - 0.5) * 0.08;
-        this.vy = (Math.random() - 0.5) * 0.08;
-        // Colors from theme: 70% sky blue, 30% amber gold (subtle opacity)
-        this.color = Math.random() > 0.3 ? "rgba(56, 189, 248, 0.12)" : "rgba(245, 158, 11, 0.12)";
+        this.vx = (Math.random() - 0.5) * 0.12;
+        this.vy = (Math.random() - 0.5) * 0.12;
+        // Colors from theme: 70% sky blue, 30% amber gold (subtle but clear)
+        this.color = Math.random() > 0.3 ? "rgba(56, 189, 248, 0.2)" : "rgba(245, 158, 11, 0.2)";
       }
 
       update() {
@@ -75,7 +75,7 @@ export default function BackgroundElements() {
     // Populate particles
     const init = () => {
       particles = [];
-      const numberOfParticles = Math.min(20, Math.floor((canvas.width * canvas.height) / 80000));
+      const numberOfParticles = Math.min(35, Math.floor((canvas.width * canvas.height) / 45000));
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
       }
@@ -93,6 +93,26 @@ export default function BackgroundElements() {
     };
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
+
+    // Click creates a tiny, neat burst of particles (non-intrusive)
+    const handleMouseClick = (e) => {
+      const burstCount = 6;
+      for (let i = 0; i < burstCount; i++) {
+        const p = new Particle(e.clientX, e.clientY);
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 0.8 + 0.4;
+        p.vx = Math.cos(angle) * speed;
+        p.vy = Math.sin(angle) * speed;
+        p.size = Math.random() * 1.2 + 0.6;
+        p.color = Math.random() > 0.4 ? "rgba(56, 189, 248, 0.35)" : "rgba(245, 158, 11, 0.35)";
+        particles.push(p);
+      }
+      // Cap max particles so it doesn't slow down
+      if (particles.length > 100) {
+        particles.splice(0, particles.length - 100);
+      }
+    };
+    window.addEventListener("click", handleMouseClick);
 
     // Loop
     const animate = () => {
@@ -142,6 +162,7 @@ export default function BackgroundElements() {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("click", handleMouseClick);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
