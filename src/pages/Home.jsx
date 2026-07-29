@@ -27,8 +27,32 @@ import Seo from "@/components/Seo";
 import { SEO_SITE_URL, SEO_SITE_NAME } from "@/lib/seo.config";
 import { toPng } from 'html-to-image';
 import { batchesList, getBatchesData } from "@/utils/schedule";
+import subjectMap from "@/assets/subjectMap.json" with { type: "json" };
 
 const siteUrl = SEO_SITE_URL || "https://timetable.vercel.app";
+
+const getSubjectNameFromMap = (code) => {
+  if (!code) return "";
+  const cleaned = code.trim().replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+  if (!cleaned) return "";
+
+  // 1. Direct match
+  if (subjectMap[cleaned]) return subjectMap[cleaned];
+
+  // 2. Custom match (exact match after cleaning keys, or prefix match if length >= 5)
+  const keys = Object.keys(subjectMap);
+  const exactKey = keys.find((k) => k.replace(/[^a-zA-Z0-9]/g, "").toUpperCase() === cleaned);
+  if (exactKey) return subjectMap[exactKey];
+
+  if (cleaned.length >= 5) {
+    const partialKey = keys.find((k) => {
+      const kClean = k.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+      return kClean.startsWith(cleaned) || cleaned.startsWith(kClean);
+    });
+    if (partialKey) return subjectMap[partialKey];
+  }
+  return "";
+};
 
 const homeStructuredData = {
   "@context": "https://schema.org",
@@ -1936,7 +1960,22 @@ export function HomeSite() {
                     placeholder="e.g. UPH013P"
                     className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white outline-none focus:border-sky-500/50 text-sm font-medium placeholder:text-white/20"
                     value={modalFormData.code}
-                    onChange={(e) => setModalFormData({ ...modalFormData, code: e.target.value })}
+                    onChange={(e) => {
+                      const inputCode = e.target.value;
+                      const autoName = getSubjectNameFromMap(inputCode);
+                      if (autoName) {
+                        setModalFormData({
+                          ...modalFormData,
+                          code: inputCode,
+                          name: autoName
+                        });
+                      } else {
+                        setModalFormData({
+                          ...modalFormData,
+                          code: inputCode
+                        });
+                      }
+                    }}
                   />
                 </div>
 
