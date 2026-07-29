@@ -413,7 +413,7 @@ export default function CalendarCard({ batches, loadingBatches }) {
           handleApiError(new Error(err.message || "OAuth authentication error."));
         }
       });
-      tokenClient.requestAccessToken({ prompt: "consent" });
+      tokenClient.requestAccessToken({ prompt: "consent", hd: "thapar.edu" });
     } catch (err) {
       handleApiError(err);
     }

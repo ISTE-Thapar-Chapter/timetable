@@ -950,7 +950,7 @@ export function HomeSite() {
           handleCalendarApiError(new Error(err.message || "OAuth authentication error."));
         }
       });
-      tokenClient.requestAccessToken({ prompt: "consent" });
+      tokenClient.requestAccessToken({ prompt: "consent", hd: "thapar.edu" });
     } catch (err) {
       handleCalendarApiError(err);
     }
