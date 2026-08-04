@@ -486,6 +486,8 @@ export function HomeSite() {
   const [freeSlotsLoading, setFreeSlotsLoading] = useState(false);
   const [freeSlotsError, setFreeSlotsError] = useState("");
   const [freeSlotsExpandedDay, setFreeSlotsExpandedDay] = useState(DAYS[0]);
+  const [isDownloadingFreeSlots, setIsDownloadingFreeSlots] = useState(false);
+  const freeSlotsHiddenTableRef = useRef(null);
 
   // Google Calendar Integration states
   const [isAddingCalendar, setIsAddingCalendar] = useState(false);
@@ -766,6 +768,38 @@ export function HomeSite() {
       console.error("Failed to generate PNG", err);
     } finally {
       setIsDownloading(false);
+    }
+  };
+
+  const handleFreeSlotsDownload = async () => {
+    setIsDownloadingFreeSlots(true);
+    try {
+      const element = freeSlotsHiddenTableRef.current;
+      if (!element) return;
+
+      await new Promise(r => setTimeout(r, 120));
+
+      const dataUrl = await toPng(element, {
+        backgroundColor: "#030712",
+        pixelRatio: 2,
+        skipFonts: true,
+        cacheBust: true,
+        style: {
+          transform: 'none',
+          opacity: '1',
+          visibility: 'visible'
+        }
+      });
+
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      const downloadName = comparisonBatches.length > 0 ? `Free_Slots_${comparisonBatches.join("_")}.png` : "Common_Free_Slots.png";
+      a.download = downloadName;
+      a.click();
+    } catch (err) {
+      console.error("Failed to generate PNG", err);
+    } finally {
+      setIsDownloadingFreeSlots(false);
     }
   };
 
@@ -1634,41 +1668,54 @@ export function HomeSite() {
                 <div className="glass-card rounded-2xl p-6 border border-white/10 relative z-10 flex-1 flex flex-col">
                   
                   {/* Header & input */}
-                  <div className="border-b border-white/10 pb-5 mb-6">
-                    <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Find Common Gaps</span>
-                    <h2 className="font-space-grotesk text-2xl font-bold text-white">Compare Batch Schedules</h2>
-                    <p className="text-xs text-white/50 mt-1">Select multiple batches to find overlapping free slots</p>
+                  <div className="border-b border-white/10 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Find Common Gaps</span>
+                      <h2 className="font-space-grotesk text-2xl font-bold text-white">Compare Batch Schedules</h2>
+                      <p className="text-xs text-white/50 mt-1">Select multiple batches to find overlapping free slots</p>
+                    </div>
+                    {freeSlotsResult && (
+                      <button
+                        onClick={handleFreeSlotsDownload}
+                        disabled={isDownloadingFreeSlots}
+                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white text-black font-bold rounded-xl hover:bg-white/90 transition-all active:scale-95 disabled:opacity-50 text-xs shadow-lg whitespace-nowrap self-start md:self-center"
+                      >
+                        {isDownloadingFreeSlots ? <Loader2 size={12} className="animate-spin" /> : <Download size={12} />}
+                        Download PNG
+                      </button>
+                    )}
+                  </div>
 
-                    <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Active batch lists */}
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-semibold text-white/50">Active Batches</label>
-                        <div className="flex flex-wrap gap-2">
-                          {comparisonBatches.length > 0 ? (
-                            comparisonBatches.map((b) => (
-                              <button
-                                key={b}
-                                onClick={() => setComparisonBatches(comparisonBatches.filter((x) => x !== b))}
-                                className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-2 transition-all ${
-                                  b === primaryBatch
-                                    ? "bg-sky-500/10 border-sky-500/20 text-sky-300 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
-                                    : "bg-white/5 border-white/10 text-white/80 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
-                                }`}
-                              >
-                                <span>{b} {b === primaryBatch && "(Active)"}</span>
-                                <X size={12} />
-                              </button>
-                            ))
-                          ) : (
-                            <span className="text-xs text-white/40 italic py-1">No batches selected. Add below or from search.</span>
-                          )}
-                        </div>
+                  <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Active batch lists */}
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-semibold text-white/50">Active Batches</label>
+                      <div className="flex flex-wrap gap-2">
+                        {comparisonBatches.length > 0 ? (
+                          comparisonBatches.map((b) => (
+                            <button
+                              key={b}
+                              onClick={() => setComparisonBatches(comparisonBatches.filter((x) => x !== b))}
+                              className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-2 transition-all ${
+                                b === primaryBatch
+                                  ? "bg-sky-500/10 border-sky-500/20 text-sky-300 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+                                  : "bg-white/5 border-white/10 text-white/80 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+                              }`}
+                            >
+                              <span>{b} {b === primaryBatch && "(Active)"}</span>
+                              <X size={12} />
+                            </button>
+                          ))
+                        ) : (
+                          <span className="text-xs text-white/40 italic py-1">No batches selected. Add below or from search.</span>
+                        )}
                       </div>
+                    </div>
 
-                      {/* Add Batch Search Dropdown */}
-                      <div className="flex flex-col gap-2 relative" ref={comparisonDropdownRef}>
-                        <label className="text-xs font-semibold text-white/50">Compare Batch</label>
-                        <div className="relative">
+                    {/* Add Batch Search Dropdown */}
+                    <div className="flex flex-col gap-2 relative" ref={comparisonDropdownRef}>
+                      <label className="text-xs font-semibold text-white/50">Compare Batch</label>
+                      <div className="relative">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={14} />
                           <input
                             type="text"
@@ -1708,7 +1755,6 @@ export function HomeSite() {
                         )}
                       </div>
                     </div>
-                  </div>
 
                   {/* Calculations Display Area */}
                   <div className="flex-1 flex flex-col justify-center">
@@ -1842,6 +1888,90 @@ export function HomeSite() {
                       </div>
                     )}
                   </div>
+
+                  {/* Off-screen capture template (to ensure perfect, unclipped downloads) */}
+                  {freeSlotsResult && (
+                    <div style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: -9999 }}>
+                      <div ref={freeSlotsHiddenTableRef} style={{ width: "1350px", padding: "35px", background: "#030712", color: "#ffffff" }}>
+                        <div style={{ marginBottom: "25px", borderBottom: "2px solid rgba(255,255,255,0.1)", paddingBottom: "15px" }}>
+                          <div style={{ fontSize: "11px", color: "#38bdf8", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "Space Grotesk, sans-serif" }}>COMMON FREE SLOTS</div>
+                          <h2 style={{ fontSize: "28px", fontWeight: "bold", margin: "5px 0 0 0", fontFamily: "Space Grotesk, sans-serif" }}>Overlapping Availability</h2>
+                          {comparisonBatches.length > 0 && (
+                            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "10px" }}>
+                              <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Batches:</span>
+                              {comparisonBatches.map((b) => (
+                                <span key={b} style={{ fontSize: "11px", padding: "2px 8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "rgba(255,255,255,0.8)" }}>
+                                  {b}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        
+                        <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                          <thead>
+                            <tr>
+                              <th style={{ padding: "12px", borderBottom: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", fontWeight: "bold", color: "#ffffff", width: "110px", textAlign: "left", fontSize: "12px", fontFamily: "Space Grotesk, sans-serif" }}>
+                                Day
+                              </th>
+                              {TIMES.map((time) => {
+                                const [timeVal, period] = time.split(" ");
+                                return (
+                                  <th key={time} style={{ padding: "10px", borderBottom: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", fontWeight: "bold", textAlign: "center", width: "95px", fontSize: "11px" }}>
+                                    <div style={{ fontFamily: "Space Grotesk, sans-serif" }}>{timeVal}</div>
+                                    <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.4)", marginTop: "2px", letterSpacing: "1px" }}>{period}</div>
+                                  </th>
+                                );
+                              })}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {DAYS.map((day) => (
+                              <tr key={day}>
+                                <td style={{ padding: "12px", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(0,0,0,0.3)", fontWeight: "bold", fontSize: "12px", color: "#ffffff", borderRight: "1px solid rgba(255,255,255,0.1)", fontFamily: "Space Grotesk, sans-serif" }}>
+                                  {day}
+                                </td>
+                                {TIMES.map((time) => {
+                                  const isFree = freeSlotsResult[day]?.includes(time);
+                                  return (
+                                    <td
+                                      key={time}
+                                      style={{
+                                        padding: "8px",
+                                        borderBottom: "1px solid rgba(255,255,255,0.05)",
+                                        textAlign: "center",
+                                        background: isFree ? "rgba(16, 185, 129, 0.08)" : "transparent"
+                                      }}
+                                    >
+                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "40px" }}>
+                                        {isFree ? (
+                                          <span style={{
+                                            margin: "auto",
+                                            padding: "4px 8px",
+                                            borderRadius: "4px",
+                                            background: "rgba(16, 185, 129, 0.15)",
+                                            border: "1px solid rgba(16, 185, 129, 0.2)",
+                                            color: "#34d399",
+                                            fontWeight: "bold",
+                                            fontSize: "10px",
+                                            letterSpacing: "1px"
+                                          }}>
+                                            FREE
+                                          </span>
+                                        ) : (
+                                          <span style={{ margin: "auto", color: "rgba(255,255,255,0.15)" }}>-</span>
+                                        )}
+                                      </div>
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
 
                 </div>
               )}

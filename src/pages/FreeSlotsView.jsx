@@ -1,10 +1,11 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { ArrowLeft, Loader2, Users, ChevronDown } from "lucide-react";
+import { ArrowLeft, Loader2, Users, ChevronDown, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackgroundElements from "@/components/BackgroundElements";
 import Seo from "@/components/Seo";
+import { toPng } from 'html-to-image';
 import { getBatchesData } from "@/utils/schedule";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -131,6 +132,40 @@ export default function FreeSlotsView() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [expandedDay, setExpandedDay] = useState(DAYS[0]);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const hiddenTableRef = useRef(null);
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      const element = hiddenTableRef.current;
+      if (!element) return;
+
+      await new Promise(r => setTimeout(r, 120));
+
+      const dataUrl = await toPng(element, {
+        backgroundColor: "#09090b",
+        pixelRatio: 2,
+        skipFonts: true,
+        cacheBust: true,
+        style: {
+          transform: 'none',
+          opacity: '1',
+          visibility: 'visible'
+        }
+      });
+
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      const downloadName = batches.length > 0 ? `Free_Slots_${batches.join("_")}.png` : "Common_Free_Slots.png";
+      a.download = downloadName;
+      a.click();
+    } catch (err) {
+      console.error("Failed to generate PNG", err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,11 +222,23 @@ export default function FreeSlotsView() {
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 pt-32 pb-16 flex flex-col">
         <div className="mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors">
-            <ArrowLeft size={16} />
-            <span>Back to Dashboard</span>
-          </Link>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-6 mb-2">
+          <div className="flex justify-between items-center w-full">
+            <Link to="/" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors">
+              <ArrowLeft size={16} />
+              <span>Back to Dashboard</span>
+            </Link>
+            {result && (
+              <button
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-white text-black font-semibold rounded-lg hover:bg-white/90 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed whitespace-nowrap text-sm shadow-lg shadow-black/20"
+              >
+                {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+                Download PNG
+              </button>
+            )}
+          </div>
+          <div className="flex flex-col gap-3 mt-6 mb-2">
             <h1 className="font-space-grotesk text-3xl font-bold text-white flex items-center gap-3">
               <span className="p-2 bg-amber-500/20 text-amber-500 rounded-lg">
                 <Users size={24} />
@@ -200,10 +247,10 @@ export default function FreeSlotsView() {
             </h1>
             {batches.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-white/50 text-sm">Batches:</span>
-                <div className="flex flex-wrap gap-1">
+                <span className="text-white/50 text-sm">Comparing Batches:</span>
+                <div className="flex flex-wrap gap-1.5">
                   {batches.map((b) => (
-                    <span key={b} className="text-xs px-2 py-1 bg-white/10 rounded-md text-white/80">
+                    <span key={b} className="text-xs px-2.5 py-1 bg-white/10 rounded-md text-white/90 font-medium">
                       {b}
                     </span>
                   ))}
@@ -357,6 +404,90 @@ export default function FreeSlotsView() {
             </div>
           )}
         </div>
+
+        {/* Off-screen capture template (to ensure perfect, unclipped downloads) */}
+        {result && (
+          <div style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: -9999 }}>
+            <div ref={hiddenTableRef} style={{ width: "1350px", padding: "35px", background: "#09090b", color: "#ffffff" }}>
+              <div style={{ marginBottom: "25px", borderBottom: "2px solid rgba(255,255,255,0.1)", paddingBottom: "15px" }}>
+                <div style={{ fontSize: "11px", color: "#f59e0b", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "Space Grotesk, sans-serif" }}>COMMON FREE SLOTS</div>
+                <h2 style={{ fontSize: "28px", fontWeight: "bold", margin: "5px 0 0 0", fontFamily: "Space Grotesk, sans-serif" }}>Overlapping Availability</h2>
+                {batches.length > 0 && (
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "10px" }}>
+                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Batches:</span>
+                    {batches.map((b) => (
+                      <span key={b} style={{ fontSize: "11px", padding: "2px 8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "rgba(255,255,255,0.8)" }}>
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                <thead>
+                  <tr>
+                    <th style={{ padding: "12px", borderBottom: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", fontWeight: "bold", color: "#ffffff", width: "110px", textAlign: "left", fontSize: "12px", fontFamily: "Space Grotesk, sans-serif" }}>
+                      Day
+                    </th>
+                    {TIMES.map((time) => {
+                      const [timeVal, period] = time.split(" ");
+                      return (
+                        <th key={time} style={{ padding: "10px", borderBottom: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", fontWeight: "bold", textAlign: "center", width: "95px", fontSize: "11px" }}>
+                          <div style={{ fontFamily: "Space Grotesk, sans-serif" }}>{timeVal}</div>
+                          <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.4)", marginTop: "2px", letterSpacing: "1px" }}>{period}</div>
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {DAYS.map((day) => (
+                    <tr key={day}>
+                      <td style={{ padding: "12px", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(0,0,0,0.3)", fontWeight: "bold", fontSize: "12px", color: "#ffffff", borderRight: "1px solid rgba(255,255,255,0.1)", fontFamily: "Space Grotesk, sans-serif" }}>
+                        {day}
+                      </td>
+                      {TIMES.map((time) => {
+                        const isFree = result[day]?.includes(time);
+                        return (
+                          <td
+                            key={time}
+                            style={{
+                              padding: "8px",
+                              borderBottom: "1px solid rgba(255,255,255,0.05)",
+                              textAlign: "center",
+                              background: isFree ? "rgba(16, 185, 129, 0.08)" : "transparent"
+                            }}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "40px" }}>
+                              {isFree ? (
+                                <span style={{
+                                  margin: "auto",
+                                  padding: "4px 8px",
+                                  borderRadius: "4px",
+                                  background: "rgba(16, 185, 129, 0.15)",
+                                  border: "1px solid rgba(16, 185, 129, 0.2)",
+                                  color: "#34d399",
+                                  fontWeight: "bold",
+                                  fontSize: "10px",
+                                  letterSpacing: "1px"
+                                }}>
+                                  FREE
+                                </span>
+                              ) : (
+                                <span style={{ margin: "auto", color: "rgba(255,255,255,0.15)" }}>-</span>
+                              )}
+                            </div>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
