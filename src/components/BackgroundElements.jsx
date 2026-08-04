@@ -33,8 +33,8 @@ export default function BackgroundElements() {
         // Speeds
         this.vx = (Math.random() - 0.5) * 0.12;
         this.vy = (Math.random() - 0.5) * 0.12;
-        // Colors from theme: 70% sky blue, 30% amber gold (subtle but clear)
-        this.color = Math.random() > 0.3 ? "rgba(56, 189, 248, 0.2)" : "rgba(245, 158, 11, 0.2)";
+        // Track color type for dynamic updates on theme toggles
+        this.colorType = Math.random() > 0.3 ? "primary" : "secondary";
       }
 
       update() {
@@ -64,7 +64,13 @@ export default function BackgroundElements() {
       }
 
       draw() {
-        ctx.fillStyle = this.color;
+        const isDoom = document.documentElement.classList.contains("theme-doom");
+        // Latverian magic (neon green/silver) vs default cyan/amber
+        const color = isDoom
+          ? (this.colorType === "primary" ? "rgba(16, 185, 129, 0.25)" : "rgba(209, 213, 219, 0.2)")
+          : (this.colorType === "primary" ? "rgba(56, 189, 248, 0.2)" : "rgba(245, 158, 11, 0.2)");
+
+        ctx.fillStyle = color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.closePath();
@@ -104,7 +110,7 @@ export default function BackgroundElements() {
         p.vx = Math.cos(angle) * speed;
         p.vy = Math.sin(angle) * speed;
         p.size = Math.random() * 1.2 + 0.6;
-        p.color = Math.random() > 0.4 ? "rgba(56, 189, 248, 0.35)" : "rgba(245, 158, 11, 0.35)";
+        p.colorType = Math.random() > 0.4 ? "primary" : "secondary";
         particles.push(p);
       }
       // Cap max particles so it doesn't slow down
@@ -116,11 +122,16 @@ export default function BackgroundElements() {
 
     // Loop
     const animate = () => {
-      ctx.fillStyle = "#030712"; // Solid theme background color (rich dark indigo/black)
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const isDoom = document.documentElement.classList.contains("theme-doom");
+      if (isDoom) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = "#030712"; // Solid theme background color (rich dark indigo/black)
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
 
       // Subtle grid pattern drawn over solid background
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.012)";
+      ctx.strokeStyle = isDoom ? "rgba(16, 185, 129, 0.012)" : "rgba(255, 255, 255, 0.012)";
       ctx.lineWidth = 1;
       const gridSize = 48;
       for (let x = 0; x < canvas.width; x += gridSize) {
@@ -145,8 +156,13 @@ export default function BackgroundElements() {
       // Draw cursor hover light aura (subtle glow Easter Egg)
       if (mouse.x !== null && mouse.y !== null) {
         const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouse.radius * 1.1);
-        glow.addColorStop(0, "rgba(56, 189, 248, 0.035)");
-        glow.addColorStop(0.5, "rgba(99, 102, 241, 0.015)");
+        if (isDoom) {
+          glow.addColorStop(0, "rgba(16, 185, 129, 0.045)");
+          glow.addColorStop(0.5, "rgba(52, 211, 153, 0.015)");
+        } else {
+          glow.addColorStop(0, "rgba(56, 189, 248, 0.035)");
+          glow.addColorStop(0.5, "rgba(99, 102, 241, 0.015)");
+        }
         glow.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = glow;
         ctx.beginPath();
@@ -170,7 +186,7 @@ export default function BackgroundElements() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none -z-10 bg-[#030712]"
+      className="fixed inset-0 w-full h-full pointer-events-none -z-10 bg-transparent"
     />
   );
 }

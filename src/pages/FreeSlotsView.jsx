@@ -2,6 +2,58 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Loader2, Users, ChevronDown, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useTheme } from "@/utils/theme";
+
+const DoomMaskIcon = ({ size = 24, className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.8" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className} 
+    style={{ width: size, height: size }}
+  >
+    <path d="M12 2C6.5 2 4 6 4 11c0 3.5 1.5 6.5 4 8v3h8v-3c2.5-1.5 4-4.5 4-8 0-5-2.5-9-8-9z" fill="currentColor" fillOpacity="0.15" />
+    <path d="M8 10h8" />
+    <path d="M7 11.5l2.5-.5M17 11.5l-2.5-.5" />
+    <circle cx="8.25" cy="11.25" r="0.75" fill="#10b981" />
+    <circle cx="15.75" cy="11.25" r="0.75" fill="#10b981" />
+    <path d="M12 10.5v2.5M10.5 13h3L12 10.5z" fill="#374151" />
+    <path d="M9 16.5h6" />
+    <path d="M10 16.5v2M12 16.5v2M14 16.5v2" />
+  </svg>
+);
+
+const getDoomMockSchedule = (batchName) => {
+  const schedule = {};
+  const DAYS_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const TIMES_LIST = [
+    "08:00 AM", "08:50 AM", "09:40 AM", "10:30 AM", "11:20 AM",
+    "12:10 PM", "01:00 PM", "01:50 PM", "02:40 PM", "03:30 PM",
+    "04:20 PM", "05:10 PM", "06:00 PM"
+  ];
+  
+  DAYS_LIST.forEach(day => {
+    schedule[day] = {};
+    TIMES_LIST.forEach(time => {
+      schedule[day][time] = null;
+    });
+
+    if (day === "Monday" || day === "Wednesday" || day === "Friday") {
+      schedule[day]["09:40 AM"] = ["DOOM101", "Intro to Sorcery", "Castle Doom Sanctum", "Dr. Doom", "L", []];
+      schedule[day]["11:20 AM"] = ["DOOM204", "Doombot Robotics Lab", "Armory Level 3", "Doombot Prime", "P", []];
+      schedule[day]["02:40 PM"] = ["DOOM399", "Anti-Richards Seminar", "Latverian War Room", "Dr. Doom", "L", []];
+    } else {
+      schedule[day]["08:50 AM"] = ["DOOM102", "Glory of Latveria History", "Grand Throne Room", "Chancellor", "L", []];
+      schedule[day]["01:50 PM"] = ["DOOM444", "Cosmic Power Harnessing", "Sanctum Laboratory", "Dr. Doom", "L", []];
+      schedule[day]["03:30 PM"] = ["DOOM555", "Hypnotism & Mind Control", "Dungeon Level 1", "Dr. Doom", "P", []];
+    }
+  });
+  return schedule;
+};
 import Footer from "@/components/Footer";
 import BackgroundElements from "@/components/BackgroundElements";
 import Seo from "@/components/Seo";
@@ -124,6 +176,8 @@ const calculateCommonFreeSlots = (schedules) => {
 };
 
 export default function FreeSlotsView() {
+  const { theme } = useTheme();
+  const isDoom = theme === "doom";
   const location = useLocation();
   const rawBatches = location.state?.batches;
   const batches = useMemo(() => rawBatches || [], [rawBatches]);
@@ -173,7 +227,14 @@ export default function FreeSlotsView() {
       setError(null);
       try {
         if (batches.length > 0) {
-          const data = getBatchesData(batches);
+          const rawData = getBatchesData(batches);
+          const data = { ...rawData };
+          batches.forEach(b => {
+            if (["CASTLE_DOOM_GUARD_A", "LATVERIA_COHORT_1", "RICHARDS_IS_INFERIOR"].includes(b)) {
+              data[b] = getDoomMockSchedule(b);
+            }
+          });
+
           if (data && Object.keys(data).length > 0) {
             const backendSchedules = normalizeBatchSchedules(data, batches);
 
@@ -239,15 +300,23 @@ export default function FreeSlotsView() {
             )}
           </div>
           <div className="flex flex-col gap-3 mt-6 mb-2">
-            <h1 className="font-space-grotesk text-3xl font-bold text-white flex items-center gap-3">
-              <span className="p-2 bg-amber-500/20 text-amber-500 rounded-lg">
-                <Users size={24} />
-              </span>
-              Common Free Slots
+            <h1 className={`font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 ${isDoom ? "text-glow-green" : ""}`}>
+              {isDoom ? (
+                <span className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
+                  <DoomMaskIcon size={24} />
+                </span>
+              ) : (
+                <span className="p-2 bg-amber-500/20 text-amber-500 rounded-lg">
+                  <Users size={24} />
+                </span>
+              )}
+              {isDoom ? "Imperial Overlapping Gaps" : "Common Free Slots"}
             </h1>
             {batches.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-white/50 text-sm">Comparing Batches:</span>
+                <span className="text-white/50 text-sm">
+                  {isDoom ? "Assigned Cohorts:" : "Comparing Batches:"}
+                </span>
                 <div className="flex flex-wrap gap-1.5">
                   {batches.map((b) => (
                     <span key={b} className="text-xs px-2.5 py-1 bg-white/10 rounded-md text-white/90 font-medium">
@@ -258,7 +327,12 @@ export default function FreeSlotsView() {
               </div>
             )}
           </div>
-          <p className="text-white/50">Find overlapping free time slots among selected batches.</p>
+          <p className="text-white/50">
+            {isDoom 
+              ? "DOOM enforces synchronization of empty periods between Latverian cohorts." 
+              : "Find overlapping free time slots among selected batches."
+            }
+          </p>
         </div>
 
         <div className="glass-card rounded-2xl p-6 min-h-[400px] flex flex-col relative overflow-hidden">
@@ -408,13 +482,19 @@ export default function FreeSlotsView() {
         {/* Off-screen capture template (to ensure perfect, unclipped downloads) */}
         {result && (
           <div style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: -9999 }}>
-            <div ref={hiddenTableRef} style={{ width: "1350px", padding: "35px", background: "#09090b", color: "#ffffff" }}>
-              <div style={{ marginBottom: "25px", borderBottom: "2px solid rgba(255,255,255,0.1)", paddingBottom: "15px" }}>
-                <div style={{ fontSize: "11px", color: "#f59e0b", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "Space Grotesk, sans-serif" }}>COMMON FREE SLOTS</div>
-                <h2 style={{ fontSize: "28px", fontWeight: "bold", margin: "5px 0 0 0", fontFamily: "Space Grotesk, sans-serif" }}>Overlapping Availability</h2>
+            <div ref={hiddenTableRef} style={{ width: "1350px", padding: "35px", background: isDoom ? "#040a06" : "#09090b", color: "#ffffff", fontFamily: "Space Grotesk, sans-serif" }}>
+              <div style={{ marginBottom: "25px", borderBottom: `2px solid ${isDoom ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}`, paddingBottom: "15px" }}>
+                <div style={{ fontSize: "11px", color: isDoom ? "#10b981" : "#f59e0b", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase" }}>
+                  {isDoom ? "IMPERIAL OVERLAPPING GAPS" : "COMMON FREE SLOTS"}
+                </div>
+                <h2 style={{ fontSize: "28px", fontWeight: "bold", margin: "5px 0 0 0", color: isDoom ? "#10b981" : "#ffffff" }}>
+                  {isDoom ? "Latverian Cohort Alignment" : "Overlapping Availability"}
+                </h2>
                 {batches.length > 0 && (
                   <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "10px" }}>
-                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Batches:</span>
+                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>
+                      {isDoom ? "Cohorts:" : "Batches:"}
+                    </span>
                     {batches.map((b) => (
                       <span key={b} style={{ fontSize: "11px", padding: "2px 8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "rgba(255,255,255,0.8)" }}>
                         {b}

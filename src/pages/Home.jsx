@@ -21,6 +21,58 @@ import {
   BookOpen
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useTheme } from "@/utils/theme";
+
+const DoomMaskIcon = ({ size = 24, className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.8" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className} 
+    style={{ width: size, height: size }}
+  >
+    <path d="M12 2C6.5 2 4 6 4 11c0 3.5 1.5 6.5 4 8v3h8v-3c2.5-1.5 4-4.5 4-8 0-5-2.5-9-8-9z" fill="currentColor" fillOpacity="0.15" />
+    <path d="M8 10h8" />
+    <path d="M7 11.5l2.5-.5M17 11.5l-2.5-.5" />
+    <circle cx="8.25" cy="11.25" r="0.75" fill="#10b981" />
+    <circle cx="15.75" cy="11.25" r="0.75" fill="#10b981" />
+    <path d="M12 10.5v2.5M10.5 13h3L12 10.5z" fill="#374151" />
+    <path d="M9 16.5h6" />
+    <path d="M10 16.5v2M12 16.5v2M14 16.5v2" />
+  </svg>
+);
+
+const getDoomMockSchedule = (batchName) => {
+  const schedule = {};
+  const DAYS_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const TIMES_LIST = [
+    "08:00 AM", "08:50 AM", "09:40 AM", "10:30 AM", "11:20 AM",
+    "12:10 PM", "01:00 PM", "01:50 PM", "02:40 PM", "03:30 PM",
+    "04:20 PM", "05:10 PM", "06:00 PM"
+  ];
+  
+  DAYS_LIST.forEach(day => {
+    schedule[day] = {};
+    TIMES_LIST.forEach(time => {
+      schedule[day][time] = null;
+    });
+
+    if (day === "Monday" || day === "Wednesday" || day === "Friday") {
+      schedule[day]["09:40 AM"] = ["DOOM101", "Intro to Sorcery", "Castle Doom Sanctum", "Dr. Doom", "L", []];
+      schedule[day]["11:20 AM"] = ["DOOM204", "Doombot Robotics Lab", "Armory Level 3", "Doombot Prime", "P", []];
+      schedule[day]["02:40 PM"] = ["DOOM399", "Anti-Richards Seminar", "Latverian War Room", "Dr. Doom", "L", []];
+    } else {
+      schedule[day]["08:50 AM"] = ["DOOM102", "Glory of Latveria History", "Grand Throne Room", "Chancellor", "L", []];
+      schedule[day]["01:50 PM"] = ["DOOM444", "Cosmic Power Harnessing", "Sanctum Laboratory", "Dr. Doom", "L", []];
+      schedule[day]["03:30 PM"] = ["DOOM555", "Hypnotism & Mind Control", "Dungeon Level 1", "Dr. Doom", "P", []];
+    }
+  });
+  return schedule;
+};
 import Footer from "@/components/Footer";
 import BackgroundElements from "@/components/BackgroundElements";
 import Seo from "@/components/Seo";
@@ -443,6 +495,8 @@ const deleteCalendarOnly = async (accessToken, batchName, onProgress) => {
 };
 
 export function HomeSite() {
+  const { theme } = useTheme();
+  const isDoom = theme === "doom";
   const navigate = useNavigate();
   const [batches, setBatches] = useState([]);
   const [loadingBatches, setLoadingBatches] = useState(true);
@@ -535,9 +589,14 @@ export function HomeSite() {
 
     try {
       // 1. Get backend data
-      const data = getBatchesData([primaryBatch]);
-      const raw = data[primaryBatch] || {};
-      const resolvedRaw = resolveElectives(raw, primaryBatch);
+      let resolvedRaw;
+      if (["CASTLE_DOOM_GUARD_A", "LATVERIA_COHORT_1", "RICHARDS_IS_INFERIOR"].includes(primaryBatch)) {
+        resolvedRaw = getDoomMockSchedule(primaryBatch);
+      } else {
+        const data = getBatchesData([primaryBatch]);
+        const raw = data[primaryBatch] || {};
+        resolvedRaw = resolveElectives(raw, primaryBatch);
+      }
       setOriginalSchedule(resolvedRaw);
 
       // 2. Check local modifications
@@ -576,6 +635,13 @@ export function HomeSite() {
   // Primary Batch Search Filter
   const filteredPrimaryBatches = useMemo(() => {
     if (!Array.isArray(batches)) return [];
+
+    // Easter Egg Doom triggers
+    const query = primarySearch.toLowerCase().trim();
+    if (query === "doom" || query === "latveria" || query === "richards") {
+      return ["CASTLE_DOOM_GUARD_A", "LATVERIA_COHORT_1", "RICHARDS_IS_INFERIOR"];
+    }
+
     return batches.filter((b) => {
       if (typeof b !== 'string') return false;
       return b.toLowerCase().includes(primarySearch.toLowerCase());
@@ -585,6 +651,13 @@ export function HomeSite() {
   // Comparison Batch Search Filter (excludes already selected)
   const filteredComparisonBatches = useMemo(() => {
     if (!Array.isArray(batches)) return [];
+
+    // Easter Egg Doom triggers
+    const query = comparisonSearch.toLowerCase().trim();
+    if (query === "doom" || query === "latveria" || query === "richards") {
+      return ["CASTLE_DOOM_GUARD_A", "LATVERIA_COHORT_1", "RICHARDS_IS_INFERIOR"].filter(b => !comparisonBatches.includes(b));
+    }
+
     return batches.filter((b) => {
       if (typeof b !== 'string') return false;
       if (comparisonBatches.includes(b)) return false;
@@ -1213,24 +1286,29 @@ export function HomeSite() {
           <div className="flex-1 flex flex-col items-center justify-center py-12">
             <div className="w-full max-w-2xl text-center space-y-6">
               <div className="inline-flex p-3 rounded-2xl bg-white/5 border border-white/10 text-sky-400 shadow-inner mb-2">
-                <Layout size={32} />
+                {isDoom ? <DoomMaskIcon size={32} className="text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" /> : <Layout size={32} />}
               </div>
-              <h1 className="font-space-grotesk text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-                Timetable Dashboard
+              <h1 className={`font-space-grotesk text-4xl md:text-5xl font-extrabold tracking-tight text-white ${isDoom ? "text-glow-green" : ""}`}>
+                {isDoom ? "Doom's Timetable Decree" : "Timetable Dashboard"}
               </h1>
               <p className="text-base md:text-lg text-white/50 max-w-lg mx-auto">
-                Select your batch to view your schedule, edit classes, and compare free time slots.
+                {isDoom 
+                  ? "DOOM demands compliance. Select your cohort to receive weekly regimental timetable assignments." 
+                  : "Select your batch to view your schedule, edit classes, and compare free time slots."
+                }
               </p>
 
               {/* Central Search work desk */}
               <div className="glass-card rounded-2xl p-6 md:p-8 border border-white/10 relative z-20" ref={primaryDropdownRef}>
                 <div className="flex flex-col gap-3 relative text-left">
-                  <label className="font-share-tech text-xs uppercase tracking-widest text-white/60">Select Your Batch</label>
+                  <label className="font-share-tech text-xs uppercase tracking-widest text-white/60">
+                    {isDoom ? "SELECT COHORT FOR IMPERIAL DECREE" : "Select Your Batch"}
+                  </label>
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={18} />
                     <input
                       type="text"
-                      placeholder="Type batch name (e.g. 1A11, 2COE1, etc.)..."
+                      placeholder={isDoom ? "Input cohort name under penalty of DOOM..." : "Type batch name (e.g. 1A11, 2COE1, etc.)..."}
                       className="w-full bg-black/40 border border-white/15 rounded-xl pl-12 pr-10 py-3.5 text-white outline-none focus:border-sky-500/50 focus:ring-4 focus:ring-sky-500/10 placeholder:text-white/30 text-sm md:text-base transition-all"
                       value={primarySearch}
                       onChange={(e) => {
@@ -1278,7 +1356,9 @@ export function HomeSite() {
                 {/* Popular Batches */}
                 {!loadingBatches && batches.length > 0 && (
                   <div className="mt-6 text-left border-t border-white/5 pt-5">
-                    <span className="font-share-tech text-[10px] uppercase tracking-widest text-white/40 block mb-3">Popular Batches</span>
+                    <span className="font-share-tech text-[10px] uppercase tracking-widest text-white/40 block mb-3">
+                      {isDoom ? "REGIMENT COHORTS" : "Popular Batches"}
+                    </span>
                     <div className="flex flex-wrap gap-2">
                       {batches.slice(0, 8).map((b) => (
                         <button
@@ -1305,13 +1385,17 @@ export function HomeSite() {
               
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner shrink-0">
-                  <Layout size={20} />
+                  {isDoom ? <DoomMaskIcon size={20} className="text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" /> : <Layout size={20} />}
                 </div>
                 <div>
-                  <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">ACTIVE BATCH</span>
+                  <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">
+                    {isDoom ? "ASSIGNED COHORT" : "ACTIVE BATCH"}
+                  </span>
                   <div className="flex items-center gap-2 mt-0.5">
                     <h2 className="font-orbitron text-2xl font-black text-white leading-none">{primaryBatch}</h2>
-                    <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold">ODD 26-27</span>
+                    <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold">
+                      {isDoom ? "REGIME DECREE" : "ODD 26-27"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1327,7 +1411,7 @@ export function HomeSite() {
                         : "text-white/60 hover:text-white"
                     }`}
                   >
-                    Week Planner
+                    {isDoom ? "Regimental Planner" : "Week Planner"}
                   </button>
                   <button
                     onClick={() => setActiveTab("freeSlots")}
@@ -1337,7 +1421,7 @@ export function HomeSite() {
                         : "text-white/60 hover:text-white"
                     }`}
                   >
-                    Free Slots Panel
+                    {isDoom ? "Free Slots Decrees" : "Free Slots Panel"}
                   </button>
                 </div>
 
@@ -1346,7 +1430,7 @@ export function HomeSite() {
                   className="py-2 px-4 rounded-xl text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all text-center flex items-center justify-center gap-2"
                 >
                   <RefreshCw size={14} />
-                  <span>Change Batch</span>
+                  <span>{isDoom ? "Re-assign Cohort" : "Change Batch"}</span>
                 </button>
               </div>
             </div>
@@ -1360,9 +1444,18 @@ export function HomeSite() {
                   {/* Title & Actions Bar */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
                     <div>
-                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Schedule Planner</span>
-                      <h2 className="font-space-grotesk text-2xl font-bold text-white">Edit Weekly Schedule</h2>
-                      <p className="text-xs text-white/50 mt-1">Drag classes to move them, or click on a class to edit details</p>
+                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">
+                        {isDoom ? "IMPERIAL PLANNER" : "Schedule Planner"}
+                      </span>
+                      <h2 className={`font-space-grotesk text-2xl font-bold text-white ${isDoom ? "text-glow-green" : ""}`}>
+                        {isDoom ? "Weekly Regimental Decree" : "Edit Weekly Schedule"}
+                      </h2>
+                      <p className="text-xs text-white/50 mt-1">
+                        {isDoom 
+                          ? "Adjust imperial cohort assignments. Changes are bound to local device memory." 
+                          : "Drag classes to move them, or click on a class to edit details"
+                        }
+                      </p>
                     </div>
 
                     <div className="flex flex-wrap gap-2 shrink-0">
@@ -1371,14 +1464,14 @@ export function HomeSite() {
                         disabled={!editedSchedule}
                         className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 text-white font-bold rounded-xl border border-white/15 hover:bg-white/15 transition-all active:scale-95 disabled:opacity-50 text-xs"
                       >
-                        Save Local
+                        {isDoom ? "Commit Decree" : "Save Local"}
                       </button>
                       <button
                         onClick={handleResetLocal}
                         disabled={!hasSavedLocalData}
                         className="flex items-center justify-center gap-2 px-4 py-2.5 bg-sky-500/10 text-sky-300 font-bold rounded-xl border border-sky-400/20 hover:bg-sky-500/20 transition-all active:scale-95 disabled:opacity-50 text-xs"
                       >
-                        Reset Local
+                        {isDoom ? "Revert Archival" : "Reset Local"}
                       </button>
                       <button
                         onClick={handleDownload}
@@ -1670,9 +1763,18 @@ export function HomeSite() {
                   {/* Header & input */}
                   <div className="border-b border-white/10 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">Find Common Gaps</span>
-                      <h2 className="font-space-grotesk text-2xl font-bold text-white">Compare Batch Schedules</h2>
-                      <p className="text-xs text-white/50 mt-1">Select multiple batches to find overlapping free slots</p>
+                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">
+                        {isDoom ? "IMPERIAL RECONNAISSANCE" : "Find Common Gaps"}
+                      </span>
+                      <h2 className={`font-space-grotesk text-2xl font-bold text-white ${isDoom ? "text-glow-green" : ""}`}>
+                        {isDoom ? "Overlapping Cohort Gaps" : "Compare Batch Schedules"}
+                      </h2>
+                      <p className="text-xs text-white/50 mt-1">
+                        {isDoom 
+                          ? "DOOM commands identifying overlapping rest schedules for imperial surveillance." 
+                          : "Select multiple batches to find overlapping free slots"
+                        }
+                      </p>
                     </div>
                     {freeSlotsResult && (
                       <button

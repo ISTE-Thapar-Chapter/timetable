@@ -2,6 +2,58 @@ import { useEffect, useState, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { ArrowLeft, Loader2, Calendar, Download, Plus, Trash2, X, ChevronDown } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useTheme } from "@/utils/theme";
+
+const DoomMaskIcon = ({ size = 24, className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.8" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className} 
+    style={{ width: size, height: size }}
+  >
+    <path d="M12 2C6.5 2 4 6 4 11c0 3.5 1.5 6.5 4 8v3h8v-3c2.5-1.5 4-4.5 4-8 0-5-2.5-9-8-9z" fill="currentColor" fillOpacity="0.15" />
+    <path d="M8 10h8" />
+    <path d="M7 11.5l2.5-.5M17 11.5l-2.5-.5" />
+    <circle cx="8.25" cy="11.25" r="0.75" fill="#10b981" />
+    <circle cx="15.75" cy="11.25" r="0.75" fill="#10b981" />
+    <path d="M12 10.5v2.5M10.5 13h3L12 10.5z" fill="#374151" />
+    <path d="M9 16.5h6" />
+    <path d="M10 16.5v2M12 16.5v2M14 16.5v2" />
+  </svg>
+);
+
+const getDoomMockSchedule = (batchName) => {
+  const schedule = {};
+  const DAYS_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const TIMES_LIST = [
+    "08:00 AM", "08:50 AM", "09:40 AM", "10:30 AM", "11:20 AM",
+    "12:10 PM", "01:00 PM", "01:50 PM", "02:40 PM", "03:30 PM",
+    "04:20 PM", "05:10 PM", "06:00 PM"
+  ];
+  
+  DAYS_LIST.forEach(day => {
+    schedule[day] = {};
+    TIMES_LIST.forEach(time => {
+      schedule[day][time] = null;
+    });
+
+    if (day === "Monday" || day === "Wednesday" || day === "Friday") {
+      schedule[day]["09:40 AM"] = ["DOOM101", "Intro to Sorcery", "Castle Doom Sanctum", "Dr. Doom", "L", []];
+      schedule[day]["11:20 AM"] = ["DOOM204", "Doombot Robotics Lab", "Armory Level 3", "Doombot Prime", "P", []];
+      schedule[day]["02:40 PM"] = ["DOOM399", "Anti-Richards Seminar", "Latverian War Room", "Dr. Doom", "L", []];
+    } else {
+      schedule[day]["08:50 AM"] = ["DOOM102", "Glory of Latveria History", "Grand Throne Room", "Chancellor", "L", []];
+      schedule[day]["01:50 PM"] = ["DOOM444", "Cosmic Power Harnessing", "Sanctum Laboratory", "Dr. Doom", "L", []];
+      schedule[day]["03:30 PM"] = ["DOOM555", "Hypnotism & Mind Control", "Dungeon Level 1", "Dr. Doom", "P", []];
+    }
+  });
+  return schedule;
+};
 import Footer from "@/components/Footer";
 import BackgroundElements from "@/components/BackgroundElements";
 import Seo from "@/components/Seo";
@@ -125,6 +177,8 @@ const getTypeBadgeColors = (type) => {
 };
 
 export default function ScheduleView() {
+  const { theme } = useTheme();
+  const isDoom = theme === "doom";
   const [searchParams] = useSearchParams();
   const batch = searchParams.get("batch");
   const seoPath = batch ? `/schedule?batch=${encodeURIComponent(batch)}` : "/schedule";
@@ -168,10 +222,19 @@ export default function ScheduleView() {
       setError(null);
       try {
         if (batch) {
-          const data = batchScheduleData(batch);
-          if (data && Object.keys(data).length !== 0) {
-            const backendSchedule = data;
-            const resolvedBackend = resolveElectives(backendSchedule, batch);
+          let resolvedBackend;
+          if (["CASTLE_DOOM_GUARD_A", "LATVERIA_COHORT_1", "RICHARDS_IS_INFERIOR"].includes(batch)) {
+            resolvedBackend = getDoomMockSchedule(batch);
+          } else {
+            const data = batchScheduleData(batch);
+            if (data && Object.keys(data).length !== 0) {
+              resolvedBackend = resolveElectives(data, batch);
+            } else {
+              resolvedBackend = null;
+            }
+          }
+
+          if (resolvedBackend) {
             setResult(resolvedBackend);
 
             const storageKey = getScheduleStorageKey(batch);
@@ -550,10 +613,15 @@ export default function ScheduleView() {
     >
       <div className={`flex items-end justify-between pb-4 ${isCaptureOnly ? 'mb-6 border-b-2 border-white/10' : 'mb-4 border-b border-white/10'}`}>
         <div>
-          {isCaptureOnly && <div className="font-space-grotesk text-sky-400 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2"><Calendar size={14} /> GENERATED TIMETABLE</div>}
-          <h2 className={`font-space-grotesk ${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight`}>
-            {!isCaptureOnly && <Calendar className="text-sky-400" />}
-            {isCaptureOnly ? `Schedule for ${batch}` : `Schedule: ${batch}`}
+          {isCaptureOnly && (
+            <div className="font-space-grotesk text-sky-400 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2">
+              {isDoom ? <DoomMaskIcon size={14} className="text-emerald-400" /> : <Calendar size={14} />}
+              {isDoom ? "IMPERIAL DECREE" : "GENERATED TIMETABLE"}
+            </div>
+          )}
+          <h2 className={`font-space-grotesk ${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight ${isDoom ? "text-glow-green" : ""}`}>
+            {!isCaptureOnly && (isDoom ? <DoomMaskIcon className="text-emerald-400" /> : <Calendar className="text-sky-400" />)}
+            {isDoom ? `Regimental Decree: ${batch}` : (isCaptureOnly ? `Schedule for ${batch}` : `Schedule: ${batch}`)}
           </h2>
         </div>
       </div>
@@ -680,13 +748,24 @@ export default function ScheduleView() {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <h1 className="font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 mb-2">
-                <span className="p-2 bg-sky-500/20 text-sky-400 rounded-lg">
-                  <Calendar size={24} />
-                </span>
-                Schedule for {batch}
+              <h1 className={`font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 mb-2 ${isDoom ? "text-glow-green" : ""}`}>
+                {isDoom ? (
+                  <span className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
+                    <DoomMaskIcon size={24} />
+                  </span>
+                ) : (
+                  <span className="p-2 bg-sky-500/20 text-sky-400 rounded-lg">
+                    <Calendar size={24} />
+                  </span>
+                )}
+                {isDoom ? `Regimental Decree for ${batch}` : `Schedule for ${batch}`}
               </h1>
-              <p className="text-white/50">Edit your classes manually, then download your personalized timetable.</p>
+              <p className="text-white/50">
+                {isDoom 
+                  ? "Adjust cohort timetable assignments. Disobedience will be dealt with by DOOM." 
+                  : "Edit your classes manually, then download your personalized timetable."
+                }
+              </p>
               {saveStatus && (
                 <p className="text-xs text-white/70 mt-2">{saveStatus}</p>
               )}

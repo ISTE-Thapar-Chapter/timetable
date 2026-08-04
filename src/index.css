@@ -80,3 +80,187 @@
 .toast-animate {
   animation: slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Doctor Doom (Latveria Regime) Theme variables */
+:root.theme-doom {
+  --background: 140 28% 4.5%;      /* Menacing castle dungeon background */
+  --foreground: 0 0% 90%;         /* Steel metal silver */
+  --card: 140 20% 7.5%;           /* Iron green container */
+  --card-foreground: 0 0% 92%;
+  --popover: 140 20% 7.5%;
+  --popover-foreground: 0 0% 92%;
+  --primary: 142 70% 45%;         /* Menacing sorcery green */
+  --primary-foreground: 140 30% 4%;
+  --secondary: 140 10% 12%;       /* Dark steel grey */
+  --secondary-foreground: 0 0% 90%;
+  --muted: 140 10% 12%;
+  --muted-foreground: 140 5% 55%;
+  --accent: 142 70% 30%;          /* Glowing forest green accent */
+  --accent-foreground: 0 0% 95%;
+  --border: 140 12% 16%;          /* Dark iron green borders */
+  --input: 140 12% 12%;
+  --ring: 142 70% 45%;
+}
+
+.theme-doom body {
+  background-image: radial-gradient(circle at center, rgba(4, 15, 8, 0.92) 0%, rgba(9, 9, 11, 0.97) 100%), url('/dr_doom_bg.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Doctor Doom Glow Utilities and Overrides */
+.theme-doom .glass-card {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, rgba(0, 0, 0, 0.4) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.12);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.05), 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+.theme-doom .glass {
+  background: rgba(16, 185, 129, 0.02);
+  border: 1px solid rgba(16, 185, 129, 0.08);
+}
+
+/* Doctor Doom slot color overrides: Lectures (Emerald Magic) & Practicals (High-Tech Cyan Science) */
+
+/* 1. Lectures (originally sky blue) -> Glowing Emerald Magic */
+.theme-doom .text-sky-300,
+.theme-doom .hover\:text-sky-300:hover {
+  color: #34d399 !important; /* Vibrant emerald green */
+  text-shadow: 0 0 8px rgba(52, 211, 153, 0.25);
+}
+
+.theme-doom .text-sky-400,
+.theme-doom .text-sky-500,
+.theme-doom .group-hover\:text-sky-400:hover {
+  color: #10b981 !important;
+}
+
+.theme-doom .bg-sky-500\/10 {
+  background-color: rgba(16, 185, 129, 0.12) !important; /* Glowing green background */
+}
+
+.theme-doom .bg-sky-500\/20 {
+  background-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+.theme-doom .border-sky-500\/30,
+.theme-doom .border-sky-500\/20,
+.theme-doom .border-sky-400\/20,
+.theme-doom .hover\:border-sky-500\/30:hover {
+  border-color: rgba(16, 185, 129, 0.3) !important; /* Green border */
+}
+
+/* 2. Practicals & Labs (originally emerald green) -> High-Tech Cyan Science */
+.theme-doom .text-emerald-300,
+.theme-doom .hover\:text-emerald-300:hover {
+  color: #38bdf8 !important; /* Bright cyan/sky blue */
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+}
+
+.theme-doom .text-emerald-400,
+.theme-doom .text-emerald-500,
+.theme-doom .group-hover\:text-emerald-400:hover {
+  color: #0ea5e9 !important;
+}
+
+.theme-doom .bg-emerald-500\/10 {
+  background-color: rgba(56, 189, 248, 0.12) !important; /* Glowing blue background */
+}
+
+.theme-doom .bg-emerald-500\/20 {
+  background-color: rgba(56, 189, 248, 0.22) !important;
+}
+
+.theme-doom .border-emerald-500\/30,
+.theme-doom .border-emerald-500\/20,
+.theme-doom .border-emerald-400\/20,
+.theme-doom .hover\:border-emerald-500\/30:hover {
+  border-color: rgba(56, 189, 248, 0.3) !important; /* Cyan border */
+}
+
+/* Gold cloak-clasp accents */
+.theme-doom .text-amber-500,
+.theme-doom .text-amber-400 {
+  color: #fbbf24 !important; /* Amber gold */
+}
+
+.theme-doom .bg-amber-500\/20,
+.theme-doom .bg-amber-500\/10 {
+  background-color: rgba(251, 191, 36, 0.15) !important;
+}
+
+.theme-doom .text-amber-500 rounded-lg,
+.theme-doom .bg-amber-500\/20 {
+  color: #fbbf24 !important;
+  background-color: rgba(251, 191, 36, 0.15) !important;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+/* Scrollbar styling for doom */
+.theme-doom ::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-radius: 8px;
+}
+.theme-doom ::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Glowing text class */
+.text-glow-green {
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.6), 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+/* Neon Green scanlines overlay for high-tech feeling */
+.theme-doom::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 99999;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* Doctor Doom UI structural overrides - Metallic sheet plates with corner rivets */
+.theme-doom .glass-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(20, 32, 26, 0.95) 0%, rgba(6, 10, 8, 0.98) 100%) !important;
+  border: 2px solid rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.05), inset 0 0 15px rgba(16, 185, 129, 0.05) !important;
+}
+
+/* Brushed metal plate seam line */
+.theme-doom .glass-card::before {
+  content: "";
+  position: absolute;
+  top: 8px; left: 8px; right: 8px; bottom: 8px;
+  border: 1px dashed rgba(16, 185, 129, 0.15);
+  border-radius: calc(var(--radius) - 4px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Corner steel rivets */
+.theme-doom .glass-card::after {
+  content: "";
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #374151; /* Dark iron color */
+  box-shadow: 
+    calc(100% - 24px) 0 0 #374151, 
+    0 calc(100% - 24px) 0 #374151, 
+    calc(100% - 24px) calc(100% - 24px) 0 #374151;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 2;
+}
