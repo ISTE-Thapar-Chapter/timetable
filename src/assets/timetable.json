@@ -71549,12 +71549,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UCH506L",
@@ -71616,12 +71623,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCH506P",
@@ -71891,12 +71905,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UCH506L",
@@ -71958,12 +71979,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCH401T",
@@ -73220,12 +73248,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -73770,12 +73805,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -74336,12 +74378,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -74870,12 +74919,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -75436,12 +75492,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -75986,12 +76049,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -76536,12 +76606,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -77086,12 +77163,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -77588,12 +77672,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -78138,12 +78229,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -78704,12 +78802,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -79238,12 +79343,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -79788,12 +79900,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -80354,12 +80473,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -80904,12 +81030,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -81454,12 +81587,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -81988,12 +82128,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -82554,12 +82701,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -83056,12 +83210,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -83624,12 +83785,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -84222,12 +84390,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -84802,12 +84977,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -85370,12 +85552,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -85966,12 +86155,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -86522,12 +86718,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -87078,12 +87281,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -87666,12 +87876,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -88238,12 +88455,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -88760,12 +88984,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -89314,12 +89545,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -89884,12 +90122,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -90438,12 +90683,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -90992,12 +91244,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -91498,12 +91757,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -92068,12 +92334,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -92622,12 +92895,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -93176,12 +93456,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -93730,12 +94017,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -94370,12 +94664,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -94950,12 +95251,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -97051,12 +97359,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -97685,12 +98000,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -98303,12 +98625,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -98929,12 +99258,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -99547,12 +99883,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -100181,12 +100524,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -100815,12 +101165,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -101425,12 +101782,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -102043,12 +102407,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -102645,12 +103016,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -103160,12 +103538,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -103203,12 +103588,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UBT513L",
@@ -103485,12 +103877,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -103528,12 +103927,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UBT513L",
@@ -103786,12 +104192,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UTA025P",
@@ -103845,12 +104258,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UBT513L",
@@ -104103,12 +104523,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UBT517T",
@@ -104170,12 +104597,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UBT513L",
@@ -104458,12 +104892,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UTA024L",
@@ -104551,12 +104992,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME408L",
@@ -104850,12 +105298,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UTA024L",
@@ -104943,12 +105398,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME408L",
@@ -105258,12 +105720,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UTA024L",
@@ -105309,12 +105778,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME408L",
@@ -105684,12 +106160,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UME718P",
@@ -105743,12 +106226,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME633L",
@@ -106018,12 +106508,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UME718P",
@@ -106077,12 +106574,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME633L",
@@ -106426,12 +106930,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UME404T",
@@ -106477,12 +106988,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME633L",
@@ -106802,12 +107320,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT503L",
@@ -106869,12 +107394,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UMT503L",
@@ -107160,12 +107692,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT503L",
@@ -107227,12 +107766,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UMT503L",
@@ -107478,12 +108024,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT503L",
@@ -107545,12 +108098,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UMT503L",
@@ -108227,12 +108787,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -108879,12 +109446,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -109563,12 +110137,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -110231,12 +110812,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -110899,12 +111487,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -111567,12 +112162,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -112251,12 +112853,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -112895,12 +113504,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -113563,12 +114179,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -114199,12 +114822,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -114835,12 +115465,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -115519,12 +116156,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101/ROS",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101/ROS"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -116182,12 +116826,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UCS553L",
@@ -116206,12 +116857,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -116249,12 +116907,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "10:30 AM": [
         "UCS421L",
@@ -116788,12 +117453,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UCS553L",
@@ -116812,12 +117484,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -116855,12 +117534,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "10:30 AM": [
         "UCS421L",
@@ -117394,12 +118080,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UCS553L",
@@ -117418,12 +118111,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -117461,12 +118161,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "10:30 AM": [
         "UCS421L",
@@ -117984,12 +118691,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS553P",
@@ -118024,12 +118738,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -118067,12 +118788,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "10:30 AM": [
         "UCS421L",
@@ -118598,20 +119326,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -118649,12 +119391,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS421L",
@@ -119204,20 +119953,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -119255,12 +120018,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS421L",
@@ -119810,20 +120580,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -119861,12 +120645,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS421L",
@@ -120416,20 +121207,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -120467,12 +121272,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS421L",
@@ -121006,12 +121818,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS553P",
@@ -121030,12 +121849,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -121073,12 +121899,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS421L",
@@ -121618,12 +122451,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UML501L",
@@ -121642,12 +122482,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -121685,12 +122532,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS503L",
@@ -122246,12 +123100,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UML501L",
@@ -122270,12 +123131,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -122313,12 +123181,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS503L",
@@ -122858,12 +123733,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS420P",
@@ -122898,12 +123780,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -122941,12 +123830,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS503L",
@@ -123502,12 +124398,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "03:30 PM": [
         "UML501L",
@@ -123526,12 +124429,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -123569,12 +124479,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS503L",
@@ -124114,12 +125031,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503P",
@@ -124154,12 +125078,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -124197,12 +125128,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS503L",
@@ -124762,20 +125700,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -124813,12 +125765,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS420P",
@@ -125386,12 +126345,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503P",
@@ -125426,12 +126392,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -125469,12 +126442,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "11:20 AM": [
         null,
@@ -126010,20 +126990,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -126061,12 +127055,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS553P",
@@ -126650,20 +127651,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -126701,12 +127716,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS553P",
@@ -127274,20 +128296,34 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -127325,12 +128361,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UCS503P",
@@ -127884,12 +128927,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS553P",
@@ -127924,12 +128974,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -127967,12 +129024,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "10:30 AM": [
         "UCS421L",
@@ -131543,12 +132607,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -132079,12 +133150,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -132599,12 +133677,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LT101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -133022,12 +134107,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT802L",
@@ -133089,12 +134181,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "11:20 AM": [
         "UMT403L",
@@ -133316,12 +134415,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT802L",
@@ -133383,12 +134489,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UMT802P",
@@ -133626,12 +134739,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT802L",
@@ -133693,12 +134813,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "10:30 AM": [
         "UME725T",
@@ -133944,12 +135071,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "02:40 PM": [
         "UMT802L",
@@ -134011,12 +135145,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UME725T",
@@ -134380,12 +135521,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503L",
@@ -134404,12 +135552,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -134447,12 +135602,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "11:20 AM": [
         null,
@@ -134895,12 +136057,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503L",
@@ -134919,12 +136088,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -134962,12 +136138,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "11:20 AM": [
         null,
@@ -135394,12 +136577,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503L",
@@ -135418,12 +136608,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -135461,12 +136658,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "11:20 AM": [
         null,
@@ -135861,12 +137065,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503L",
@@ -135901,12 +137112,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -135944,12 +137162,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UAI504P",
@@ -136360,12 +137585,19 @@
         ]
       ],
       "01:00 PM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "01:50 PM": [
         "UCS503L",
@@ -136384,12 +137616,19 @@
         []
       ],
       "05:10 PM": [
-        "UCS539L",
-        "LP101",
-        "Finance Accounting And Valuation",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UCS539L",
+            "subject_name": "Finance Accounting And Valuation",
+            "type": "Lecture",
+            "place": "LP101"
+          }
+        ]
       ]
     },
     "Thursday": {
@@ -136427,12 +137666,19 @@
         ]
       ],
       "08:50 AM": [
-        "UHU018L",
-        "LT101",
-        "Introduction To Corporate Finance",
-        "Lecture",
         null,
-        []
+        null,
+        null,
+        "Elective",
+        null,
+        [
+          {
+            "subject_code": "UHU018L",
+            "subject_name": "Introduction To Corporate Finance",
+            "type": "Lecture",
+            "place": "LT101"
+          }
+        ]
       ],
       "09:40 AM": [
         "UAI502P",
