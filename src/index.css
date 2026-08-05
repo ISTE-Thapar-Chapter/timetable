@@ -1,5 +1,32 @@
 @import "@fontsource-variable/inter";
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Share+Tech+Mono&family=Space+Grotesk:wght@500;700&display=swap');
+
+@property --theme-bg-1 {
+  syntax: '<color>';
+  initial-value: rgba(3, 7, 18, 0.95);
+  inherits: true;
+}
+@property --theme-bg-2 {
+  syntax: '<color>';
+  initial-value: rgba(3, 7, 18, 0.99);
+  inherits: true;
+}
+@property --card-bg-1 {
+  syntax: '<color>';
+  initial-value: rgba(255, 255, 255, 0.04);
+  inherits: true;
+}
+@property --card-bg-2 {
+  syntax: '<color>';
+  initial-value: rgba(255, 255, 255, 0.01);
+  inherits: true;
+}
+@property --card-border {
+  syntax: '<color>';
+  initial-value: rgba(255, 255, 255, 0.08);
+  inherits: true;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -38,6 +65,13 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --radius: 0.75rem;
+    
+    /* Theme Transition Colors */
+    --theme-bg-1: rgba(3, 7, 18, 0.95);
+    --theme-bg-2: rgba(3, 7, 18, 0.99);
+    --card-bg-1: rgba(255, 255, 255, 0.04);
+    --card-bg-2: rgba(255, 255, 255, 0.01);
+    --card-border: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -47,6 +81,28 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary/30;
+    background-image: radial-gradient(circle at center, var(--theme-bg-1) 0%, var(--theme-bg-2) 100%) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    transition: --theme-bg-1 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                --theme-bg-2 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.8s ease, 
+                color 0.5s ease;
+  }
+  
+  /* Smooth transitions for key interactive and thematic elements */
+  .glass, .glass-card, nav, button, input, span, h1, h2, h3, label, tr, td, th {
+    transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                background 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.4s ease, 
+                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                text-shadow 0.4s ease,
+                --card-bg-1 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                --card-bg-2 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                --card-border 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 }
 
@@ -59,10 +115,10 @@
 }
 
 .glass-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(180deg, var(--card-bg-1) 0%, var(--card-bg-2) 100%) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -100,10 +156,45 @@
   --border: 140 12% 16%;          /* Dark iron green borders */
   --input: 140 12% 12%;
   --ring: 142 70% 45%;
+  
+  /* Theme Transition Colors */
+  --theme-bg-1: rgba(4, 15, 8, 0.92);
+  --theme-bg-2: rgba(9, 9, 11, 0.97);
+  --card-bg-1: rgba(20, 32, 26, 0.95);
+  --card-bg-2: rgba(6, 10, 8, 0.98);
+  --card-border: rgba(16, 185, 129, 0.25);
+}
+
+/* Iron Man (Stark Protocol) Theme variables */
+:root.theme-ironman {
+  --background: 0 45% 4.5%;       /* Deep dark crimson background */
+  --foreground: 0 0% 95%;         /* Light silver titanium */
+  --card: 0 35% 8%;               /* Metallic red armor card */
+  --card-foreground: 0 0% 96%;
+  --popover: 0 35% 8%;
+  --popover-foreground: 0 0% 96%;
+  --primary: 0 84% 60%;           /* Crimson red armor plates */
+  --primary-foreground: 0 0% 98%;
+  --secondary: 40 85% 15%;        /* Dark gold padding */
+  --secondary-foreground: 45 100% 50%; /* Golden yellow interface details */
+  --muted: 0 10% 12%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 180 100% 50%;         /* Arc Reactor Cyan */
+  --accent-foreground: 0 0% 98%;
+  --border: 0 40% 18%;            /* Dark crimson borders */
+  --input: 0 25% 10%;
+  --ring: 180 100% 50%;           /* Hologram cyan ring */
+  
+  /* Theme Transition Colors */
+  --theme-bg-1: rgba(30, 4, 4, 0.93);
+  --theme-bg-2: rgba(9, 9, 11, 0.98);
+  --card-bg-1: rgba(28, 4, 4, 0.96);
+  --card-bg-2: rgba(6, 12, 16, 0.98);
+  --card-border: rgba(251, 191, 36, 0.25);
 }
 
 .theme-doom body {
-  background-image: radial-gradient(circle at center, rgba(4, 15, 8, 0.92) 0%, rgba(9, 9, 11, 0.97) 100%), url('/dr_doom_bg.jpg') !important;
+  background-image: radial-gradient(circle at center, var(--theme-bg-1) 0%, var(--theme-bg-2) 100%), url('/dr_doom_bg.jpg') !important;
   background-size: cover !important;
   background-position: center !important;
   background-attachment: fixed !important;
@@ -112,14 +203,7 @@
 
 /* Doctor Doom Glow Utilities and Overrides */
 .theme-doom .glass-card {
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, rgba(0, 0, 0, 0.4) 100%);
-  border: 1px solid rgba(16, 185, 129, 0.12);
-  box-shadow: 0 0 30px rgba(16, 185, 129, 0.05), 0 4px 30px rgba(0, 0, 0, 0.6);
-}
-
-.theme-doom .glass {
-  background: rgba(16, 185, 129, 0.02);
-  border: 1px solid rgba(16, 185, 129, 0.08);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.05), 0 4px 30px rgba(0, 0, 0, 0.6) !important;
 }
 
 /* Doctor Doom slot color overrides: Lectures (Emerald Magic) & Practicals (High-Tech Cyan Science) */
@@ -232,8 +316,6 @@
 /* Doctor Doom UI structural overrides - Metallic sheet plates with corner rivets */
 .theme-doom .glass-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(20, 32, 26, 0.95) 0%, rgba(6, 10, 8, 0.98) 100%) !important;
-  border: 2px solid rgba(16, 185, 129, 0.25) !important;
   box-shadow: 0 0 25px rgba(16, 185, 129, 0.05), inset 0 0 15px rgba(16, 185, 129, 0.05) !important;
 }
 
@@ -264,3 +346,169 @@
   opacity: 0.8;
   z-index: 2;
 }
+
+/* Iron Man (Stark Protocol) Theme Overrides */
+.theme-ironman body {
+  background-image: radial-gradient(circle at center, rgba(30, 4, 4, 0.93) 0%, rgba(9, 9, 11, 0.98) 100%), url('/iron_man_bg.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+}
+
+.theme-ironman .glass {
+  background: rgba(239, 68, 68, 0.02) !important;
+  border: 1px solid rgba(251, 191, 36, 0.1) !important;
+}
+
+/* Stark Holographic Card layout */
+.theme-ironman .glass-card {
+  position: relative;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.08), inset 0 0 15px rgba(251, 191, 36, 0.05) !important;
+}
+
+/* Hologram tech sub-border */
+.theme-ironman .glass-card::before {
+  content: "";
+  position: absolute;
+  top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border: 1px solid rgba(6, 182, 212, 0.15); /* Sleek cybernetic blue line */
+  border-radius: calc(var(--radius) - 3px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scrollbar styling for Iron Man */
+.theme-ironman ::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.2) !important;
+  border-radius: 8px;
+}
+.theme-ironman ::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.4) !important;
+}
+
+/* Glowing text classes */
+.text-glow-red {
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.6), 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.6), 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+/* Cyan/Blue Scanlines overlay for Holographic JARVIS display */
+.theme-ironman::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(6, 182, 212, 0.04), rgba(239, 68, 68, 0.02), rgba(6, 182, 212, 0.04));
+  z-index: 99999;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* Iron Man slot overrides (Lecture = Crimson Red, Lab = Arc Reactor Cyan, Tutorial = Gold) */
+
+/* 1. Lectures (originally sky blue) -> Crimson Red */
+.theme-ironman .text-sky-300,
+.theme-ironman .hover\:text-sky-300:hover {
+  color: #f87171 !important; /* Crimson light */
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.25);
+}
+
+.theme-ironman .text-sky-400,
+.theme-ironman .text-sky-500,
+.theme-ironman .group-hover\:text-sky-400:hover {
+  color: #ef4444 !important;
+}
+
+.theme-ironman .bg-sky-500\/10 {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+.theme-ironman .bg-sky-500\/20 {
+  background-color: rgba(239, 68, 68, 0.22) !important;
+}
+
+.theme-ironman .border-sky-500\/30,
+.theme-ironman .border-sky-500\/20,
+.theme-ironman .border-sky-400\/20,
+.theme-ironman .hover\:border-sky-500\/30:hover {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+/* 2. Practicals & Labs (originally emerald green) -> Arc Reactor Cyan */
+.theme-ironman .text-emerald-300,
+.theme-ironman .hover\:text-emerald-300:hover {
+  color: #22d3ee !important; /* Bright cyan */
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.25);
+}
+
+.theme-ironman .text-emerald-400,
+.theme-ironman .text-emerald-500,
+.theme-ironman .group-hover\:text-emerald-400:hover {
+  color: #06b6d4 !important;
+}
+
+.theme-ironman .bg-emerald-500\/10 {
+  background-color: rgba(6, 182, 212, 0.12) !important;
+}
+
+.theme-ironman .bg-emerald-500\/20 {
+  background-color: rgba(6, 182, 212, 0.22) !important;
+}
+
+.theme-ironman .border-emerald-500\/30,
+.theme-ironman .border-emerald-500\/20,
+.theme-ironman .border-emerald-400\/20,
+.theme-ironman .hover\:border-emerald-500\/30:hover {
+  border-color: rgba(6, 182, 212, 0.3) !important;
+}
+
+/* 3. Tutorials (originally fuchsia purple) -> Stark Gold/Yellow */
+.theme-ironman .text-fuchsia-300,
+.theme-ironman .hover\:text-fuchsia-300:hover {
+  color: #fef08a !important; /* Gold light */
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.25);
+}
+
+.theme-ironman .text-fuchsia-400,
+.theme-ironman .text-fuchsia-500,
+.theme-ironman .group-hover\:text-fuchsia-400:hover {
+  color: #fbbf24 !important;
+}
+
+.theme-ironman .bg-fuchsia-500\/10 {
+  background-color: rgba(251, 191, 36, 0.12) !important;
+}
+
+.theme-ironman .bg-fuchsia-500\/20 {
+  background-color: rgba(251, 191, 36, 0.22) !important;
+}
+
+.theme-ironman .border-fuchsia-500\/30,
+.theme-ironman .border-fuchsia-500\/20,
+.theme-ironman .border-fuchsia-400\/20,
+.theme-ironman .hover\:border-fuchsia-500\/30:hover {
+  border-color: rgba(251, 191, 36, 0.3) !important;
+}
+
+/* 4. Electives (originally amber) -> Kept gold but with red accent highlights */
+.theme-ironman .text-amber-500,
+.theme-ironman .text-amber-400 {
+  color: #fbbf24 !important;
+}
+
+.theme-ironman .bg-amber-500\/20,
+.theme-ironman .bg-amber-500\/10 {
+  background-color: rgba(251, 191, 36, 0.15) !important;
+}
+
+.theme-ironman .text-amber-500 rounded-lg,
+.theme-ironman .bg-amber-500\/20 {
+  color: #fbbf24 !important;
+  background-color: rgba(251, 191, 36, 0.15) !important;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}

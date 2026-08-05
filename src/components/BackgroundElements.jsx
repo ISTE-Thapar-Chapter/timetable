@@ -65,10 +65,16 @@ export default function BackgroundElements() {
 
       draw() {
         const isDoom = document.documentElement.classList.contains("theme-doom");
-        // Latverian magic (neon green/silver) vs default cyan/amber
-        const color = isDoom
-          ? (this.colorType === "primary" ? "rgba(16, 185, 129, 0.25)" : "rgba(209, 213, 219, 0.2)")
-          : (this.colorType === "primary" ? "rgba(56, 189, 248, 0.2)" : "rgba(245, 158, 11, 0.2)");
+        const isIronman = document.documentElement.classList.contains("theme-ironman");
+        // Latverian magic (neon green/silver) vs Stark Protocol (crimson/gold) vs default cyan/amber
+        let color;
+        if (isDoom) {
+          color = this.colorType === "primary" ? "rgba(16, 185, 129, 0.25)" : "rgba(209, 213, 219, 0.2)";
+        } else if (isIronman) {
+          color = this.colorType === "primary" ? "rgba(239, 68, 68, 0.3)" : "rgba(251, 191, 36, 0.2)";
+        } else {
+          color = this.colorType === "primary" ? "rgba(56, 189, 248, 0.2)" : "rgba(245, 158, 11, 0.2)";
+        }
 
         ctx.fillStyle = color;
         ctx.beginPath();
@@ -123,7 +129,8 @@ export default function BackgroundElements() {
     // Loop
     const animate = () => {
       const isDoom = document.documentElement.classList.contains("theme-doom");
-      if (isDoom) {
+      const isIronman = document.documentElement.classList.contains("theme-ironman");
+      if (isDoom || isIronman) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       } else {
         ctx.fillStyle = "#030712"; // Solid theme background color (rich dark indigo/black)
@@ -131,7 +138,13 @@ export default function BackgroundElements() {
       }
 
       // Subtle grid pattern drawn over solid background
-      ctx.strokeStyle = isDoom ? "rgba(16, 185, 129, 0.012)" : "rgba(255, 255, 255, 0.012)";
+      let strokeStyle = "rgba(255, 255, 255, 0.012)";
+      if (isDoom) {
+        strokeStyle = "rgba(16, 185, 129, 0.012)";
+      } else if (isIronman) {
+        strokeStyle = "rgba(6, 182, 212, 0.012)";
+      }
+      ctx.strokeStyle = strokeStyle;
       ctx.lineWidth = 1;
       const gridSize = 48;
       for (let x = 0; x < canvas.width; x += gridSize) {
@@ -159,6 +172,9 @@ export default function BackgroundElements() {
         if (isDoom) {
           glow.addColorStop(0, "rgba(16, 185, 129, 0.045)");
           glow.addColorStop(0.5, "rgba(52, 211, 153, 0.015)");
+        } else if (isIronman) {
+          glow.addColorStop(0, "rgba(6, 182, 212, 0.05)");
+          glow.addColorStop(0.5, "rgba(34, 211, 238, 0.015)");
         } else {
           glow.addColorStop(0, "rgba(56, 189, 248, 0.035)");
           glow.addColorStop(0.5, "rgba(99, 102, 241, 0.015)");

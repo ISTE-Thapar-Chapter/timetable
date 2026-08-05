@@ -27,6 +27,26 @@ const DoomMaskIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
+const ArcReactorIcon = ({ size = 24, className = "" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    style={{ width: size, height: size }}
+  >
+    <circle cx="12" cy="12" r="10" stroke="currentColor" fill="currentColor" fillOpacity="0.05" />
+    <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" />
+    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+    <path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+  </svg>
+);
+
 const getDoomMockSchedule = (batchName) => {
   const schedule = {};
   const DAYS_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -178,6 +198,7 @@ const calculateCommonFreeSlots = (schedules) => {
 export default function FreeSlotsView() {
   const { theme } = useTheme();
   const isDoom = theme === "doom";
+  const isIronman = theme === "ironman";
   const location = useLocation();
   const rawBatches = location.state?.batches;
   const batches = useMemo(() => rawBatches || [], [rawBatches]);
@@ -300,22 +321,28 @@ export default function FreeSlotsView() {
             )}
           </div>
           <div className="flex flex-col gap-3 mt-6 mb-2">
-            <h1 className={`font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 ${isDoom ? "text-glow-green" : ""}`}>
+            <h1 className={`font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 ${
+              isDoom ? "text-glow-green" : isIronman ? "text-glow-cyan text-cyan-400" : ""
+            }`}>
               {isDoom ? (
                 <span className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
                   <DoomMaskIcon size={24} />
+                </span>
+              ) : isIronman ? (
+                <span className="p-2 bg-red-500/20 text-red-500 rounded-lg drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">
+                  <ArcReactorIcon size={24} className="animate-pulse" />
                 </span>
               ) : (
                 <span className="p-2 bg-amber-500/20 text-amber-500 rounded-lg">
                   <Users size={24} />
                 </span>
               )}
-              {isDoom ? "Imperial Overlapping Gaps" : "Common Free Slots"}
+              {isDoom ? "Imperial Overlapping Gaps" : isIronman ? "Holo-Gap Analysis" : "Common Free Slots"}
             </h1>
             {batches.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-white/50 text-sm">
-                  {isDoom ? "Assigned Cohorts:" : "Comparing Batches:"}
+                  {isDoom ? "Assigned Cohorts:" : isIronman ? "Scanned Protocols:" : "Comparing Batches:"}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {batches.map((b) => (
@@ -482,18 +509,39 @@ export default function FreeSlotsView() {
         {/* Off-screen capture template (to ensure perfect, unclipped downloads) */}
         {result && (
           <div style={{ position: 'fixed', top: 0, left: 0, width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: -9999 }}>
-            <div ref={hiddenTableRef} style={{ width: "1350px", padding: "35px", background: isDoom ? "#040a06" : "#09090b", color: "#ffffff", fontFamily: "Space Grotesk, sans-serif" }}>
-              <div style={{ marginBottom: "25px", borderBottom: `2px solid ${isDoom ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}`, paddingBottom: "15px" }}>
-                <div style={{ fontSize: "11px", color: isDoom ? "#10b981" : "#f59e0b", fontWeight: "bold", letterSpacing: "2px", textTransform: "uppercase" }}>
-                  {isDoom ? "IMPERIAL OVERLAPPING GAPS" : "COMMON FREE SLOTS"}
+            <div ref={hiddenTableRef} style={{
+              width: "1350px",
+              padding: "35px",
+              background: isDoom ? "#040a06" : isIronman ? "#1c0404" : "#09090b",
+              color: "#ffffff",
+              fontFamily: "Space Grotesk, sans-serif"
+            }}>
+              <div style={{
+                marginBottom: "25px",
+                borderBottom: `2px solid ${isDoom ? 'rgba(16,185,129,0.2)' : isIronman ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.1)'}`,
+                paddingBottom: "15px"
+              }}>
+                <div style={{
+                  fontSize: "11px",
+                  color: isDoom ? "#10b981" : isIronman ? "#ef4444" : "#f59e0b",
+                  fontWeight: "bold",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase"
+                }}>
+                  {isDoom ? "IMPERIAL OVERLAPPING GAPS" : isIronman ? "HOLO-GAP DIAGNOSTICS" : "COMMON FREE SLOTS"}
                 </div>
-                <h2 style={{ fontSize: "28px", fontWeight: "bold", margin: "5px 0 0 0", color: isDoom ? "#10b981" : "#ffffff" }}>
-                  {isDoom ? "Latverian Cohort Alignment" : "Overlapping Availability"}
+                <h2 style={{
+                  fontSize: "28px",
+                  fontWeight: "bold",
+                  margin: "5px 0 0 0",
+                  color: isDoom ? "#10b981" : isIronman ? "#ef4444" : "#ffffff"
+                }}>
+                  {isDoom ? "Latverian Cohort Alignment" : isIronman ? "Stark Protocol Intersection" : "Overlapping Availability"}
                 </h2>
                 {batches.length > 0 && (
                   <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "10px" }}>
                     <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>
-                      {isDoom ? "Cohorts:" : "Batches:"}
+                      {isDoom ? "Cohorts:" : isIronman ? "Protocols:" : "Batches:"}
                     </span>
                     {batches.map((b) => (
                       <span key={b} style={{ fontSize: "11px", padding: "2px 8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "rgba(255,255,255,0.8)" }}>

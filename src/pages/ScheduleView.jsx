@@ -27,6 +27,26 @@ const DoomMaskIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
+const ArcReactorIcon = ({ size = 24, className = "" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    style={{ width: size, height: size }}
+  >
+    <circle cx="12" cy="12" r="10" stroke="currentColor" fill="currentColor" fillOpacity="0.05" />
+    <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" />
+    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+    <path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+  </svg>
+);
+
 const getDoomMockSchedule = (batchName) => {
   const schedule = {};
   const DAYS_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -179,6 +199,7 @@ const getTypeBadgeColors = (type) => {
 export default function ScheduleView() {
   const { theme } = useTheme();
   const isDoom = theme === "doom";
+  const isIronman = theme === "ironman";
   const [searchParams] = useSearchParams();
   const batch = searchParams.get("batch");
   const seoPath = batch ? `/schedule?batch=${encodeURIComponent(batch)}` : "/schedule";
@@ -614,14 +635,37 @@ export default function ScheduleView() {
       <div className={`flex items-end justify-between pb-4 ${isCaptureOnly ? 'mb-6 border-b-2 border-white/10' : 'mb-4 border-b border-white/10'}`}>
         <div>
           {isCaptureOnly && (
-            <div className="font-space-grotesk text-sky-400 font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2">
-              {isDoom ? <DoomMaskIcon size={14} className="text-emerald-400" /> : <Calendar size={14} />}
-              {isDoom ? "IMPERIAL DECREE" : "GENERATED TIMETABLE"}
+            <div className={`font-space-grotesk font-semibold text-xs tracking-widest uppercase mb-1.5 flex items-center gap-2 ${
+              isDoom ? "text-emerald-400" : isIronman ? "text-red-500" : "text-sky-400"
+            }`}>
+              {isDoom ? (
+                <DoomMaskIcon size={14} className="text-emerald-400" />
+              ) : isIronman ? (
+                <ArcReactorIcon size={14} className="text-red-500 drop-shadow-[0_0_4px_rgba(239,68,68,0.5)]" />
+              ) : (
+                <Calendar size={14} />
+              )}
+              {isDoom ? "IMPERIAL DECREE" : isIronman ? "STARK MODULE COMPILE" : "GENERATED TIMETABLE"}
             </div>
           )}
-          <h2 className={`font-space-grotesk ${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight ${isDoom ? "text-glow-green" : ""}`}>
-            {!isCaptureOnly && (isDoom ? <DoomMaskIcon className="text-emerald-400" /> : <Calendar className="text-sky-400" />)}
-            {isDoom ? `Regimental Decree: ${batch}` : (isCaptureOnly ? `Schedule for ${batch}` : `Schedule: ${batch}`)}
+          <h2 className={`font-space-grotesk ${isCaptureOnly ? 'text-3xl' : 'text-xl'} font-bold text-white flex items-center gap-2 tracking-tight ${
+            isDoom ? "text-glow-green" : isIronman ? "text-glow-red text-red-500" : ""
+          }`}>
+            {!isCaptureOnly && (
+              isDoom ? (
+                <DoomMaskIcon className="text-emerald-400" />
+              ) : isIronman ? (
+                <ArcReactorIcon className="text-red-500 drop-shadow-[0_0_6px_rgba(239,68,68,0.5)] animate-pulse" />
+              ) : (
+                <Calendar className="text-sky-400" />
+              )
+            )}
+            {isDoom 
+              ? `Regimental Decree: ${batch}` 
+              : isIronman 
+                ? `Stark Protocol: ${batch}` 
+                : (isCaptureOnly ? `Schedule for ${batch}` : `Schedule: ${batch}`)
+            }
           </h2>
         </div>
       </div>
@@ -748,22 +792,30 @@ export default function ScheduleView() {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <h1 className={`font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 mb-2 ${isDoom ? "text-glow-green" : ""}`}>
+              <h1 className={`font-space-grotesk text-3xl font-bold text-white flex items-center gap-3 mb-2 ${
+                isDoom ? "text-glow-green" : isIronman ? "text-glow-red text-red-500" : ""
+              }`}>
                 {isDoom ? (
                   <span className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
                     <DoomMaskIcon size={24} />
+                  </span>
+                ) : isIronman ? (
+                  <span className="p-2 bg-red-500/20 text-red-500 rounded-lg drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">
+                    <ArcReactorIcon size={24} className="animate-pulse" />
                   </span>
                 ) : (
                   <span className="p-2 bg-sky-500/20 text-sky-400 rounded-lg">
                     <Calendar size={24} />
                   </span>
                 )}
-                {isDoom ? `Regimental Decree for ${batch}` : `Schedule for ${batch}`}
+                {isDoom ? `Regimental Decree for ${batch}` : isIronman ? `Stark Protocol: ${batch}` : `Schedule for ${batch}`}
               </h1>
               <p className="text-white/50">
                 {isDoom 
                   ? "Adjust cohort timetable assignments. Disobedience will be dealt with by DOOM." 
-                  : "Edit your classes manually, then download your personalized timetable."
+                  : isIronman
+                    ? "Welcome back, Boss. Manual scheduling modules are operational. Export protocol ready."
+                    : "Edit your classes manually, then download your personalized timetable."
                 }
               </p>
               {saveStatus && (

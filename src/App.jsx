@@ -8,10 +8,11 @@ function App() {
   useEffect(() => {
     // Initial anti-flash theme check
     const savedTheme = localStorage.getItem("theme");
+    document.documentElement.classList.remove("theme-doom", "theme-ironman");
     if (savedTheme === "doom") {
       document.documentElement.classList.add("theme-doom");
-    } else {
-      document.documentElement.classList.remove("theme-doom");
+    } else if (savedTheme === "ironman") {
+      document.documentElement.classList.add("theme-ironman");
     }
   }, []);
 

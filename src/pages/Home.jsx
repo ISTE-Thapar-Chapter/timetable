@@ -46,6 +46,26 @@ const DoomMaskIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
+const ArcReactorIcon = ({ size = 24, className = "" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    style={{ width: size, height: size }}
+  >
+    <circle cx="12" cy="12" r="10" stroke="currentColor" fill="currentColor" fillOpacity="0.05" />
+    <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" />
+    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+    <path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+  </svg>
+);
+
 const getDoomMockSchedule = (batchName) => {
   const schedule = {};
   const DAYS_LIST = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -497,6 +517,7 @@ const deleteCalendarOnly = async (accessToken, batchName, onProgress) => {
 export function HomeSite() {
   const { theme } = useTheme();
   const isDoom = theme === "doom";
+  const isIronman = theme === "ironman";
   const navigate = useNavigate();
   const [batches, setBatches] = useState([]);
   const [loadingBatches, setLoadingBatches] = useState(true);
@@ -1286,15 +1307,25 @@ export function HomeSite() {
           <div className="flex-1 flex flex-col items-center justify-center py-12">
             <div className="w-full max-w-2xl text-center space-y-6">
               <div className="inline-flex p-3 rounded-2xl bg-white/5 border border-white/10 text-sky-400 shadow-inner mb-2">
-                {isDoom ? <DoomMaskIcon size={32} className="text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" /> : <Layout size={32} />}
+                {isDoom ? (
+                  <DoomMaskIcon size={32} className="text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+                ) : isIronman ? (
+                  <ArcReactorIcon size={32} className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)] animate-pulse" />
+                ) : (
+                  <Layout size={32} />
+                )}
               </div>
-              <h1 className={`font-space-grotesk text-4xl md:text-5xl font-extrabold tracking-tight text-white ${isDoom ? "text-glow-green" : ""}`}>
-                {isDoom ? "Doom's Timetable Decree" : "Timetable Dashboard"}
+              <h1 className={`font-space-grotesk text-4xl md:text-5xl font-extrabold tracking-tight text-white ${
+                isDoom ? "text-glow-green" : isIronman ? "text-glow-red text-red-500" : ""
+              }`}>
+                {isDoom ? "Doom's Timetable Decree" : isIronman ? "Stark Holo-Scheduler" : "Timetable Dashboard"}
               </h1>
               <p className="text-base md:text-lg text-white/50 max-w-lg mx-auto">
                 {isDoom 
                   ? "DOOM demands compliance. Select your cohort to receive weekly regimental timetable assignments." 
-                  : "Select your batch to view your schedule, edit classes, and compare free time slots."
+                  : isIronman
+                    ? "Welcome back, Boss. Select your protocol to initialize holographic scheduling interfaces."
+                    : "Select your batch to view your schedule, edit classes, and compare free time slots."
                 }
               </p>
 
@@ -1302,14 +1333,26 @@ export function HomeSite() {
               <div className="glass-card rounded-2xl p-6 md:p-8 border border-white/10 relative z-20" ref={primaryDropdownRef}>
                 <div className="flex flex-col gap-3 relative text-left">
                   <label className="font-share-tech text-xs uppercase tracking-widest text-white/60">
-                    {isDoom ? "SELECT COHORT FOR IMPERIAL DECREE" : "Select Your Batch"}
+                    {isDoom ? "SELECT COHORT FOR IMPERIAL DECREE" : isIronman ? "INITIALIZE STARK PROTOCOL (SELECT BATCH)" : "Select Your Batch"}
                   </label>
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={18} />
                     <input
                       type="text"
-                      placeholder={isDoom ? "Input cohort name under penalty of DOOM..." : "Type batch name (e.g. 1A11, 2COE1, etc.)..."}
-                      className="w-full bg-black/40 border border-white/15 rounded-xl pl-12 pr-10 py-3.5 text-white outline-none focus:border-sky-500/50 focus:ring-4 focus:ring-sky-500/10 placeholder:text-white/30 text-sm md:text-base transition-all"
+                      placeholder={
+                        isDoom 
+                          ? "Input cohort name under penalty of DOOM..." 
+                          : isIronman 
+                            ? "Select batch protocol (e.g. 1A11, 2COE1)..." 
+                            : "Type batch name (e.g. 1A11, 2COE1, etc.)..."
+                      }
+                      className={`w-full bg-black/40 border border-white/15 rounded-xl pl-12 pr-10 py-3.5 text-white outline-none focus:ring-4 placeholder:text-white/30 text-sm md:text-base transition-all ${
+                        isDoom 
+                          ? "focus:border-emerald-500/50 focus:ring-emerald-500/10" 
+                          : isIronman 
+                            ? "focus:border-red-500/50 focus:ring-red-500/10" 
+                            : "focus:border-sky-500/50 focus:ring-sky-500/10"
+                      }`}
                       value={primarySearch}
                       onChange={(e) => {
                         setPrimarySearch(e.target.value);
@@ -1328,7 +1371,9 @@ export function HomeSite() {
                   </div>
 
                   {isPrimaryDropdownOpen && (
-                    <div className="absolute top-[105%] left-0 right-0 max-h-60 overflow-y-auto bg-zinc-950 border border-white/15 rounded-xl p-2 z-50 shadow-[0_12px_40px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+                    <div className={`absolute top-[105%] left-0 right-0 max-h-60 overflow-y-auto bg-zinc-950 border rounded-xl p-2 z-50 shadow-[0_12px_40px_rgba(0,0,0,0.8)] backdrop-blur-2xl ${
+                      isDoom ? "border-emerald-500/25" : isIronman ? "border-red-500/25" : "border-white/15"
+                    }`}>
                       {loadingBatches ? (
                         <div className="flex items-center justify-center p-6 text-white/40 gap-2 text-sm">
                           <Loader2 size={16} className="animate-spin" /> Fetching database...
@@ -1338,7 +1383,13 @@ export function HomeSite() {
                           <button
                             key={b}
                             onClick={() => handleSelectPrimary(b)}
-                            className="w-full text-left px-4 py-3 rounded-lg text-sm transition-all hover:bg-white/10 hover:text-white text-white/70 mb-0.5 font-medium flex items-center justify-between"
+                            className={`w-full text-left px-4 py-3 rounded-lg text-sm transition-all text-white/70 mb-0.5 font-medium flex items-center justify-between group ${
+                              isDoom 
+                                ? "hover:bg-emerald-500/10 hover:text-emerald-400" 
+                                : isIronman 
+                                  ? "hover:bg-red-500/10 hover:text-red-500" 
+                                  : "hover:bg-sky-500/10 hover:text-sky-300"
+                            }`}
                           >
                             <span>{b}</span>
                             <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -1357,14 +1408,20 @@ export function HomeSite() {
                 {!loadingBatches && batches.length > 0 && (
                   <div className="mt-6 text-left border-t border-white/5 pt-5">
                     <span className="font-share-tech text-[10px] uppercase tracking-widest text-white/40 block mb-3">
-                      {isDoom ? "REGIMENT COHORTS" : "Popular Batches"}
+                      {isDoom ? "REGIMENT COHORTS" : isIronman ? "POPULAR PROTOCOLS" : "Popular Batches"}
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {batches.slice(0, 8).map((b) => (
                         <button
                           key={b}
                           onClick={() => handleSelectPrimary(b)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-sky-500/30 hover:bg-sky-500/10 text-white/80 hover:text-sky-300 text-xs font-semibold tracking-wider transition-all"
+                          className={`px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/80 text-xs font-semibold tracking-wider transition-all ${
+                            isDoom 
+                              ? "hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400" 
+                              : isIronman 
+                                ? "hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-500 text-glow-red" 
+                                : "hover:border-sky-500/30 hover:bg-sky-500/10 hover:text-sky-300"
+                          }`}
                         >
                           {b}
                         </button>
@@ -1379,22 +1436,34 @@ export function HomeSite() {
           // ==================== MAIN WORKSPACE VIEW ====================
           <div className="flex-1 flex flex-col gap-6 mt-4 w-full">
             
-            {/* Sleek Horizontal Control Deck */}
+             {/* Sleek Horizontal Control Deck */}
             <div className="glass-card rounded-2xl p-5 border border-white/10 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
               <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
               
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner shrink-0">
-                  {isDoom ? <DoomMaskIcon size={20} className="text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" /> : <Layout size={20} />}
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-inner shrink-0 ${
+                  isDoom 
+                    ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" 
+                    : isIronman 
+                      ? "bg-red-500/10 border border-red-500/20 text-red-500" 
+                      : "bg-sky-500/10 border border-sky-500/20 text-sky-400"
+                }`}>
+                  {isDoom ? (
+                    <DoomMaskIcon size={20} className="text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                  ) : isIronman ? (
+                    <ArcReactorIcon size={20} className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
+                  ) : (
+                    <Layout size={20} />
+                  )}
                 </div>
                 <div>
                   <span className="font-share-tech text-[9px] uppercase tracking-widest text-white/40 block">
-                    {isDoom ? "ASSIGNED COHORT" : "ACTIVE BATCH"}
+                    {isDoom ? "ASSIGNED COHORT" : isIronman ? "ACTIVE PROTOCOL" : "ACTIVE BATCH"}
                   </span>
                   <div className="flex items-center gap-2 mt-0.5">
                     <h2 className="font-orbitron text-2xl font-black text-white leading-none">{primaryBatch}</h2>
                     <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold">
-                      {isDoom ? "REGIME DECREE" : "ODD 26-27"}
+                      {isDoom ? "REGIME DECREE" : isIronman ? "STARK OS 26-27" : "ODD 26-27"}
                     </span>
                   </div>
                 </div>
@@ -1411,7 +1480,7 @@ export function HomeSite() {
                         : "text-white/60 hover:text-white"
                     }`}
                   >
-                    {isDoom ? "Regimental Planner" : "Week Planner"}
+                    {isDoom ? "Regimental Planner" : isIronman ? "Interface Console" : "Week Planner"}
                   </button>
                   <button
                     onClick={() => setActiveTab("freeSlots")}
@@ -1421,7 +1490,7 @@ export function HomeSite() {
                         : "text-white/60 hover:text-white"
                     }`}
                   >
-                    {isDoom ? "Free Slots Decrees" : "Free Slots Panel"}
+                    {isDoom ? "Free Slots Decrees" : isIronman ? "Holo-Gap Analyzer" : "Free Slots Panel"}
                   </button>
                 </div>
 
@@ -1430,7 +1499,7 @@ export function HomeSite() {
                   className="py-2 px-4 rounded-xl text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all text-center flex items-center justify-center gap-2"
                 >
                   <RefreshCw size={14} />
-                  <span>{isDoom ? "Re-assign Cohort" : "Change Batch"}</span>
+                  <span>{isDoom ? "Re-assign Cohort" : isIronman ? "Eject Protocol" : "Change Batch"}</span>
                 </button>
               </div>
             </div>
@@ -1444,16 +1513,22 @@ export function HomeSite() {
                   {/* Title & Actions Bar */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
                     <div>
-                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">
-                        {isDoom ? "IMPERIAL PLANNER" : "Schedule Planner"}
+                      <span className={`font-share-tech text-[10px] uppercase tracking-widest block mb-1 ${
+                        isDoom ? "text-emerald-400" : isIronman ? "text-red-500" : "text-sky-400"
+                      }`}>
+                        {isDoom ? "IMPERIAL PLANNER" : isIronman ? "STARK MAIN CONSOLE" : "Schedule Planner"}
                       </span>
-                      <h2 className={`font-space-grotesk text-2xl font-bold text-white ${isDoom ? "text-glow-green" : ""}`}>
-                        {isDoom ? "Weekly Regimental Decree" : "Edit Weekly Schedule"}
+                      <h2 className={`font-space-grotesk text-2xl font-bold text-white ${
+                        isDoom ? "text-glow-green" : isIronman ? "text-glow-red text-red-500" : ""
+                      }`}>
+                        {isDoom ? "Weekly Regimental Decree" : isIronman ? "Stark Weekly Scheduler" : "Edit Weekly Schedule"}
                       </h2>
                       <p className="text-xs text-white/50 mt-1">
                         {isDoom 
                           ? "Adjust imperial cohort assignments. Changes are bound to local device memory." 
-                          : "Drag classes to move them, or click on a class to edit details"
+                          : isIronman
+                            ? "Configure Stark-engineered timeline modules below. Alterations will compile onto local nodes."
+                            : "Drag classes to move them, or click on a class to edit details"
                         }
                       </p>
                     </div>
@@ -1462,16 +1537,28 @@ export function HomeSite() {
                       <button
                         onClick={handleSaveLocal}
                         disabled={!editedSchedule}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 text-white font-bold rounded-xl border border-white/15 hover:bg-white/15 transition-all active:scale-95 disabled:opacity-50 text-xs"
+                        className={`flex items-center justify-center gap-2 px-4 py-2.5 font-bold rounded-xl border transition-all active:scale-95 disabled:opacity-50 text-xs ${
+                          isDoom 
+                            ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20 hover:bg-emerald-500/20" 
+                            : isIronman 
+                              ? "bg-red-500/10 text-red-500 border-red-500/25 hover:bg-red-500/20 text-glow-red" 
+                              : "bg-white/10 text-white border-white/15 hover:bg-white/15"
+                        }`}
                       >
-                        {isDoom ? "Commit Decree" : "Save Local"}
+                        {isDoom ? "Commit Decree" : isIronman ? "Compile Protocol" : "Save Local"}
                       </button>
                       <button
                         onClick={handleResetLocal}
                         disabled={!hasSavedLocalData}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-sky-500/10 text-sky-300 font-bold rounded-xl border border-sky-400/20 hover:bg-sky-500/20 transition-all active:scale-95 disabled:opacity-50 text-xs"
+                        className={`flex items-center justify-center gap-2 px-4 py-2.5 font-bold rounded-xl border transition-all active:scale-95 disabled:opacity-50 text-xs ${
+                          isDoom 
+                            ? "bg-zinc-800/50 text-white/50 border-white/5 hover:bg-zinc-800" 
+                            : isIronman 
+                              ? "bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500/20 text-glow-gold" 
+                              : "bg-sky-500/10 text-sky-300 border-sky-400/20 hover:bg-sky-500/20"
+                        }`}
                       >
-                        {isDoom ? "Revert Archival" : "Reset Local"}
+                        {isDoom ? "Revert Archival" : isIronman ? "Flush Cache" : "Reset Local"}
                       </button>
                       <button
                         onClick={handleDownload}
@@ -1485,7 +1572,13 @@ export function HomeSite() {
                   </div>
 
                   {saveStatus && (
-                    <div className="mb-4 text-xs bg-sky-500/10 border border-sky-500/20 text-sky-300 px-4 py-2.5 rounded-xl font-semibold">
+                    <div className={`mb-4 text-xs px-4 py-2.5 rounded-xl font-semibold border ${
+                      isDoom 
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300" 
+                        : isIronman 
+                          ? "bg-red-500/10 border-red-500/20 text-red-400" 
+                          : "bg-sky-500/10 border-sky-500/20 text-sky-300"
+                    }`}>
                       {saveStatus}
                     </div>
                   )}
@@ -1763,16 +1856,22 @@ export function HomeSite() {
                   {/* Header & input */}
                   <div className="border-b border-white/10 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                      <span className="font-share-tech text-[10px] uppercase tracking-widest text-sky-400 block mb-1">
-                        {isDoom ? "IMPERIAL RECONNAISSANCE" : "Find Common Gaps"}
+                      <span className={`font-share-tech text-[10px] uppercase tracking-widest block mb-1 ${
+                        isDoom ? "text-emerald-400" : isIronman ? "text-red-500" : "text-sky-400"
+                      }`}>
+                        {isDoom ? "IMPERIAL RECONNAISSANCE" : isIronman ? "HOLO-DIAGNOSTICS" : "Find Common Gaps"}
                       </span>
-                      <h2 className={`font-space-grotesk text-2xl font-bold text-white ${isDoom ? "text-glow-green" : ""}`}>
-                        {isDoom ? "Overlapping Cohort Gaps" : "Compare Batch Schedules"}
+                      <h2 className={`font-space-grotesk text-2xl font-bold text-white ${
+                        isDoom ? "text-glow-green" : isIronman ? "text-glow-cyan text-cyan-400" : ""
+                      }`}>
+                        {isDoom ? "Overlapping Cohort Gaps" : isIronman ? "Stark Holo-Gap Diagnostics" : "Compare Batch Schedules"}
                       </h2>
                       <p className="text-xs text-white/50 mt-1">
                         {isDoom 
                           ? "DOOM commands identifying overlapping rest schedules for imperial surveillance." 
-                          : "Select multiple batches to find overlapping free slots"
+                          : isIronman
+                            ? "Execute hologram analysis to identify intersecting idle phases across separate user protocols."
+                            : "Select multiple batches to find overlapping free slots"
                         }
                       </p>
                     </div>
