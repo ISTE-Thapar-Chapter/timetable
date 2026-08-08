@@ -1,4 +1,4 @@
-export const SEO_SITE_NAME = "ISTE Timetable";
+export const SEO_SITE_NAME = "ISTE Thapar Chapter";
 export const SEO_DEFAULT_OG_IMAGE = "/logo.png";
 
 const ENV_SITE_URL = (import.meta.env.VITE_SITE_URL || "").trim();

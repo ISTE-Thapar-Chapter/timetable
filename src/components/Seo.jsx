@@ -15,7 +15,7 @@ export default function Seo({
   robots = "index, follow",
   structuredData,
 }) {
-  const pageTitle = title ? `${title} | ${SEO_SITE_NAME}` : SEO_SITE_NAME;
+  const pageTitle = title ? `${SEO_SITE_NAME} | ${title}` : SEO_SITE_NAME;
   const canonicalPath =
     path ??
     (typeof window !== "undefined"
