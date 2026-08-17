@@ -947,7 +947,7 @@ export default function ScheduleView() {
         </div>
       </main>
 
-      <Footer />
+      <Footer defaultBatch={batchName} />
 
       {/* Editor Modal */}
       {isModalOpen && currentEditSlot && (

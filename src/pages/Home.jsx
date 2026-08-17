@@ -2182,7 +2182,7 @@ export function HomeSite() {
         )}
       </main>
 
-      <Footer />
+      <Footer defaultBatch={primaryBatch} />
 
       {/* ==================== EDIT CLASS DIALOG MODAL ==================== */}
       {isModalOpen && (

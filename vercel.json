@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/api/discrepancy",
+            "destination": "https://iste-contact-backend.onrender.com/api/timetable/discrepency"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
