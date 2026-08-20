@@ -5,6 +5,7 @@ import DoomIntroOverlay from "@/components/DoomIntroOverlay";
 import DoomMascot from "@/components/DoomMascot";
 import MaintenanceMode from "@/components/MaintenanceMode";
 import CONFIG from "@/config";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
       <DoomIntroOverlay />
       <DoomMascot />
       <AppRouter />
+      <Analytics />
     </BrowserRouter>
   );
 }
