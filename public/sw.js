@@ -1,4 +1,4 @@
-const CACHE_NAME = 'timetable-v1';
+const CACHE_NAME = 'timetable-maintenance-v1';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -11,13 +11,13 @@ const PRECACHE_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Pre-caching offline assets');
+      console.log('[Service Worker] Pre-caching maintenance assets');
       return cache.addAll(PRECACHE_ASSETS);
     }).then(() => self.skipWaiting())
   );
 });
 
-// Activate Event: clean up outdated caches
+// Activate Event: clean up outdated caches and take control immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {

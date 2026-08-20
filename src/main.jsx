@@ -18,6 +18,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then((reg) => {
         console.log('[Service Worker] Registered successfully with scope:', reg.scope);
+        // Force update check to immediately fetch new sw.js
+        reg.update();
       })
       .catch((err) => {
         console.error('[Service Worker] Registration failed:', err);
