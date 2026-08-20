@@ -3,6 +3,8 @@ import AppRouter from "@/router/AppRouter";
 import { BrowserRouter } from "react-router-dom";
 import DoomIntroOverlay from "@/components/DoomIntroOverlay";
 import DoomMascot from "@/components/DoomMascot";
+import MaintenanceMode from "@/components/MaintenanceMode";
+import CONFIG from "@/config";
 
 function App() {
   useEffect(() => {
@@ -15,6 +17,10 @@ function App() {
       document.documentElement.classList.add("theme-ironman");
     }
   }, []);
+
+  if (CONFIG.IS_MAINTENANCE_MODE) {
+    return <MaintenanceMode />;
+  }
 
   return (
     <BrowserRouter>
