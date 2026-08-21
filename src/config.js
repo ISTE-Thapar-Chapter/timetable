@@ -1,6 +1,6 @@
 export const CONFIG = {
   // Toggle maintenance mode on/off
-  IS_MAINTENANCE_MODE: true,
+  IS_MAINTENANCE_MODE: false,
 
   // Custom status text shown on the maintenance screen
   MAINTENANCE_STATUS_MESSAGE: "Upgrading Database & Infrastructure",
